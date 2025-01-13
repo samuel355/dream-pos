@@ -1,13 +1,13 @@
 <?php
-include_once('includes/head.php');
-require_once 'includes/db_connection.php';
-require_once 'includes/auth.php';
+  include_once('includes/head.php');
+  require_once 'includes/db_connection.php';
+  require_once 'includes/auth.php';
 
-// Redirect if already logged in
-if (isLoggedIn()) {
-  header('Location: /');
-  exit();
-}
+  // Redirect if already logged in
+  if (isLoggedIn()) {
+    header('Location: /');
+    exit();
+  }
 
 ?>
 
@@ -16,7 +16,7 @@ if (isLoggedIn()) {
     <div class="account-content">
       <div class="login-wrapper">
         <div class="login-content">
-          <form id="login-form" class="login-userset">
+          <form id="login-form" class="login-userset" method="POST">   
             <div class="login-logo logo-normal">
               <img src="assets/img/logo.png" alt="img">
             </div>
