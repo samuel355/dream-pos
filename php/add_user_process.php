@@ -89,7 +89,7 @@ function handleImageUpload($file)
       }
     }
 
-    // Validate file type
+    // file types
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mime_type = finfo_file($finfo, $file['tmp_name']);
     finfo_close($finfo);
@@ -104,12 +104,12 @@ function handleImageUpload($file)
       throw new Exception('Invalid file type. Only JPG, PNG & GIF files are allowed');
     }
 
-    // Generate unique filename
+    // unique filename
     $file_extension = $allowed_types[$mime_type];
     $filename = uniqid() . '.' . $file_extension;
     $target_file = $target_dir . $filename;
 
-    // Check file size (5MB max)
+    // (5MB max)
     if ($file['size'] > 5000000) {
       throw new Exception('File is too large (max 5MB)');
     }
@@ -119,7 +119,6 @@ function handleImageUpload($file)
       throw new Exception('Failed to move uploaded file');
     }
 
-    // Return relative path for database storage
     return 'uploads/profile_images/' . $filename;
   } catch (Exception $e) {
     error_log('Image Upload Error: ' . $e->getMessage());
