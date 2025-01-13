@@ -22,42 +22,34 @@
 
         <div class="card">
           <div class="card-body">
-            <div class="row">
+            <form id="add-category-form" class="row" enctype="multipart/form-data" method="post">
               <div class="col-lg-6 col-sm-6 col-12">
                 <div class="form-group">
                   <label>Category Name</label>
-                  <input type="text">
-                </div>
-              </div>
-              <div class="col-lg-6 col-sm-6 col-12">
-                <div class="form-group">
-                  <label>Category Code</label>
-                  <input type="text">
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="form-group">
-                  <label>Description</label>
-                  <textarea class="form-control"></textarea>
+                  <input type="text" name="category-name" id="category-name">
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="form-group">
                   <label> Product Image</label>
                   <div class="image-upload">
-                    <input type="file">
+                    <input type="file"
+                      id="image"
+                      name="image"
+                      accept="image/*"
+                      onchange="previewImage(this);">
                     <div class="image-uploads">
                       <img src="assets/img/icons/upload.svg" alt="img">
                       <h4>Drag and drop a file to upload</h4>
+                      <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="preview" class="preview-image">
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-lg-12">
-                <a href="javascript:void(0);" class="btn btn-submit me-2">Submit</a>
-                <a href="categorylist.html" class="btn btn-cancel">Cancel</a>
+                <button type="submit" class="btn btn-submit me-2">Submit</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
 
@@ -65,4 +57,4 @@
     </div>
   </div>
 
-<?php include_once('includes/scripts.php') ?>
+  <?php include_once('includes/scripts.php') ?>

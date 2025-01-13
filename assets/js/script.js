@@ -703,11 +703,6 @@ $(document).ready(function () {
     '<img src="assets/img/icons/sidebar-icon-02.svg" class="feather-five" alt="">' +
     "</a>" +
     "</li>" +
-    '<li class="sidebar-icons">' +
-    '<a href="https://themeforest.net/item/dreamspos-pos-inventory-management-admin-dashboard-template/38834413" target="_blank" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Tooltip on left">' +
-    '<img src="assets/img/icons/sidebar-icon-03.svg" class="feather-five" alt="">' +
-    "</a>" +
-    "</li>" +
     "</ul>" +
     "</div>" +
     '<div class="sidebar-settings preview-toggle">' +

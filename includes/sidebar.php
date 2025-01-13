@@ -18,7 +18,8 @@
         <ul>
           <li><a href=""><i data-feather="box"></i><span>Products</span></a></li>
           <li><a href=""><i data-feather="plus-square"></i><span>Add Product</span></a></li>
-          <li><a href=""><i data-feather="codepen"></i><span>Category</span></a></li>
+          <li><a href=""><i data-feather="codepen"></i><span>Categories</span></a></li>
+          <li><a href="/add-category"><i data-feather="codepen"></i><span>Add Category</span></a></li>
         </ul>
       </li>
       <li class="submenu-open">
