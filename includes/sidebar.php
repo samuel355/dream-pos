@@ -32,7 +32,7 @@
         <h6 class="submenu-hdr">Peoples</h6>
         <ul>
           <li><a href=""><i data-feather="user-check"></i><span>Users</span></a></li>
-          <li><a href=""> <i data-feather="user-check"></i> <span>Add User</span> </a></li>
+          <li><a href="/add-user"> <i data-feather="user-check"></i> <span>Add User</span> </a></li>
           <li><a href=""><i data-feather="user"></i><span>Customers</span></a></li>
         </ul>
       </li>
