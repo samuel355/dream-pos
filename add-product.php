@@ -22,26 +22,39 @@
 
         <div class="card">
           <div class="card-body">
-            <div class="row">
-              <div class="col-lg-3 col-sm-6 col-12">
-                <div class="form-group">
-                  <label>Product Name</label>
-                  <input id="product-name" name="product-name" type="text">
+            <form id="add-product-form" enctype="multipart/form-data" method="post" class="row">
+              <div class="row">
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Product Name</label>
+                    <input id="product-name" name="product-name" type="text">
+                  </div>
                 </div>
-              </div>
-              <div class="col-lg-3 col-sm-6 col-12">
-                <div class="form-group">
-                  <label>Category</label>
-                  <select class="select" id="category-name" name="category-name">
-                    <option value="Choose Category">Choose Category</option>
-                    <option>Computers</option>
-                  </select>
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select class="select" id="category-id" name="category-id">
+                      <option value="Choose Category">Choose Category</option>
+                      <?php
+                      // Include database connection
+                      include_once('includes/db_connection.php');
+
+                      // Fetch categories from database
+                      $query = "SELECT * FROM categories ORDER BY name";
+                      $result = mysqli_query($conn, $query);
+
+                      while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                      }
+                      ?>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-lg-3 col-sm-6 col-12">
-                <div class="form-group">
-                  <label>Price</label>
-                  <input type="text" name="price" id="price">
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Price</label>
+                    <input type="text" name="price" id="price">
+                  </div>
                 </div>
               </div>
               <div class="col-lg-12">
@@ -56,14 +69,15 @@
                     <div class="image-uploads">
                       <img src="assets/img/icons/upload.svg" alt="img">
                       <h4>Drag and drop a file to upload</h4>
+                      <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="preview" class="preview-image">
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-lg-12">
-                <button type="submit"class="btn btn-submit me-2">Submit</button>>
+                <button type="submit" class="btn btn-submit me-2">Submit</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
 

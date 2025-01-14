@@ -20,6 +20,7 @@
 <script src="ajax/login.js"></script>
 <script src="ajax/add-user.js"></script>
 <script src="ajax/add-category.js" ></script>
+<script src="ajax/add-product.js" ></script>
 </body>
 
 </html>
