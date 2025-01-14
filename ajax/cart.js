@@ -167,7 +167,7 @@ function displayProducts(products, categoryId) {
                           <img src="../php/${product.image}" 
                               alt="${product.name}"
                               onerror="this.src='assets/img/products/default.png'"
-                              style="width: 85%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover; margin-bottom:6px"/>
+                              style="width: 85%; height: 15vh; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover; margin-bottom:6px"/>
                           <span><i data-feather="check" class="feather-16"></i></span>
                       </a>
                       <h6 class="cat-name mt-4"><a href="javascript:void(0);">${
@@ -219,27 +219,71 @@ function addToCart(productId, quantity = 1) {
 
 //Fetch cart items
 function updateCart() {
-  fetch("php/get-cart.php")
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === "success") {
-        console.log(data.data)
-        displayCart(data.data);
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-}
+    fetch("php/get-cart.php")
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status === "success") {
+                const cartData = data.data;
+                
+                // Get container elements
+                const leftContainer = document.querySelector('.product-right-block');
+                const rightContainer = document.querySelector('.order-right-block');
+                const valuesContainer = document.querySelector('.setvalue')
+                const orderBtn = document.querySelector('.order-btn-container')
+                
+                // Adjust layout based on cart items
+                if (cartData.items.length === 0) {
+                    if(valuesContainer){
+                        valuesContainer.style.display = 'none'
+                    }
+                    if(orderBtn){
+                        orderBtn.style.display = 'none'
+                    }
+                    if (leftContainer) {
+                        leftContainer.classList.remove('col-lg-8');
+                        leftContainer.classList.add('col-lg-12');
+                    }
+                    if (rightContainer) {
+                        rightContainer.style.display = 'none';
+                    }
+                } else {
+                    if(valuesContainer){
+                        valuesContainer.style.display = 'block'
+                    }
+                    if(orderBtn){
+                        orderBtn.style.display = 'block'
+                    }
+                    if (leftContainer) {
+                        leftContainer.classList.remove('col-lg-12');
+                        leftContainer.classList.add('col-lg-8');
+                    }
+                    if (rightContainer) {
+                        rightContainer.style.display = 'block';
+                    }
+                }
 
+                // Display cart items
+                displayCart(cartData);
+            }
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
 // Function to display cart
-function displayCart(cartData) {
+function displayCart(cartData) {    
     const cartContainer = document.querySelector('.product-wrap');
     const totalItems = document.querySelector('.count-items');
     const subtotalElement = document.querySelector('.cart-subtotal');
     const totalElement = document.querySelector('.cart-total-items');
     const checkoutTotal = document.querySelector('.cart-total-amount');
+    const checkoutCheckout = document.querySelector('.cart-total-checkout');
+
+
+    
     
     // Update total items
-    totalItems.textContent = `${cartData.total_items}`;
+    totalItems.textContent = `  ${cartData.items.length}`;
     
     // Display cart items
     let html = '';
@@ -259,10 +303,16 @@ function displayCart(cartData) {
                             <p>GHS ${item.price}</p>
                         </div>
                     </div>
-                    <div class="qty-item text-center">
-                        <a href="javascript:void(0);" onclick="updateQuantity(${item.cart_id}, ${item.quantity - 1})" class="button-minus dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i data-feather="minus-circle" class="feather-14"></i></a>
-                        <input type="text" class="form-control text-center quantity-field" value="${item.quantity}" readonly>
-                        <a href="javascript:void(0);" onclick="updateQuantity(${item.cart_id}, ${item.quantity + 1})" class=" inc button-plus d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i data-feather="plus-circle" class="feather-14"></i></a>
+
+                    <div class="increment-decrement">
+                        <div class="input-groups">
+                            <input onclick="updateQuantity(${item.cart_id}, ${item.quantity - 1})" type="button" value="-"
+                                class="button-minus dec button">
+                            <input type="text" name="child" value="${item.quantity}" readonly
+                                class="quantity-field">
+                            <input onclick="updateQuantity(${item.cart_id}, ${item.quantity + 1})" type="button" value="+"
+                                class="button-plus inc button ">
+                        </div>
                     </div>
                     <div class="d-flex align-items-center action">
                         <a href="javascript:void(0);" 
@@ -279,9 +329,58 @@ function displayCart(cartData) {
     cartContainer.innerHTML = html;
     
     // Update totals
-    subtotalElement.textContent = `$${cartData.subtotal.toFixed(2)}`;
-    totalElement.textContent = `$${cartData.total.toFixed(2)}`;
-    checkoutTotal.textContent = `$${cartData.total.toFixed(2)}`;
+    subtotalElement.textContent = ` GHS. ${cartData.subtotal.toFixed(2)}`;
+    totalElement.textContent = `${cartData.total_items}`;
+    checkoutTotal.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+    checkoutCheckout.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+}
+
+// Function to delete cart item
+function deleteCartItem(cartId) {
+    if (confirm('Are you sure you want to remove this item?')) {
+        const formData = new FormData();
+        formData.append('cart_id', cartId);
+        
+        fetch('php/delete-cart-item.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                updateCart(); // Refresh cart display
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+// Function to update quantity
+function updateQuantity(cartId, newQuantity) {
+    if (newQuantity < 1) {
+        toastr.error('Quantity cannot be less than 1')
+        return;
+    }
+    
+    const formData = new FormData();
+    formData.append('cart_id', cartId);
+    formData.append('quantity', newQuantity);
+    
+    fetch('php/update-cart.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            updateCart(); // Refresh cart display
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 // Update your DOMContentLoaded event listener
