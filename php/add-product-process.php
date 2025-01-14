@@ -31,7 +31,6 @@ try {
     sendResponse('error', 'Sorry product name already exist');
   }
 
-
   // Handle image upload
   $image_path = null;
   if (isset($_FILES['image']) && $_FILES['image']['size'] > 0) {
