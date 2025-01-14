@@ -56,38 +56,36 @@ function displayCategories(categories) {
 }
 
 function initializeCategoryEvents() {
-  const categoryElements = document.querySelectorAll(
-    "#categories-container li"
-  );
+  const categoryElements = document.querySelectorAll("#categories-container li");
 
-  categoryElements.forEach((categoryElement) => {
-    categoryElement.addEventListener("click", function (e) {
-      e.preventDefault();
+  categoryElements.forEach(categoryElement => {
+      categoryElement.addEventListener("click", function(e) {
+          e.preventDefault();
 
-      // Remove active class from all categories
-      categoryElements.forEach((el) => el.classList.remove("active"));
+          // Remove active class from all categories
+          categoryElements.forEach(el => el.classList.remove("active"));
 
-      // Add active class to clicked category
-      this.classList.add("active");
+          // Add active class to clicked category
+          this.classList.add("active");
 
-      // Get category ID and load products
-      const categoryId = this.dataset.categoryId;
+          // Get category ID
+          const categoryId = this.dataset.categoryId;
+          console.log("Selected category ID:", categoryId); // Debug log
 
-      // Remove active class from all tab contents
-      document.querySelectorAll(".tab_content").forEach((tab) => {
-        tab.classList.remove("active");
+          // Remove active class from all tab contents
+          document.querySelectorAll(".tab_content").forEach(tab => {
+              tab.classList.remove("active");
+          });
+
+          // Add active class to corresponding tab content
+          const correspondingTab = document.querySelector(`.tab_content[data-tab="category-${categoryId}"]`);
+          if (correspondingTab) {
+              correspondingTab.classList.add("active");
+          }
+
+          // Load products for the selected category
+          loadProducts(categoryId);
       });
-
-      // Add active class to corresponding tab content
-      const correspondingTab = document.querySelector(
-        `.tab_content[data-tab="category-${categoryId}"]`
-      );
-      if (correspondingTab) {
-        correspondingTab.classList.add("active");
-      }
-
-      loadProducts(categoryId);
-    });
   });
 }
 
@@ -107,19 +105,29 @@ function loadProducts(categoryId) {
   `;
   productsContainer.innerHTML = loadingHtml;
 
-  // Fetch products
+  // Fetch products with category ID as parameter
   fetch(`php/get-products.php?category_id=${categoryId}`)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === "success") {
-        displayProducts(data.data, categoryId);
-      } else {
-        console.error("Error loading products:", data.message);
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      productsContainer.innerHTML = `
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.json();
+      })
+      .then(data => {
+          if (data.status === "success") {
+              // Filter products by category ID before displaying
+              const filteredProducts = data.data.filter(product => 
+                  product.category_id === categoryId || 
+                  parseInt(product.category_id) === parseInt(categoryId)
+              );
+              displayProducts(filteredProducts, categoryId);
+          } else {
+              throw new Error(data.message || 'Failed to load products');
+          }
+      })
+      .catch(error => {
+          console.error("Error:", error);
+          productsContainer.innerHTML = `
               <div class="tab_content active" data-tab="category-${categoryId}">
                   <div class="row">
                       <div class="col-12 text-center">
@@ -128,7 +136,7 @@ function loadProducts(categoryId) {
                   </div>
               </div>
           `;
-    });
+      });
 }
 
 // Function to display products
@@ -136,35 +144,43 @@ function displayProducts(products, categoryId) {
   const productsContainer = document.querySelector(".tabs_container");
   let html = `<div class="tab_content active" data-tab="category-${categoryId}"><div class="row">`;
 
-  if (products.length === 0) {
-    html += `
+  if (!products || products.length === 0) {
+      html += `
           <div class="col-12 text-center">
               <p>No products found in this category.</p>
           </div>
       `;
   } else {
-    products.forEach((product) => {
-      html += `
-      <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
-            <div class="product-info default-cover card" onclick="addToCart(${product.id})">
-                <a href="javascript:void(0);" class="img-bg">
-                    <img src="../php/${product.image}"  alt="Beef Sauce" style="width: 85%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover; margin-bottom:6px"/>
-                    <span><i data-feather="check" class="feather-16"></i></span>
-                </a>
-                <h6 class="cat-name"><a href="javascript:void(0);">${product.category_name}</a></h6>
-                <h6 class="product-name"><a href="javascript:void(0);">${product.name}</a></h6>
-                <div class="d-flex align-items-center justify-content-between price">
-                    <span>30 Pcs</span>
-                    <p>GHS ${product.price}</p>
-                </div>
-            </div>
-        </div>
-      `;
-    });
+      products.forEach(product => {
+          html += `
+              <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
+                  <div class="product-info default-cover card" onclick="addToCart(${product.id})">
+                      <a href="javascript:void(0);" class="img-bg">
+                          <img src="../php/${product.image}" 
+                              alt="${product.name}"
+                              onerror="this.src='assets/img/products/default.png'"
+                              style="width: 85%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover; margin-bottom:6px"/>
+                          <span><i data-feather="check" class="feather-16"></i></span>
+                      </a>
+                      <h6 class="cat-name mt-4"><a href="javascript:void(0);">${product.category_name}</a></h6>
+                      <h6 class="product-name"><a href="javascript:void(0);">${product.name}</a></h6>
+                      <div class="d-flex align-items-center justify-content-between price">
+                          <span>${product.quantity || 'N/A'} ${product.unit || 'Pcs'}</span>
+                          <p>GHS ${parseFloat(product.price).toFixed(2)}</p>
+                      </div>
+                  </div>
+              </div>
+          `;
+      });
   }
 
   html += "</div></div>";
   productsContainer.innerHTML = html;
+
+  // Reinitialize Feather icons if you're using them
+  if (typeof feather !== 'undefined') {
+      feather.replace();
+  }
 }
 
 // Update your DOMContentLoaded event listener
