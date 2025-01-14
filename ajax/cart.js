@@ -73,7 +73,7 @@ function initializeCategoryEvents() {
 
       // Get category ID
       const categoryId = this.dataset.categoryId;
-      console.log("Selected category ID:", categoryId); // Debug log
+      //console.log("Selected category ID:", categoryId); // Debug log
 
       // Remove active class from all tab contents
       document.querySelectorAll(".tab_content").forEach((tab) => {
@@ -279,9 +279,6 @@ function displayCart(cartData) {
     const checkoutTotal = document.querySelector('.cart-total-amount');
     const checkoutCheckout = document.querySelector('.cart-total-checkout');
 
-
-    
-    
     // Update total items
     totalItems.textContent = `  ${cartData.items.length}`;
     
@@ -333,6 +330,11 @@ function displayCart(cartData) {
     totalElement.textContent = `${cartData.total_items}`;
     checkoutTotal.textContent = ` GHS ${cartData.total.toFixed(2)}`;
     checkoutCheckout.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+
+    const createOrderBtn = document.querySelector('.order-btn-container'); 
+    createOrderBtn.onclick = () => {
+        previewReceipt(cartData);
+    };
 }
 
 // Function to delete cart item
@@ -381,6 +383,101 @@ function updateQuantity(cartId, newQuantity) {
         }
     })
     .catch(error => console.error('Error:', error));
+}
+
+// Function to clear cart
+function clearCart() {
+    if (confirm('Are you sure you want to clear your cart?')) {
+        fetch('php/clear-cart.php', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                updateCart(); // Refresh cart display
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+function previewReceipt(cartData) {
+    const receiptWindow = window.open('', '_blank', 'width=400,height=600');
+    
+    let html = `
+        <html>
+        <head>
+            <title>Receipt Preview</title>
+            <style>
+                body {
+                    font-family: monospace;
+                    padding: 20px;
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .items {
+                    margin: 20px 0;
+                }
+                .item {
+                    margin: 5px 0;
+                }
+                .totals {
+                    margin-top: 20px;
+                    text-align: right;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h2>Your Store Name</h2>
+                <p>123 Store Address</p>
+                <p>City, State, ZIP</p>
+                <p>Tel: (123) 456-7890</p>
+                <p>Date: ${new Date().toLocaleString()}</p>
+                <p>Receipt #: ${Date.now()}</p>
+            </div>
+            
+            <div class="items">
+    `;
+    
+    cartData.items.forEach(item => {
+        html += `
+            <div class="item">
+                <div>${item.name}</div>
+                <div style="margin-left:8px">${item.quantity} x 
+                ${item.price} = ${(item.quantity * item.price).toFixed(2)}</div>
+                <hr />
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+            
+            <div class="totals">
+                <p>Subtotal: GHS ${cartData.subtotal.toFixed(2)}</p>
+                <p>Total: GHS ${cartData.total.toFixed(2)}</p>
+            </div>
+            
+            <div class="footer">
+                <p>Thank you for your purchase!</p>
+                <p>Please come again</p>
+            </div>
+        </body>
+        </html>
+    `;
+    
+    receiptWindow.document.write(html);
 }
 
 // Update your DOMContentLoaded event listener
