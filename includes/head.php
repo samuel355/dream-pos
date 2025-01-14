@@ -10,6 +10,8 @@
   <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
 
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="assets/css/feather.css">
+  <link rel='stylesheet' href='assets/css/dataTables.bootstrap5.min.css'>
 
   <link rel="stylesheet" href="assets/css/animate.css">
   <link rel="stylesheet" href="assets/plugins/owlcarousel/owl.carousel.min.css">
@@ -23,4 +25,5 @@
   <link rel="stylesheet" href="assets/css/toastr.css" >
 
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/plugins/daterangepicker/daterangepicker.css">
 </head>
