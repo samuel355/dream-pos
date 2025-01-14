@@ -42,3 +42,5 @@ next-env.d.ts
 .vscode 
 history
 vscode
+
+/php/uploads
