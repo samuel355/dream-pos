@@ -23,11 +23,12 @@ function displayCategories(categories) {
       category.id
     }" 
               data-category-id="${category.id}">
-              <a href="javascript:void(0);"> <img src="${
+              <a href="javascript:void(0);"> 
+              <img style="width:100%; height:60px; object-fit: contain; border-radius: 20px" src="${
                 category.image
               }" alt="${category.name}"> </a>
-              <h6>${category.name}</h6>
-              <span>4 Items</span>
+              <h6 class="text-center">${category.name}</h6>
+              <p class="text-center">4 Items</p>
           </li>
       `;
   });
@@ -181,6 +182,26 @@ function displayProducts(products, categoryId) {
   if (typeof feather !== 'undefined') {
       feather.replace();
   }
+}
+
+// Function to add product to cart
+function addToCart(productId, quantity = 1) {
+  const formData = new FormData();
+  formData.append('product_id', productId);
+  formData.append('quantity', quantity);
+  
+  fetch('php/add-to-cart.php', {
+      method: 'POST',
+      body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.status === 'success') {
+        toastr.success('Product added to cart')
+          //updateCart();
+      }
+  })
+  .catch(error => console.error('Error:', error));
 }
 
 // Update your DOMContentLoaded event listener

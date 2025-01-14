@@ -11,19 +11,13 @@
 
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
-                <div class="btn-row d-sm-flex align-items-center">
-                    <a href="javascript:void(0);" class="btn btn-secondary mb-xs-3" data-bs-toggle="modal" data-bs-target="#orders"><span class="me-1 d-flex align-items-center"><i data-feather="shopping-cart" class="feather-16"></i></span>View Orders</a>
-                    <a href="javascript:void(0);" class="btn btn-info"><span class="me-1 d-flex align-items-center"><i data-feather="rotate-cw" class="feather-16"></i></span>Reset</a>
-                    <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#recents"><span class="me-1 d-flex align-items-center"><i data-feather="refresh-ccw" class="feather-16"></i></span>Transaction</a>
-                </div>
-
                 <div class="row align-items-start pos-wrapper">
                     <div class="col-md-12 col-lg-8">
                         <div class="pos-categories tabs_wrapper">
                             <h5>Categories</h5>
                             <p>Select From Below Categories</p>
                             <ul class="tabs pos-category" style="display: flex; flex-direction:row; gap:15px; margin-bottom:12px; overflow-x:scroll" id="categories-container">
-                                
+
                             </ul>
                             <div class="pos-products">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -32,11 +26,11 @@
                                 <div class="tabs_container" id="tabs-container">
                                     <div class="tab_content active" data-tab="all">
                                         <div class="row">
-                                            <?php 
-                                                include('includes/product-skeleton.php'); 
-                                                include('includes/product-skeleton.php'); 
-                                                include('includes/product-skeleton.php'); 
-                                                include('includes/product-skeleton.php'); 
+                                            <?php
+                                            include('includes/product-skeleton.php');
+                                            include('includes/product-skeleton.php');
+                                            include('includes/product-skeleton.php');
+                                            include('includes/product-skeleton.php');
                                             ?>
 
                                         </div>
@@ -49,38 +43,31 @@
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class="">
-                                    <h5>Order List</h5>
-                                    <span>Transaction ID : #65565</span>
+                                    <h5>New Order</h5>
                                 </div>
                                 <div class="">
                                     <a class="confirm-text" href="javascript:void(0);"><i data-feather="trash-2" class="feather-16 text-danger"></i></a>
-                                    <a href="javascript:void(0);" class="text-default"><i data-feather="more-vertical" class="feather-16"></i></a>
                                 </div>
                             </div>
                             <div class="customer-info block-section">
                                 <h6>Customer Information</h6>
                                 <div class="input-block d-flex align-items-center">
                                     <div class="flex-grow-1">
-                                        <select class="select">
-                                            <option>Walk in Customer</option>
-                                            <option>John</option>
-                                            <option>Smith</option>
-                                            <option>Ana</option>
-                                            <option>Elza</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" id="customer-name" name="customer-name">
+                                        </div>
                                     </div>
-                                    <a href="#" class="btn btn-primary btn-icon" data-bs-toggle="modal" data-bs-target="#create"><i data-feather="user-plus" class="feather-16"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon"><i data-feather="user-plus" class="feather-16"></i></a>
                                 </div>
-                                <div class="input-block">
-                                    <select class="select">
-                                        <option>Search Products</option>
-                                        <option>IPhone 14 64GB</option>
-                                        <option>MacBook Pro</option>
-                                        <option>Rolex Tribute V3</option>
-                                        <option>Red Nike Angelo</option>
-                                        <option>Airpod 2</option>
-                                        <option>Oldest</option>
-                                    </select>
+                                <div class="input-block d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        <div class="form-group">
+                                            <label>Contact</label>
+                                            <input type="text" id="customer-contact" name="customer-contact">
+                                        </div>
+                                    </div>
+                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon"><i data-feather="phone" class="feather-16"></i></a>
                                 </div>
                             </div>
 
@@ -195,116 +182,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="block-section">
-                                <div class="selling-info">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Order Tax</label>
-                                                <select class="select">
-                                                    <option>GST 5%</option>
-                                                    <option>GST 10%</option>
-                                                    <option>GST 15%</option>
-                                                    <option>GST 20%</option>
-                                                    <option>GST 25%</option>
-                                                    <option>GST 30%</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Shipping</label>
-                                                <select class="select">
-                                                    <option>15</option>
-                                                    <option>20</option>
-                                                    <option>25</option>
-                                                    <option>30</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-4">
-                                            <div class="input-block">
-                                                <label>Discount</label>
-                                                <select class="select">
-                                                    <option>10%</option>
-                                                    <option>10%</option>
-                                                    <option>15%</option>
-                                                    <option>20%</option>
-                                                    <option>25%</option>
-                                                    <option>30%</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-total">
-                                    <table class="table table-responsive table-borderless">
-                                        <tr>
-                                            <td>Sub Total</td>
-                                            <td class="text-end">$60,454</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tax (GST 5%)</td>
-                                            <td class="text-end">$40.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Shipping</td>
-                                            <td class="text-end">$40.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sub Total</td>
-                                            <td class="text-end">$60,454</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="danger">Discount (10%)</td>
-                                            <td class="danger text-end">$15.21</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Total</td>
-                                            <td class="text-end">$64,024.5</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="block-section payment-method">
-                                <h6>Payment Method</h6>
-                                <div class="row d-flex align-items-center justify-content-center methods">
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/cash-pay.svg" alt="Payment Method">
-                                                <span>Cash</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/credit-card.svg" alt="Payment Method">
-                                                <span>Debit Card</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-4 item">
-                                        <div class="default-cover">
-                                            <a href="javascript:void(0);">
-                                                <img src="assets/img/icons/qr-scan.svg" alt="Payment Method">
-                                                <span>Scan</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="d-grid btn-block">
                                 <a class="btn btn-secondary" href="javascript:void(0);">
-                                    Grand Total : $64,024.5
+                                    Oder Now : $64,024.5
                                 </a>
-                            </div>
-                            <div class="btn-row d-sm-flex align-items-center justify-content-between">
-                                <a href="javascript:void(0);" class="btn btn-info btn-icon flex-fill" data-bs-toggle="modal" data-bs-target="#hold-order"><span class="me-1 d-flex align-items-center"><i data-feather="pause" class="feather-16"></i></span>Hold</a>
-                                <a href="javascript:void(0);" class="btn btn-danger btn-icon flex-fill"><span class="me-1 d-flex align-items-center"><i data-feather="trash-2" class="feather-16"></i></span>Void</a>
-                                <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" data-bs-toggle="modal" data-bs-target="#payment-completed"><span class="me-1 d-flex align-items-center"><i data-feather="credit-card" class="feather-16"></i></span>Payment</a>
                             </div>
 
                         </aside>
@@ -1529,17 +1410,6 @@
         </div>
     </div>
     <!-- /Recent Transactions -->
-
-    <div class="customizer-links" id="setdata">
-        <ul class="sticky-sidebar">
-            <li class="sidebar-icons">
-                <a href="#" class="navigation-add" data-bs-toggle="tooltip" data-bs-placement="left"
-                    data-bs-original-title="Theme">
-                    <i data-feather="settings" class="feather-five"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
     <!-- jQuery -->
 
     <?php include_once('includes/scripts.php') ?>

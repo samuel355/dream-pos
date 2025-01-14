@@ -46,6 +46,7 @@
 	<!-- Owl JS -->
 	<script src='assets/plugins/owlcarousel/owl.carousel.min.js' type="text/javascript"></script>
 	<script src="assets/js/rocket-loader.min.js" data-cf-settings="|49" defer></script>
+	<script src="assets/js/toastr.min.js" data-cf-settings="|49" defer></script>
 
   <script src="ajax/add-category.js"></script>
   <script src="ajax/add-product.js"></script>
