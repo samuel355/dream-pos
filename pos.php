@@ -12,12 +12,12 @@
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">
                 <div class="row align-items-start pos-wrapper">
-                    <div class="col-md-12 col-lg-8">
+                    <div class="col-md-12 col-lg-8" id="left-products">
                         <div class="pos-categories tabs_wrapper">
                             <h5>Categories</h5>
                             <p>Select From Below Categories</p>
                             <ul class="tabs pos-category" style="display: flex; flex-direction:row; gap:15px; margin-bottom:12px; overflow-x:scroll" id="categories-container">
-
+                                <!-- Categories view -->
                             </ul>
                             <div class="pos-products">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -26,6 +26,8 @@
                                 <div class="tabs_container" id="tabs-container">
                                     <div class="tab_content active" data-tab="all">
                                         <div class="row">
+
+                                            <!-- Products View -->
                                             <?php
                                             include('includes/product-skeleton.php');
                                             include('includes/product-skeleton.php');
@@ -39,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-4 ps-0">
+                    <div class="col-md-12 col-lg-4 ps-0" id="right-orders">
                         <aside class="product-order-list">
                             <div class="head d-flex align-items-center justify-content-between w-100">
                                 <div class="">
@@ -73,7 +75,7 @@
 
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
-                                    <h6 class="d-flex align-items-center mb-0">Product Added<span class="count">2</span></h6>
+                                    <h6 class="d-flex align-items-center mb-0">Products Added<span class="count-items">2</span></h6>
                                     <a href="javascript:void(0);" class="d-flex align-items-center text-danger"><span class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all</a>
                                 </div>
                                 <div class="product-wrap">
@@ -103,88 +105,30 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="assets/img/products/pos-product-17.png" alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0235</span>
-                                                <h6><a href="javascript:void(0);">Iphone 14</a></h6>
-                                                <p>$3000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="3">
-                                            <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal" data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="assets/img/products/pos-product-16.png" alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0005</span>
-                                                <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                                <p>$2000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="1">
-                                            <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="product-list d-flex align-items-center justify-content-between">
-                                        <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                                            <a href="javascript:void(0);" class="img-bg">
-                                                <img src="assets/img/products/pos-product-17.png" alt="Products">
-                                            </a>
-                                            <div class="info">
-                                                <span>PT0005</span>
-                                                <h6><a href="javascript:void(0);">Red Nike Laser</a></h6>
-                                                <p>$2000</p>
-                                            </div>
-                                        </div>
-                                        <div class="qty-item text-center">
-                                            <a href="javascript:void(0);" class="dec d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="minus"><i data-feather="minus-circle" class="feather-14"></i></a>
-                                            <input type="text" class="form-control text-center" name="qty" value="1">
-                                            <a href="javascript:void(0);" class="inc d-flex justify-content-center align-items-center" data-bs-toggle="tooltip" data-bs-placement="top" title="plus"><i data-feather="plus-circle" class="feather-14"></i></a>
-                                        </div>
-                                        <div class="d-flex align-items-center action">
-                                            <a class="btn-icon edit-icon me-2" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#edit-product">
-                                                <i data-feather="edit" class="feather-14"></i>
-                                            </a>
-                                            <a class="btn-icon delete-icon confirm-text" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-14"></i>
-                                            </a>
-                                        </div>
+                                </div>
+
+                                <div class="card-body pt-0 pb-2">
+                                    <div class="setvalue">
+                                        <ul>
+                                            <li>
+                                                <h5>Subtotal </h5>
+                                                <h6 class="cart-subtotal">55.00$</h6>
+                                            </li>
+                                            <li>
+                                                <h5>Items </h5>
+                                                <h6 class="cart-total-items">4</h6>
+                                            </li>
+                                            <li class="total-value">
+                                                <h5>Total </h5>
+                                                <h6>60.00$</h6>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="d-grid btn-block">
                                 <a class="btn btn-secondary" href="javascript:void(0);">
-                                    Oder Now : $64,024.5
+                                    Oder Now : <span class="cart-total-amount"></span>
                                 </a>
                             </div>
 
