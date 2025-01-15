@@ -63,7 +63,7 @@
                                     <h5>New Order</h5>
                                 </div>
                                 <div class="">
-                                    <a class="confirm-text" href="javascript:void(0);"><i data-feather="trash-2" class="feather-16 text-danger"></i></a>
+                                    <a onclick="clearCart()" href="javascript:void(0);"><i data-feather="trash-2" class="feather-16 text-danger"></i></a>
                                 </div>
                             </div>
                             <div class="customer-info block-section">
@@ -91,7 +91,7 @@
                             <div class="product-added block-section">
                                 <div class="head-text d-flex align-items-center justify-content-between">
                                     <h6 class="d-flex align-items-center mb-0">Products Added => <span class="count-items"> </span></h6>
-                                    <a href="javascript:void(0);" class="d-flex align-items-center text-danger"><span class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all</a>
+                                    <a onclick="clearCart()" href="javascript:void(0);" class="d-flex align-items-center text-danger"><span class="me-1"><i data-feather="x" class="feather-16"></i></span>Clear all</a>
                                 </div>
                                 <div class="product-wrap">
                                 </div>
