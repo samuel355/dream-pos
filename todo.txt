@@ -1,0 +1,303 @@
+1. First, create print_receipt.php:
+
+
+<?php
+session_start();
+require_once '../config/db.php';
+require_once '../vendor/autoload.php'; // Make sure to install mike42/escpos-php via composer
+
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\Printer;
+
+header('Content-Type: application/json');
+
+function generateReceipt($conn) {
+    try {
+        $session_id = session_id();
+        
+        // Get cart items
+        $query = "SELECT 
+                    ci.quantity,
+                    ci.price as item_price,
+                    p.name,
+                    p.sku
+                  FROM cart_items ci
+                  JOIN products p ON ci.product_id = p.id
+                  WHERE ci.session_id = ?";
+                  
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $session_id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        
+        // Calculate totals
+        $items = [];
+        $subtotal = 0;
+        
+        while ($row = mysqli_fetch_assoc($result)) {
+            $item_total = $row['quantity'] * $row['item_price'];
+            $subtotal += $item_total;
+            
+            $items[] = [
+                'name' => $row['name'],
+                'sku' => $row['sku'],
+                'quantity' => $row['quantity'],
+                'price' => $row['item_price'],
+                'total' => $item_total
+            ];
+        }
+        
+        $tax = $subtotal * 0.10; // 10% tax
+        $total = $subtotal + $tax;
+
+        // Connect to printer
+        $connector = new WindowsPrintConnector("POS-58"); // Change to your printer name
+        $printer = new Printer($connector);
+
+        // Print receipt
+        try {
+            // Initialize printer
+            $printer->initialize();
+            
+            // Store header
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->setTextSize(2, 2);
+            $printer->text("Your Store Name\n");
+            $printer->setTextSize(1, 1);
+            $printer->text("123 Store Address\n");
+            $printer->text("City, State, ZIP\n");
+            $printer->text("Tel: (123) 456-7890\n");
+            $printer->feed();
+
+            // Receipt information
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("Date: " . date('Y-m-d H:i:s') . "\n");
+            $printer->text("Receipt #: " . uniqid() . "\n");
+            $printer->text("Cashier: " . ($_SESSION['username'] ?? 'Admin') . "\n");
+            $printer->feed();
+
+            // Table header
+            $printer->text("--------------------------------\n");
+            $printer->text(sprintf("%-20s %3s %7s\n", "Item", "Qty", "Total"));
+            $printer->text("--------------------------------\n");
+
+            // Items
+            foreach ($items as $item) {
+                // Item name might need to be truncated
+                $name = strlen($item['name']) > 20 ? substr($item['name'], 0, 17) . '...' : $item['name'];
+                
+                $printer->text(sprintf("%-20s\n", $name));
+                $printer->text(sprintf("    %3d x %7.2f = %7.2f\n", 
+                    $item['quantity'], 
+                    $item['price'], 
+                    $item['total']
+                ));
+            }
+
+            // Totals
+            $printer->text("--------------------------------\n");
+            $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->text(sprintf("Subtotal: %13.2f\n", $subtotal));
+            $printer->text(sprintf("Tax (10%%): %12.2f\n", $tax));
+            $printer->text(sprintf("Total: %16.2f\n", $total));
+            $printer->text("--------------------------------\n");
+
+            // Payment method (if implemented)
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("Payment Method: Cash\n");
+            
+            // Footer
+            $printer->feed();
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Thank you for your purchase!\n");
+            $printer->text("Please come again\n");
+            
+            // Print barcode if needed
+            $printer->feed();
+            $printer->setBarcodeHeight(40);
+            $printer->setBarcodeWidth(2);
+            $printer->barcode(uniqid(), Printer::BARCODE_CODE39);
+            
+            $printer->feed(2);
+            
+            // Cut receipt
+            $printer->cut();
+            
+            // Close printer
+            $printer->close();
+
+            // Clear the cart after successful print
+            clearCart($conn, $session_id);
+
+            return [
+                'status' => 'success',
+                'message' => 'Receipt printed successfully'
+            ];
+
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => 'Printer error: ' . $e->getMessage()
+            ];
+        }
+
+    } catch (Exception $e) {
+        return [
+            'status' => 'error',
+            'message' => 'Database error: ' . $e->getMessage()
+        ];
+    }
+}
+
+// Function to clear cart
+function clearCart($conn, $session_id) {
+    $query = "DELETE FROM cart_items WHERE session_id = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $session_id);
+    mysqli_stmt_execute($stmt);
+}
+
+// Generate and print receipt
+echo json_encode(generateReceipt($conn));
+?>
+
+===========================================================================
+2. Add the print functionality to your JavaScript:
+```javascript
+// Add this to your existing cart.js file
+
+function printReceipt() {
+    // Show loading state
+    const checkoutBtn = document.querySelector('.btn-totallabel');
+    const originalText = checkoutBtn.innerHTML;
+    checkoutBtn.innerHTML = 'Printing...';
+    checkoutBtn.style.pointerEvents = 'none';
+
+    fetch('php/print_receipt.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Show success message
+                alert('Receipt printed successfully!');
+                // Refresh cart display
+                updateCart();
+            } else {
+                // Show error message
+                alert('Error printing receipt: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error printing receipt');
+        })
+        .finally(() => {
+            // Restore button state
+            checkoutBtn.innerHTML = originalText;
+            checkoutBtn.style.pointerEvents = 'auto';
+        });
+}
+
+
+// Add click event listener to checkout button
+document.querySelector('.btn-totallabel').addEventListener('click', function() {
+    // Verify cart is not empty
+    const totalItems = document.querySelector('.totalitem h4');
+    const itemCount = parseInt(totalItems.textContent.match(/\d+/)[0]);
+    
+    if (itemCount === 0) {
+        alert('Cart is empty');
+        return;
+    }
+
+    // Confirm checkout
+    if (confirm('Proceed with checkout and print receipt?')) {
+        printReceipt();
+    }
+});
+```
+
+3. Install the required ESC/POS library using Composer:
+```bash
+composer require mike42/escpos-php
+```
+======================================================================
+
+4. Create a preview receipt function (optional, for testing):
+```javascript
+function previewReceipt(cartData) {
+    const receiptWindow = window.open('', '_blank', 'width=400,height=600');
+    
+    let html = `
+        <html>
+        <head>
+            <title>Receipt Preview</title>
+            <style>
+                body {
+                    font-family: monospace;
+                    padding: 20px;
+                    max-width: 400px;
+                    margin: 0 auto;
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+                .items {
+                    margin: 20px 0;
+                }
+                .item {
+                    margin: 5px 0;
+                }
+                .totals {
+                    margin-top: 20px;
+                    text-align: right;
+                }
+                .footer {
+                    text-align: center;
+                    margin-top: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h2>Your Store Name</h2>
+                <p>123 Store Address</p>
+                <p>City, State, ZIP</p>
+                <p>Tel: (123) 456-7890</p>
+                <p>Date: ${new Date().toLocaleString()}</p>
+                <p>Receipt #: ${Date.now()}</p>
+            </div>
+            
+            <div class="items">
+    `;
+    
+    cartData.items.forEach(item => {
+        html += `
+            <div class="item">
+                <div>${item.name}</div>
+                <div>${item.quantity} x $${item.price} = $${(item.quantity * item.price).toFixed(2)}</div>
+            </div>
+        `;
+    });
+    
+    html += `
+            </div>
+            
+            <div class="totals">
+                <p>Subtotal: $${cartData.subtotal.toFixed(2)}</p>
+                <p>Tax (10%): $${cartData.tax.toFixed(2)}</p>
+                <p>Total: $${cartData.total.toFixed(2)}</p>
+            </div>
+            
+            <div class="footer">
+                <p>Thank you for your purchase!</p>
+                <p>Please come again</p>
+            </div>
+        </body>
+        </html>
+    `;
+    
+    receiptWindow.document.write(html);
+}
+```
+

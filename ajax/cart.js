@@ -219,95 +219,105 @@ function addToCart(productId, quantity = 1) {
 
 //Fetch cart items
 function updateCart() {
-    fetch("php/get-cart.php")
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.status === "success") {
-                const cartData = data.data;
-                
-                // Get container elements
-                const leftContainer = document.querySelector('.product-right-block');
-                const rightContainer = document.querySelector('.order-right-block');
-                const valuesContainer = document.querySelector('.setvalue')
-                const orderBtn = document.querySelector('.order-btn-container')
-                
-                // Adjust layout based on cart items
-                if (cartData.items.length === 0) {
-                    if(valuesContainer){
-                        valuesContainer.style.display = 'none'
-                    }
-                    if(orderBtn){
-                        orderBtn.style.display = 'none'
-                    }
-                    if (leftContainer) {
-                        leftContainer.classList.remove('col-lg-8');
-                        leftContainer.classList.add('col-lg-12');
-                    }
-                    if (rightContainer) {
-                        rightContainer.style.display = 'none';
-                    }
-                } else {
-                    if(valuesContainer){
-                        valuesContainer.style.display = 'block'
-                    }
-                    if(orderBtn){
-                        orderBtn.style.display = 'block'
-                    }
-                    if (leftContainer) {
-                        leftContainer.classList.remove('col-lg-12');
-                        leftContainer.classList.add('col-lg-8');
-                    }
-                    if (rightContainer) {
-                        rightContainer.style.display = 'block';
-                    }
-                }
+  fetch("php/get-cart.php")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        const cartData = data.data;
 
-                // Display cart items
-                displayCart(cartData);
-            }
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+        // Get container elements
+        const leftContainer = document.querySelector(".product-right-block");
+        const rightContainer = document.querySelector(".order-right-block");
+        const valuesContainer = document.querySelector(".setvalue");
+        const orderBtn = document.querySelector(".order-btn-container");
+
+        // Adjust layout based on cart items
+        if (cartData.items.length === 0) {
+          if (valuesContainer) {
+            valuesContainer.style.display = "none";
+          }
+          if (orderBtn) {
+            orderBtn.style.display = "none";
+          }
+          if (leftContainer) {
+            leftContainer.classList.remove("col-lg-8");
+            leftContainer.classList.add("col-lg-12");
+          }
+          if (rightContainer) {
+            rightContainer.style.display = "none";
+          }
+        } else {
+          if (valuesContainer) {
+            valuesContainer.style.display = "block";
+          }
+          if (orderBtn) {
+            orderBtn.style.display = "block";
+          }
+          if (leftContainer) {
+            leftContainer.classList.remove("col-lg-12");
+            leftContainer.classList.add("col-lg-8");
+          }
+          if (rightContainer) {
+            rightContainer.style.display = "block";
+          }
+        }
+
+        // Display cart items
+        displayCart(cartData);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 // Function to display cart
-function displayCart(cartData) {    
-    const cartContainer = document.querySelector('.product-wrap');
-    const totalItems = document.querySelector('.count-items');
-    const subtotalElement = document.querySelector('.cart-subtotal');
-    const totalElement = document.querySelector('.cart-total-items');
-    const checkoutTotal = document.querySelector('.cart-total-amount');
-    const checkoutCheckout = document.querySelector('.cart-total-checkout');
+function displayCart(cartData) {
+  const cartContainer = document.querySelector(".product-wrap");
+  const totalItems = document.querySelector(".count-items");
+  const subtotalElement = document.querySelector(".cart-subtotal");
+  const totalElement = document.querySelector(".cart-total-items");
+  const checkoutTotal = document.querySelector(".cart-total-amount");
+  const checkoutCheckout = document.querySelector(".cart-total-checkout");
 
-    // Update total items
-    totalItems.textContent = `  ${cartData.items.length}`;
-    
-    // Display cart items
-    let html = '';
-    
-    if (cartData.items.length === 0) {
-        html = '<p class="text-center">Your cart is empty</p>';
-    } else {
-        cartData.items.forEach(item => {
-            html += `
+  // Update total items
+  totalItems.textContent = `  ${cartData.items.length}`;
+
+  // Display cart items
+  let html = "";
+
+  if (cartData.items.length === 0) {
+    html = '<p class="text-center">Your cart is empty</p>';
+  } else {
+    cartData.items.forEach((item) => {
+      html += `
                 <div class="product-list d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
                         <a href="javascript:void(0);" class="img-bg">
-                            <img src="../php/${item.image}" alt="${item.name}" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                            <img src="../php/${item.image}" alt="${
+        item.name
+      }" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;">
                         </a>
                         <div class="info">
-                            <h6><a href="javascript:void(0);">${item.name}</a></h6>
+                            <h6><a href="javascript:void(0);">${
+                              item.name
+                            }</a></h6>
                             <p>GHS ${item.price}</p>
                         </div>
                     </div>
 
                     <div class="increment-decrement">
                         <div class="input-groups">
-                            <input onclick="updateQuantity(${item.cart_id}, ${item.quantity - 1})" type="button" value="-"
+                            <input onclick="updateQuantity(${item.cart_id}, ${
+        item.quantity - 1
+      })" type="button" value="-"
                                 class="button-minus dec button">
-                            <input type="text" name="child" value="${item.quantity}" readonly
+                            <input type="text" name="child" value="${
+                              item.quantity
+                            }" readonly
                                 class="quantity-field">
-                            <input onclick="updateQuantity(${item.cart_id}, ${item.quantity + 1})" type="button" value="+"
+                            <input onclick="updateQuantity(${item.cart_id}, ${
+        item.quantity + 1
+      })" type="button" value="+"
                                 class="button-plus inc button ">
                         </div>
                     </div>
@@ -320,93 +330,148 @@ function displayCart(cartData) {
                     </div>
                 </div>
             `;
-        });
-    }
-    
-    cartContainer.innerHTML = html;
-    
-    // Update totals
-    subtotalElement.textContent = ` GHS. ${cartData.subtotal.toFixed(2)}`;
-    totalElement.textContent = `${cartData.total_items}`;
-    checkoutTotal.textContent = ` GHS ${cartData.total.toFixed(2)}`;
-    checkoutCheckout.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+    });
+  }
 
-    const createOrderBtn = document.querySelector('.order-btn-container'); 
-    createOrderBtn.onclick = () => {
-        previewReceipt(cartData);
-    };
+  cartContainer.innerHTML = html;
+
+  // Update totals
+  subtotalElement.textContent = ` GHS. ${cartData.subtotal.toFixed(2)}`;
+  totalElement.textContent = `${cartData.total_items}`;
+  checkoutTotal.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+  checkoutCheckout.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+
+  //Print preview button
+  const createOrderBtn = document.querySelector(".order-btn-container");
+  createOrderBtn.onclick = () => {
+    createOrder(cartData);
+  };
 }
 
 // Function to delete cart item
 function deleteCartItem(cartId) {
-    if (confirm('Are you sure you want to remove this item?')) {
-        const formData = new FormData();
-        formData.append('cart_id', cartId);
-        
-        fetch('php/delete-cart-item.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                updateCart(); // Refresh cart display
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+  if (confirm("Are you sure you want to remove this item?")) {
+    const formData = new FormData();
+    formData.append("cart_id", cartId);
+
+    fetch("php/delete-cart-item.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          updateCart(); // Refresh cart display
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 }
 
 // Function to update quantity
 function updateQuantity(cartId, newQuantity) {
-    if (newQuantity < 1) {
-        toastr.error('Quantity cannot be less than 1')
-        return;
-    }
-    
-    const formData = new FormData();
-    formData.append('cart_id', cartId);
-    formData.append('quantity', newQuantity);
-    
-    fetch('php/update-cart.php', {
-        method: 'POST',
-        body: formData
+  if (newQuantity < 1) {
+    toastr.error("Quantity cannot be less than 1");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("cart_id", cartId);
+  formData.append("quantity", newQuantity);
+
+  fetch("php/update-cart.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        updateCart(); // Refresh cart display
+      } else {
+        alert(data.message);
+      }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            updateCart(); // Refresh cart display
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => console.error('Error:', error));
+    .catch((error) => console.error("Error:", error));
 }
 
 // Function to clear cart
 function clearCart() {
-    if (confirm('Are you sure you want to clear your cart?')) {
-        fetch('php/clear-cart.php', {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                updateCart(); // Refresh cart display
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+  if (confirm("Are you sure you want to clear your cart?")) {
+    fetch("php/clear-cart.php", {
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          updateCart(); // Refresh cart display
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 }
 
-function previewReceipt(cartData) {
-    const receiptWindow = window.open('', '_blank', 'width=400,height=600');
-    
-    let html = `
+//Checkout funciton
+function createOrder(cartData) {
+    const order_btn = document.querySelector('.order-btn-container')
+    order_btn.textContent = 'Processing...'
+  //Save details to cart before previewing cart data to print.
+  const customerName = document.getElementById("customer-name").value;
+  const customerContact = document.getElementById("customer-contact").value;
+
+  if (customerName === "") {
+    toastr.error("Enter customer name");
+    order_btn.textContent = 'Order now'
+    return;
+  }
+  if (customerContact === "") {
+    toastr.error("Enter your contact");
+    order_btn.textContent = 'Order now'
+    return;
+  }
+  const invoiceNumber = generateReceiptNumber(customerName);
+
+  const formData = new FormData();
+  formData.append("customer_name", customerName);
+  formData.append("customer_phone", customerContact);
+  formData.append("invoice_number", invoiceNumber);
+
+  fetch("php/process-order.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.status === "success") {
+        previewReceipt(cartData, invoiceNumber, customerName, customerContact);
+        toastr.success('Your order is created successfully. Print your invoice');
+
+        //clearCart();
+        // Close the preview window and refresh the main page
+        //window.opener.location.reload();
+        //window.close();
+      } else {
+        alert("Error processing your order: " + data.message);
+        order_btn.textContent = 'Order now'
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      toastr.error("Error processing order");
+      order_btn.textContent = 'Order now'
+    });
+}
+//Function to print preview
+function previewReceipt(cartData, invoiceNumber, customerName, customerContact) {
+  const receiptWindow = window.open("", "_blank", "width=400,height=600");
+
+  let html = `
+        <!DOCTYPE html>
         <html>
         <head>
             <title>Receipt Preview</title>
@@ -435,6 +500,16 @@ function previewReceipt(cartData) {
                     text-align: center;
                     margin-top: 20px;
                 }
+                @media print {
+                    .no-print {
+                        display: none;
+                    }
+                    body {
+                        width: 100%;
+                        margin: 0;
+                        padding: 10px;
+                    }
+                }
             </style>
         </head>
         <body>
@@ -444,14 +519,16 @@ function previewReceipt(cartData) {
                 <p>City, State, ZIP</p>
                 <p>Tel: (123) 456-7890</p>
                 <p>Date: ${new Date().toLocaleString()}</p>
-                <p>Receipt #: ${Date.now()}</p>
+                <p>INV #: ${invoiceNumber}</p>
+                <p>Customer: ${customerName}</p>
+                <p>Contact: ${customerContact}</p>
             </div>
             
             <div class="items">
     `;
-    
-    cartData.items.forEach(item => {
-        html += `
+
+  cartData.items.forEach((item) => {
+    html += `
             <div class="item">
                 <div>${item.name}</div>
                 <div style="margin-left:8px">${item.quantity} x 
@@ -459,9 +536,9 @@ function previewReceipt(cartData) {
                 <hr />
             </div>
         `;
-    });
-    
-    html += `
+  });
+
+  html += `
             </div>
             
             <div class="totals">
@@ -473,11 +550,39 @@ function previewReceipt(cartData) {
                 <p>Thank you for your purchase!</p>
                 <p>Please come again</p>
             </div>
+
+            <div class="no-print" style="text-align: center; margin-top: 20px;">
+                <button onclick="window.print()" class="print-invoice" style="padding: 10px 20px;">Print Receipt</button>
+            </div>
         </body>
         </html>
     `;
-    
-    receiptWindow.document.write(html);
+
+  receiptWindow.document.write(html);
+  receiptWindow.document.close();
+
+  // Optional: Clear cart after printing
+  receiptWindow.onafterprint = function () {
+    //clearCart(); // Clear the cart after printing
+    receiptWindow.close(); // Close the receipt window
+    // Add customer details and invoice to request body
+  };
+}
+
+// Generate Invoice
+function generateReceiptNumber(name) {
+  const prefix = "INV-";
+  const namePrefix = name
+    .split(" ")
+    .map((name) => name.substring(0, 2).toUpperCase())
+    .join("");
+  const random = String(Math.floor(Math.random() * 90000) + 10000);
+
+  return prefix + namePrefix + random;
+}
+
+function printAndSaveOrder() {
+  console.log("here we go ");
 }
 
 // Update your DOMContentLoaded event listener
