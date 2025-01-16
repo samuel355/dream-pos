@@ -56,7 +56,7 @@ function processOrder($conn)
       $invoiceNumber
     );
 
-    if(!mysqli_stmt_execute($stmt)){
+    if (!mysqli_stmt_execute($stmt)) {
       sendResponse('error', 'Error creating orders');
     }
 
@@ -110,6 +110,13 @@ function processOrder($conn)
     );
     mysqli_stmt_execute($stmt);
 
+
+    //Add to notifications
+    $notification_query = "INSERT INTO notifications (order_id) VALUES (?)";
+    $stmt = mysqli_prepare($conn, $notification_query);
+    mysqli_stmt_bind_param($stmt, "i", $order_id);
+    mysqli_stmt_execute($stmt);
+
     // Commit transaction
     mysqli_commit($conn);
 
@@ -129,4 +136,3 @@ function processOrder($conn)
 }
 
 echo json_encode(processOrder($conn));
-

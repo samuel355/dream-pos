@@ -1,11 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize SSE connection
-  //initializeSSE();
-
   // Load initial orders
   loadOrders();
 
-  // Set up periodic refresh (every 5 seconds)
+  // Set up periodic refresh (every 3 seconds)
   setInterval(loadOrders, 3000);
 });
 
@@ -17,7 +14,6 @@ function loadOrders() {
     })
     .then((data) => {
       if (data.status === "success") {
-        console.log('fetching...')
         displayOrders(data.orders);
       }
     })
@@ -72,22 +68,6 @@ function formatDate(dateString) {
     minute: "2-digit",
   };
   return new Date(dateString).toLocaleDateString("en-US", options);
-}
-
-//Refresh orders when new order is created
-function initializeSSE() {
-  const evtSource = new EventSource("php/orders-stream.php");
-
-  evtSource.onmessage = function (event) {
-    const data = JSON.parse(event.data);
-    if (data.type === "new_order") {
-      loadOrders(); // Reload orders when new order is received
-    }
-  };
-
-  evtSource.onerror = function (err) {
-    console.error("EventSource failed:", err);
-  };
 }
 
 //Delete order

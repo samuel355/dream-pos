@@ -55,6 +55,7 @@
   <script src="ajax/login.js"></script>
   <script src="ajax/previewImage.js"></script>
 	<script src="ajax/orders.js" ></script>
+	<script src="ajax/notifications.js"></script>
 </body>
 
 </html>
