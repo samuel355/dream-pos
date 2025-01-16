@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(loadNotifications, 3000);
 
   // Setup clear all notifications
-  // document
-  //   .querySelector(".clear-noti")
-  //   .addEventListener("click", clearAllNotifications);
+  document
+    .querySelector(".clear-noti")
+    .addEventListener("click", clearAllNotifications);
 });
 
 function loadNotifications() {
@@ -86,4 +86,21 @@ function formatTimeAgo(dateString) {
   } else {
       return `${diffDays} days ago`;
   }
+}
+
+//Clear all notifications
+function clearAllNotifications() {
+  if (!confirm('Are you sure you want to clear all notifications?')) return;
+
+  fetch('php/clear-notifications.php', {
+      method: 'POST'
+  })
+  .then(response => response.json())
+  .then(data => {
+      if (data.status === 'success') {
+          loadNotifications();
+          toastr.success('All notifications cleared');
+      }
+  })
+  .catch(error => console.error('Error:', error));
 }
