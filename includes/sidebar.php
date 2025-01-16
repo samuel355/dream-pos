@@ -8,8 +8,8 @@
             <li class="active">
               <a href="/"><i data-feather="grid"></i><span>Dashboard</span></a>
             </li>
-            <li class="active">
             <li><a href="pos"><i data-feather="hard-drive"></i><span>POS</a></li>
+            <li><a href="orders"><i data-feather="box"></i><span>Orders</a></li>
         </li>
       </ul>
       </li>

@@ -19005,6 +19005,7 @@ body.mini-sidebar.expand-menu .sidebar .sidebar-menu>ul>li.submenu-open ul li a 
     position: fixed;
     top: 50%;
     right: 0;
+    display: none;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);

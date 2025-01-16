@@ -561,11 +561,9 @@ function previewReceipt(cartData, invoiceNumber, customerName, customerContact) 
   receiptWindow.document.write(html);
   receiptWindow.document.close();
 
-  // Optional: Clear cart after printing
   receiptWindow.onafterprint = function () {
-    //clearCart(); // Clear the cart after printing
-    receiptWindow.close(); // Close the receipt window
-    // Add customer details and invoice to request body
+    clearCart(); // Clear the cart 
+    receiptWindow.close();
   };
 }
 
@@ -579,10 +577,6 @@ function generateReceiptNumber(name) {
   const random = String(Math.floor(Math.random() * 90000) + 10000);
 
   return prefix + namePrefix + random;
-}
-
-function printAndSaveOrder() {
-  console.log("here we go ");
 }
 
 // Update your DOMContentLoaded event listener
