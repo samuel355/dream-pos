@@ -417,6 +417,7 @@ function clearCart() {
 //Checkout funciton
 function createOrder(cartData) {
     const order_btn = document.querySelector('.order-btn-container')
+    order_btn.disabled = true;
     order_btn.textContent = 'Processing...'
   //Save details to cart before previewing cart data to print.
   const customerName = document.getElementById("customer-name").value;
@@ -561,9 +562,12 @@ function previewReceipt(cartData, invoiceNumber, customerName, customerContact) 
   receiptWindow.document.write(html);
   receiptWindow.document.close();
 
+  const order_btn = document.querySelector('.order-btn-container')
+  
   receiptWindow.onafterprint = function () {
     clearCart(); // Clear the cart 
     receiptWindow.close();
+    order_btn.disabled = false;
   };
 }
 
