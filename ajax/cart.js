@@ -451,11 +451,6 @@ function createOrder(cartData) {
       if (data.status === "success") {
         previewReceipt(cartData, invoiceNumber, customerName, customerContact);
         toastr.success('Your order is created successfully. Print your invoice');
-
-        //clearCart();
-        // Close the preview window and refresh the main page
-        //window.opener.location.reload();
-        //window.close();
       } else {
         alert("Error processing your order: " + data.message);
         order_btn.textContent = 'Order now'

@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   loadOrders();
 });
 
+//Load Orders
 function loadOrders() {
   fetch("php/get-orders.php")
     .then((response) => {
@@ -13,14 +14,14 @@ function loadOrders() {
     })
     .then((data) => {
       if (data.status === "success") {
-        console.log(data.orders)
+        //console.log(data.orders);
         displayOrders(data.orders);
       }
     })
     .catch((error) => console.error("Error:", error));
 }
 
-//Format orders
+//Display orders
 function displayOrders(orders) {
   const tbody = document.getElementById("ordersTableBody");
   let html = "";
@@ -61,5 +62,47 @@ function displayOrders(orders) {
 //Format date
 function formatDate(dateString) {
   const date = new Date(dateString);
-  return date.toLocaleDateString() + ' at ' + date.toLocaleTimeString();
+  return date.toLocaleDateString() + " at " + date.toLocaleTimeString();
+}
+
+//Refresh orders when new order is created
+function initializeSSE() {
+  const evtSource = new EventSource("php/orders-stream.php");
+
+  evtSource.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+    if (data.type === "new_order") {
+      loadOrders(); // Reload orders when new order is received
+    }
+  };
+
+  evtSource.onerror = function (err) {
+    console.error("EventSource failed:", err);
+  };
+}
+
+function deleteOrder(orderId) {
+  if (confirm("Are you sure you want to delete this order?")) {
+    fetch("php/delete-order.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ order_id: orderId }),
+    })
+      .then((response) => {
+        console.log(response)
+        return response.json()
+      })
+      .then((data) => {
+        if (data.status === "success") {
+          loadOrders(); // Reload orders after deletion
+          toastr.success("Order deleted successfully");
+        } else {
+          console.log(data)
+          toastr.error("Error deleting order");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
 }
