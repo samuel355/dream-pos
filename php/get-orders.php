@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 try {
   $query = "SELECT o.*, 
-            GROUP_CONCAT(oi.quantity, 'x ', p.name) as items
+            GROUP_CONCAT(oi.quantity, 'x ',  p.name) as items
             FROM orders o
             LEFT JOIN order_items oi ON o.id = oi.order_id
             LEFT JOIN products p ON oi.product_id = p.id
