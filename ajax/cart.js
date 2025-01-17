@@ -1,9 +1,26 @@
 function loadCategories() {
   fetch("php/get-categories.php")
-    .then((response) => response.json())
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
       if (data.status === "success") {
-        displayCategories(data.data);
+        const categoriesList = document.querySelector(".categories-content"); //table
+        const categoriesContainer = document.getElementById("categories-container"); //pos
+
+        console.log('table', categoriesList)
+        console.log('pos', categoriesContainer)
+        //table categories
+        if(categoriesList !== null){
+          displayTableCategories(data.categories);
+          return;
+        }
+
+        //pos categories
+        if(categoriesContainer !== null){
+          displayCategories(data.categories);
+          return;
+        }
       } else {
         console.error("Error loading categories:", data.message);
       }
@@ -11,11 +28,52 @@ function loadCategories() {
     .catch((error) => console.error("Error:", error));
 }
 
-// Function to display categories
+// Display categories in tabular form
+function displayTableCategories(categories) {
+  const categoriesList = document.querySelector(".categories-content");
+
+  let html = "";
+  categories.forEach((category) => {
+    html += `
+          <tr>
+            <td class="productimgname">
+              <a href="javascript:void(0);" class="product-img">
+                <img src="${category.image}" alt="${category.name}">
+              </a>
+            </td>
+            <td>${category.name}</td>
+            <td>${category.created_by ?? "Admin"}</td>
+            <td>
+              <a class="me-3" href="#">
+                <img src="assets/img/icons/edit.svg" alt="img">
+              </a>
+              <a onclick="deleteCategory(${
+                category.id
+              })" class="me-3 confirm-text" href="javascript:void(0);">
+                <img src="assets/img/icons/delete.svg" alt="img">
+              </a>
+            </td>
+          </tr>
+      `;
+  });
+
+  if (categories.length === 0) {
+    html =
+      '<li class="notification-message"><div class="media d-flex"><div class="media-body flex-grow-1"><p class="text-center">No new notifications</p></div></div></li>';
+  }
+
+  categoriesList.innerHTML = html;
+}
+
+// Function to display categories on POS page
 function displayCategories(categories) {
   const categoriesContainer = document.getElementById("categories-container");
   let html = "";
 
+  if (categories.length <= 0) {
+    categoriesContainer.textContent = "No Products available yet";
+    return;
+  }
   // First category should be active by default
   categories.forEach((category, index) => {
     html += `
@@ -416,21 +474,21 @@ function clearCart() {
 
 //Checkout funciton
 function createOrder(cartData) {
-    const order_btn = document.querySelector('.order-btn-container')
-    order_btn.disabled = true;
-    order_btn.textContent = 'Processing...'
+  const order_btn = document.querySelector(".order-btn-container");
+  order_btn.disabled = true;
+  order_btn.textContent = "Processing...";
   //Save details to cart before previewing cart data to print.
   const customerName = document.getElementById("customer-name").value;
   const customerContact = document.getElementById("customer-contact").value;
 
   if (customerName === "") {
     toastr.error("Enter customer name");
-    order_btn.textContent = 'Order now'
+    order_btn.textContent = "Order now";
     return;
   }
   if (customerContact === "") {
     toastr.error("Enter your contact");
-    order_btn.textContent = 'Order now'
+    order_btn.textContent = "Order now";
     return;
   }
   const invoiceNumber = generateReceiptNumber(customerName);
@@ -450,20 +508,27 @@ function createOrder(cartData) {
     .then((data) => {
       if (data.status === "success") {
         previewReceipt(cartData, invoiceNumber, customerName, customerContact);
-        toastr.success('Your order is created successfully. Print your invoice');
+        toastr.success(
+          "Your order is created successfully. Print your invoice"
+        );
       } else {
         alert("Error processing your order: " + data.message);
-        order_btn.textContent = 'Order now'
+        order_btn.textContent = "Order now";
       }
     })
     .catch((error) => {
       console.error("Error:", error);
       toastr.error("Error processing order");
-      order_btn.textContent = 'Order now'
+      order_btn.textContent = "Order now";
     });
 }
 //Function to print preview
-function previewReceipt(cartData, invoiceNumber, customerName, customerContact) {
+function previewReceipt(
+  cartData,
+  invoiceNumber,
+  customerName,
+  customerContact
+) {
   const receiptWindow = window.open("", "_blank", "width=400,height=600");
 
   let html = `
@@ -557,10 +622,10 @@ function previewReceipt(cartData, invoiceNumber, customerName, customerContact) 
   receiptWindow.document.write(html);
   receiptWindow.document.close();
 
-  const order_btn = document.querySelector('.order-btn-container')
-  
+  const order_btn = document.querySelector(".order-btn-container");
+
   receiptWindow.onafterprint = function () {
-    clearCart(); // Clear the cart 
+    clearCart(); // Clear the cart
     receiptWindow.close();
     order_btn.disabled = false;
   };
@@ -578,6 +643,34 @@ function generateReceiptNumber(name) {
   return prefix + namePrefix + random;
 }
 
+
+//Delete Category
+function deleteCategory(categoryId) {
+  const formData = new FormData();
+  formData.append("category_id", categoryId);
+  if (
+    !confirm(
+      "Deleting this category will delete all products associated with it. Do you want to proceded"
+    )
+  )
+    return;
+
+  fetch("php/delete-category.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        loadCategories();
+        toastr.success("Category Deleted Successfully");
+      } if(data.status ==='error') {
+        toastr.error(data.message);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
 // Update your DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
   // Load categories first
@@ -586,3 +679,4 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load initial cart
   updateCart();
 });
+

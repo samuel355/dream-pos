@@ -49,10 +49,10 @@
 
                                             <!-- Products View -->
                                             <?php
-                                            include('includes/product-skeleton.php');
-                                            include('includes/product-skeleton.php');
-                                            include('includes/product-skeleton.php');
-                                            include('includes/product-skeleton.php');
+                                            // include('includes/product-skeleton.php');
+                                            // include('includes/product-skeleton.php');
+                                            // include('includes/product-skeleton.php');
+                                            // include('includes/product-skeleton.php');
                                             ?>
 
                                         </div>
