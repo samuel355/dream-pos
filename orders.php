@@ -1,4 +1,8 @@
-<?php include_once('includes/head.php') ?>
+<?php include_once('includes/head.php');
+include_once('includes/auth.php');
+
+requireAdmin();
+?>
 
 <body>
   <div id="global-loader">

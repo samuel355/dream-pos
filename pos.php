@@ -17,12 +17,17 @@
 
 <body>
 
+    <div class="header">
+        <div class="page-header">
+            <div class="page-btn mt-3">
+                <a href="/dashboard" class="btn btn-added">
+                    Go To Dashboard</a>
+            </div>
+        </div>
+    </div>
+
     <!-- Main Wrapper -->
     <div class="main-wrapper">
-
-        <!-- Header -->
-        <?php include_once('includes/header.php') ?>
-        <!-- /Header -->
 
         <div class="page-wrapper pos-pg-wrapper ms-0">
             <div class="content pos-design p-0">

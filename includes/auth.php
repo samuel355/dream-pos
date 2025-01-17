@@ -28,6 +28,10 @@ function login($email, $password, $conn)
       // Update last login
       updateLastLogin($user['id'], $conn);
 
+      if($_SESSION['role'] === 'admin'){
+        header('Location: dashboard');
+      }
+
       return "success";
     }
   }
@@ -48,7 +52,7 @@ function isLoggedIn()
 
 function isAdmin()
 {
-  return isset($_SESSION['role']) && $_SESSION['role'] == 'admin';
+  return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
 
 function requireLogin()
@@ -63,7 +67,7 @@ function requireAdmin()
 {
   requireLogin();
   if (!isAdmin()) {
-    header('Location: /');
+    header('Location: pos');
     exit();
   }
 }
