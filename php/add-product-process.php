@@ -10,7 +10,7 @@ header('Content-Type: application/json');
 // }
 
 try {
-  if (empty($_POST['product-name']) || empty($_POST['price'])) {
+  if (empty($_POST['product-name']) || empty($_POST['price']) || empty($_POST['size'])) {
     sendResponse('error', 'Fill all fields');
     exit;
   }
@@ -23,6 +23,7 @@ try {
   $product_name = mysqli_real_escape_string($conn, trim($_POST['product-name']));
   $cat_id = mysqli_real_escape_string($conn, trim($_POST['category-id']));
   $price = mysqli_real_escape_string($conn, trim($_POST['price']));
+  $size = mysqli_real_escape_string($conn, trim($_POST['size']));
   $created_by = null;
 
   // Check if product name already exists
@@ -42,10 +43,10 @@ try {
   $cat_name = $row['name'];
 
   //insert data
-  $query = "INSERT INTO products(category_id, category_name, name, price, created_by, image)
-            VALUES(?, ?, ?, ?, ?, ?)";
+  $query = "INSERT INTO products(category_id, category_name, name, size, price, created_by, image)
+            VALUES(?, ?, ?, ?, ?, ?, ?)";
   $stmt = mysqli_prepare($conn, $query);
-  mysqli_stmt_bind_param($stmt, "ssssss", $cat_id, $cat_name, $product_name, $price, $created_by, $image_path);
+  mysqli_stmt_bind_param($stmt, "sssssss", $cat_id, $cat_name, $product_name, $size, $price, $created_by, $image_path);
 
   if (!mysqli_stmt_execute($stmt)) {
     throw new Exception('Database error occurred');

@@ -1,4 +1,9 @@
-<?php include_once('includes/head.php') ?>
+<?php
+include_once('includes/head.php');
+include_once('includes/auth.php');
+
+requireAdmin()
+?>
 
 <body>
   <div id="global-loader">
@@ -27,7 +32,7 @@
                 <div class="col-lg-4 col-sm-6 col-12">
                   <div class="form-group">
                     <label>Product Name</label>
-                    <input id="product-name" name="product-name" type="text">
+                    <input placeholder="Product Name" id="product-name" name="product-name" type="text">
                   </div>
                 </div>
                 <div class="col-lg-4 col-sm-6 col-12">
@@ -50,10 +55,21 @@
                     </select>
                   </div>
                 </div>
+
                 <div class="col-lg-4 col-sm-6 col-12">
                   <div class="form-group">
-                    <label>Price</label>
-                    <input type="text" name="price" id="price">
+                    <label>Select Size</label>
+                    <select class="select" id="size" name="size">
+                      <option value="Select Size">Select Size</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Large">Large</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-12">
+                  <div class="form-group">
+                    <label>Price (GHS)</label>
+                    <input placeholder="Price (GHS)" type="text" name="price" id="price">
                   </div>
                 </div>
               </div>
@@ -75,7 +91,7 @@
                 </div>
               </div>
               <div class="col-lg-12">
-                <button type="submit" class="btn btn-submit me-2">Submit</button>
+                <button type="submit" class="btn btn-submit me-2">Add Product</button>
               </div>
             </form>
           </div>

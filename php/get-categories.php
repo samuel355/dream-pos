@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 function getCategories($conn)
 {
-  $query = "SELECT id, name, image FROM categories ORDER BY name";
+  $query = "SELECT id, name, created_by, image FROM categories ORDER BY name";
   $result = mysqli_query($conn, $query);
 
   if (!$result) {
@@ -18,11 +18,12 @@ function getCategories($conn)
     $categories[] = [
       'id' => $row['id'],
       'name' => $row['name'],
+      'created_by' => $row['created_by'],
       'image' => 'php/' . $row['image']
     ];
   }
 
-  return ['status' => 'success', 'data' => $categories];
+  return ['status' => 'success', 'categories' => $categories];
 }
 
 echo json_encode(getCategories($conn));

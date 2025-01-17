@@ -47,8 +47,7 @@
 	<script src='assets/plugins/owlcarousel/owl.carousel.min.js' type="text/javascript"></script>
 	<script src="assets/js/rocket-loader.min.js" data-cf-settings="|49" defer></script>
 	<script src="assets/js/toastr.min.js" data-cf-settings="|49" defer></script>
-
-  <script src="ajax/add-category.js"></script>
+	<script src="ajax/helpers.js" ></script>
   <script src="ajax/add-product.js"></script>
   <script src="ajax/add-user.js"></script>
   <script src="ajax/cart.js"></script>
@@ -57,6 +56,7 @@
 	<script src="ajax/orders.js" ></script>
 	<script src="ajax/notifications.js"></script>
 	<script src="ajax/auth.js"></script>
+	<script src="ajax/category.js"></script>
 </body>
 
 </html>

@@ -15,7 +15,8 @@ try {
   }
 
   $categoryname = mysqli_real_escape_string($conn, trim($_POST['category-name']));
-  $created_by = null;
+  $created_by =   $_SESSION['fullname'];
+  $user_id = $_SESSION['user_id'];
   // Check if category already exists
   $check_cat = mysqli_query($conn, "SELECT id FROM categories WHERE name = '$categoryname'");
   if (mysqli_num_rows($check_cat) > 0) {
@@ -29,10 +30,10 @@ try {
   }
 
   //insert data
-  $query = "INSERT INTO categories(name, created_by, image) 
-            VALUES(?, ?, ?)";
+  $query = "INSERT INTO categories(name, created_by, image, user_id) 
+            VALUES(?, ?, ?, ?)";
   $stmt = mysqli_prepare($conn, $query);
-  mysqli_stmt_bind_param($stmt, "sss", $categoryname, $created_by, $image_path);
+  mysqli_stmt_bind_param($stmt, "ssss", $categoryname, $created_by, $image_path, $user_id);
 
   if(!mysqli_stmt_execute($stmt)){
     throw new Exception('Database error occurred');

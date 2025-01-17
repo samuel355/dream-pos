@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const productname = $('#product-name').val()
     const price = $('#price').val()
     const category_id  = $('#category-id').val()
+    const size = $('#size').val();
 
     if(productname === ''){
       toastr.error('Enter product name')
@@ -19,8 +20,12 @@ document.addEventListener("DOMContentLoaded", function () {
       toastr.error('Please Select Category name')
       return
     }
-    if(price === ''){
-      toastr.error('Enter product price')
+    if(size === 'Select Size' || size === ''){
+      toastr.error('Select size')
+      return
+    }
+    if(isNaN(price) || price === ''){
+      toastr.error('Enter product price (numbers)')
       return
     }
 
@@ -36,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === "success") {
           toastr.success(data.message)
           form.reset();
+          $('#category-id').empty();
+          $('#size').empty()
           document.getElementById("preview").style.display = "none";
         } else {
           toastr.error(data.message)
