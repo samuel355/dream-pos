@@ -62,6 +62,12 @@ function processOrder($conn)
 
     $order_id = mysqli_insert_id($conn);
 
+    //Add customers
+    $customer_query = "INSERT INTO customers(name, contact) VALUES(?, ?)";
+    $stmt = mysqli_prepare($conn, $customer_query);
+    mysqli_stmt_bind_param($stmt, "ss", $customerName, $customerContact);
+    mysqli_stmt_execute($stmt);
+
     //Add order items
     $item_query = "INSERT INTO order_items (
           order_id, 
@@ -86,7 +92,6 @@ function processOrder($conn)
       );
       mysqli_stmt_execute($stmt);
     }
-
 
     // // Add to order history
     $history_query = "INSERT INTO order_history (
