@@ -27,6 +27,7 @@ try {
   // Sanitize inputs
   $fullname = mysqli_real_escape_string($conn, trim($_POST['fullname']));
   $email = mysqli_real_escape_string($conn, trim($_POST['email']));
+  $password = mysqli_real_escape_string($conn, trim($_POST['password']));
   $role = mysqli_real_escape_string($conn, trim($_POST['role']));
   $phone = mysqli_real_escape_string($conn, trim($_POST['phone']));
 

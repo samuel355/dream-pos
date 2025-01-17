@@ -9,8 +9,8 @@ $("#login-form").on("submit", function (e) {
     return;
   }
 
-  $(".btn-login").text("Logging in...");
-  $(".btn-login").prop("disabled", true); // Correctly disable the button
+  $("#btn-login").text("Logging in...");
+  $("#btn-login").prop("disabled", true); // Correctly disable the button
 
   // Create FormData object
   const formData = new FormData();

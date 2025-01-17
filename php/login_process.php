@@ -3,13 +3,7 @@
 session_start();
 include_once('../includes/db_connection.php');
 header('Content-Type: application/json');
-
-// Helper function to send a JSON response
-function sendResponse($status, $message, $data = [])
-{
-  echo json_encode(array_merge(['status' => $status, 'message' => $message], $data));
-  exit;
-}
+include_once('../includes/sendResponse.php');
 
 // Check if request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
