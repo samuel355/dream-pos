@@ -25,7 +25,7 @@ if (!$conn) {
 
 
 // Query user
-$query = "SELECT id, email, username, password, role, status 
+$query = "SELECT *
           FROM users 
           WHERE email = ? 
           AND status = 'active' 
@@ -45,6 +45,8 @@ if ($result && mysqli_num_rows($result) > 0) {
     $_SESSION['email'] = $user['email'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['role'] = $user['role'];
+    $_SESSION['fullname'] = $user['fullname'];
+    $_SESSION['image'] = $user['image'];
 
     // Update last login
     mysqli_query(

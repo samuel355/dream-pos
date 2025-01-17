@@ -49,61 +49,62 @@
         </div>
         <div class="noti-content">
           <ul class="notification-list notifications-content">
-            <li class="notification-message">
-              <a href="activities.html">
-                <div class="media d-flex">
-                  <span class="avatar flex-shrink-0">
-                    <img alt src="assets/img/profiles/avatar-02.jpg">
-                  </span>
-                  <div class="media-body flex-grow-1">
-                    <p class="noti-details"><span class="noti-title">
-                      John Doe</span> added new task <span
-                        class="noti-title">Patient appointment booking</span></p>
-                    <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-                  </div>
-                </div>
-              </a>
-            </li>
+            <!-- Notification content -->
           </ul>
         </div>
         <div class="topnav-dropdown-footer">
-          <a href="activities.html">View all Notifications</a>
+          <a href="/">View all Notifications</a>
         </div>
       </div>
     </li>
-    
+
     <li class="nav-item dropdown has-arrow main-drop">
       <a href="javascript:void(0);" class="dropdown-toggle nav-link userset" data-bs-toggle="dropdown">
         <span class="user-info">
           <span class="user-letter">
-            <img src="assets/img/profiles/avator1.jpg" alt class="img-fluid">
+            <?php if (isset($_SESSION['image']) && !empty($_SESSION['image'])): ?>
+              <img src="php/<?php echo $_SESSION['image']; ?>" alt="Profile" class="img-fluid">
+            <?php else: ?>
+              <img src="assets/img/profiles/avatar-default.jpg" alt="Default Profile" class="img-fluid">
+            <?php endif; ?>
           </span>
           <span class="user-detail">
-            <span class="user-name">John Smilga</span>
-            <span class="user-role">Super Admin</span>
+            <span class="user-name"><?php echo isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'Guest'; ?></span>
+            <span class="user-role"><?php echo isset($_SESSION['role']) ? ucfirst($_SESSION['role']) : ''; ?></span>
           </span>
         </span>
       </a>
       <div class="dropdown-menu menu-drop-user">
         <div class="profilename">
           <div class="profileset">
-            <span class="user-img"><img src="assets/img/profiles/avator1.jpg" alt>
-              <span class="status online"></span></span>
+            <span class="user-img">
+              <?php if (isset($_SESSION['image']) && !empty($_SESSION['image'])): ?>
+                <img src="php/<?php echo $_SESSION['image']; ?>" alt="Profile">
+              <?php else: ?>
+                <img src="assets/img/profiles/avatar-default.jpg" alt="Default Profile">
+              <?php endif; ?>
+              <span class="status online"></span>
+            </span>
             <div class="profilesets">
-              <h6>John Smilga</h6>
-              <h5>Super Admin</h5>
+              <h6><?php echo isset($_SESSION['fullname']) ? $_SESSION['fullname'] : 'Guest'; ?></h6>
+              <h5><?php echo isset($_SESSION['role']) ? ucfirst($_SESSION['role']) : ''; ?></h5>
             </div>
           </div>
           <hr class="m-0">
-          <a class="dropdown-item" href=""> <i class="me-2" data-feather="user"></i> My Profile</a>
-          <a class="dropdown-item" href=""><i class="me-2"
-              data-feather="settings"></i>Settings</a>
+          <a class="dropdown-item" href="profile.php">
+            <i class="me-2" data-feather="user"></i> My Profile
+          </a>
+          <a class="dropdown-item" href="settings.php">
+            <i class="me-2" data-feather="settings"></i>Settings
+          </a>
           <hr class="m-0">
-          <a class="dropdown-item logout pb-0" href=""><img src="assets/img/icons/log-out.svg"
-              class="me-2" alt="img">Logout</a>
+          <a class="dropdown-item logout pb-0" href="javascript:void(0);" onclick="logout()">
+            <img src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout
+          </a>
         </div>
       </div>
     </li>
+
   </ul>
 
   <div class="dropdown mobile-user-menu">
