@@ -6,9 +6,21 @@ header('Content-Type: application/json');
 
 function getProductSizes($conn)
 {
-  $query = "SELECT * FROM product_pricing pc
-  JOIN categories c ON c.id = pc.category_id
-  ORDER BY pc.size_name";
+  $query = "
+  SELECT 
+    pc.id AS price_id, 
+    pc.size_name, 
+    pc.category_id, 
+    pc.price,
+    c.image,
+    c.name AS category_name
+  FROM 
+    product_pricing pc
+  LEFT JOIN 
+    categories c ON c.id = pc.category_id
+  ORDER BY 
+    pc.size_name";
+
   $result = mysqli_query($conn, $query);
 
   if (!$result) {
@@ -19,8 +31,8 @@ function getProductSizes($conn)
   $product_pricing = [];
   while ($row = mysqli_fetch_assoc($result)) {
     $product_pricing[] = [
-      'id' => $row['id'],
-      'category_name' => $row['name'],
+      'id' => $row['price_id'],
+      'category_name' => $row['category_name'],
       'size_name' => $row['size_name'],
       'price' => $row['price'],
       'image' => 'php/' . $row['image']

@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load product size first
   loadProductPricing();
 
-
   //Create new product size
   const form = document.getElementById("add-product-pricing-form");
   //Add product size
@@ -15,18 +14,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const category_id = $("#category-id").val();
     const price = $("#price").val();
 
-    if(category_id === 'Choose Categoroy' || category_id === ''){
-      toastr.error('Select  Product Category')
-      return
+    if (category_id === "Choose Category" || category_id === "") {
+      toastr.error("Select  Product Category");
+      return;
     }
 
-    if (size_name === "") {
+    if (size_name === "" || size_name === 'Select Size') {
       toastr.error("Please Enter the size name: Small, Medium, Large, etc.");
       return;
     }
 
-    if(isNaN(price) || price === ''){
-      toastr.error('Enter the correct amount');
+    if (isNaN(price) || price === "") {
+      toastr.error("Enter the correct amount");
       return;
     }
 
@@ -40,11 +39,10 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((data) => {
         if (data.status === "success") {
-          $('#pricing-modal').modal('hide');
-          
+          form.reset();
+          $("#pricing-modal").modal("hide");
           loadProductPricing();
           toastr.success(data.message);
-          form.reset();
         } else {
           toastr.error(data.message);
         }
@@ -54,27 +52,24 @@ document.addEventListener("DOMContentLoaded", function () {
         toastr.error("An error occurred. Please try again..");
       });
   });
-
-
 });
 
-function loadProductPricing(){
+function loadProductPricing() {
   fetch("php/get-product-pricing.php")
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    if (data.status === "success") {
-      console.log(data.product_pricing)
-      displayProductPricings(data.product_pricing)
-    } else {
-      console.error("Error loading data:", data.message);
-    }
-  })
-  .catch((error) => console.error("Error:", error));
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.status === "success") {
+        displayProductPricings(data.product_pricing);
+      } else {
+        console.error("Error loading data:", data.message);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
 }
 
-function displayProductPricings(data){
+function displayProductPricings(data) {
   const pricingList = document.querySelector(".product-pricing-content");
 
   let html = "";
@@ -116,12 +111,10 @@ function displayProductPricings(data){
 function deleteProductPrice(id) {
   const formData = new FormData();
   formData.append("price_id", id);
-  if (
-    !confirm(
-      "Are you sure you want to delete?. Do you want to proceded"
-    )
-  )
+  if (!confirm("Are you sure you want to delete?. Do you want to proceded"))
     return;
+
+  console.log(formData)
 
   fetch("php/delete-product-pricing.php", {
     method: "POST",
@@ -130,7 +123,7 @@ function deleteProductPrice(id) {
     .then((response) => response.json())
     .then((data) => {
       if (data.status === "success") {
-        loadCategories();
+        loadProductPricing();
         toastr.success("Pricing Deleted Successfully");
       }
       if (data.status === "error") {

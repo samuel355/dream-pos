@@ -99,7 +99,7 @@ requireAdmin()
                     <div class="form-group">
                       <label>Size Name</label>
                       <select class="select" id="size-name" name="size-name">
-                        <option value="Select">Select Size</option>
+                        <option value="Select Size">Select Size</option>
                         <option value="Medium">Medium</option>
                         <option value="Large">Large</option>
                       </select>

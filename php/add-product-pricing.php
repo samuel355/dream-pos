@@ -10,13 +10,25 @@ header('Content-Type: application/json');
 // }
 
 try {
-  if (empty($_POST['size-name'])) {
-    sendResponse('error', 'Enter product size');
-  }
 
   $size_name = mysqli_real_escape_string($conn, trim($_POST['size-name']));
   $category_id = mysqli_real_escape_string($conn, trim($_POST['category-id']));
   $price = mysqli_real_escape_string($conn, trim($_POST['price']));
+  
+  if($category_id === '' || $category_id === 'Choose Category'){
+    sendResponse('error', 'Select Product Category');
+    exit;
+  }
+
+  if($size_name === '' || $size_name === 'Select Size'){
+    sendResponse('error', 'Select Size');
+    exit;
+  }
+
+  if(empty($price)){
+    sendResponse('error', 'Enter the amount');
+    exit;
+  }
 
   $check = mysqli_query($conn, "SELECT size_name, category_id FROM product_pricing WHERE size_name = '$size_name' AND category_id = '$category_id' ");
   if (mysqli_num_rows($check) > 0) {
