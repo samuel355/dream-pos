@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === "success") {
           toastr.success(data.message)
           form.reset();
-          $('#category-id').empty();
-          $('#size').empty()
+          // $('#category-id').empty();
+          // $('#size').empty()
           document.getElementById("preview").style.display = "none";
         } else {
           toastr.error(data.message)

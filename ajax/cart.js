@@ -6,18 +6,18 @@ function loadCategories() {
     .then((data) => {
       if (data.status === "success") {
         const categoriesList = document.querySelector(".categories-content"); //table
-        const categoriesContainer = document.getElementById("categories-container"); //pos
+        const categoriesContainer = document.getElementById(
+          "categories-container"
+        ); //pos
 
-        console.log('table', categoriesList)
-        console.log('pos', categoriesContainer)
         //table categories
-        if(categoriesList !== null){
+        if (categoriesList !== null) {
           displayTableCategories(data.categories);
           return;
         }
 
         //pos categories
-        if(categoriesContainer !== null){
+        if (categoriesContainer !== null) {
           displayCategories(data.categories);
           return;
         }
@@ -486,6 +486,11 @@ function createOrder(cartData) {
     order_btn.textContent = "Order now";
     return;
   }
+  if (customerName.length < 3) {
+    toastr.error("Add your full name");
+    order_btn.textContent = "Order now";
+    return;
+  }
   if (customerContact === "") {
     toastr.error("Enter your contact");
     order_btn.textContent = "Order now";
@@ -575,10 +580,10 @@ function previewReceipt(
         </head>
         <body>
             <div class="header">
-                <h2>Your Store Name</h2>
-                <p>123 Store Address</p>
-                <p>City, State, ZIP</p>
-                <p>Tel: (123) 456-7890</p>
+                <h2>POPSY BUBBLE TEA SHOP</h2>
+                <p>Ayeduase New Site - </p>
+                <small> Close to Liendaville Hostel </small>
+                <p>Tel: 0530975528</p>
                 <p>Date: ${new Date().toLocaleString()}</p>
                 <p>INV #: ${invoiceNumber}</p>
                 <p>Customer: ${customerName}</p>
@@ -588,36 +593,36 @@ function previewReceipt(
             <div class="items">
     `;
 
-  cartData.items.forEach((item) => {
-    html += `
-            <div class="item">
-                <div>${item.name}</div>
-                <div style="margin-left:8px">${item.quantity} x 
-                ${item.price} = ${(item.quantity * item.price).toFixed(2)}</div>
-                <hr />
-            </div>
-        `;
-  });
+            cartData.items.forEach((item) => {
+              html += `
+                      <div class="item">
+                          <div>${item.name}</div>
+                          <div style="margin-left:8px">${item.quantity} x 
+                          ${item.price} = ${(item.quantity * item.price).toFixed(2)}</div>
+                          <hr />
+                      </div>
+                  `;
+            });
 
-  html += `
-            </div>
-            
-            <div class="totals">
-                <p>Subtotal: GHS ${cartData.subtotal.toFixed(2)}</p>
-                <p>Total: GHS ${cartData.total.toFixed(2)}</p>
-            </div>
-            
-            <div class="footer">
-                <p>Thank you for your purchase!</p>
-                <p>Please come again</p>
-            </div>
+            html += `
+                      </div>
+                      
+                      <div class="totals">
+                          <p>Subtotal: GHS ${cartData.subtotal.toFixed(2)}</p>
+                          <p>Total: GHS ${cartData.total.toFixed(2)}</p>
+                      </div>
+                      
+                      <div class="footer">
+                          <p>Thank you for your purchase!</p>
+                          <p>Please come again</p>
+                      </div>
 
-            <div class="no-print" style="text-align: center; margin-top: 20px;">
-                <button onclick="window.print()" class="print-invoice" style="padding: 10px 20px;">Print Receipt</button>
-            </div>
-        </body>
-        </html>
-    `;
+                      <div class="no-print" style="text-align: center; margin-top: 20px;">
+                          <button onclick="window.print()" class="print-invoice" style="padding: 10px 20px;">Print Receipt</button>
+                      </div>
+                  </body>
+                  </html>
+            `;
 
   receiptWindow.document.write(html);
   receiptWindow.document.close();
@@ -643,7 +648,6 @@ function generateReceiptNumber(name) {
   return prefix + namePrefix + random;
 }
 
-
 //Delete Category
 function deleteCategory(categoryId) {
   const formData = new FormData();
@@ -664,7 +668,8 @@ function deleteCategory(categoryId) {
       if (data.status === "success") {
         loadCategories();
         toastr.success("Category Deleted Successfully");
-      } if(data.status ==='error') {
+      }
+      if (data.status === "error") {
         toastr.error(data.message);
       }
     })
@@ -678,5 +683,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Load initial cart
   updateCart();
-});
 
+  //Create new category
+  const form = document.getElementById("add-category-form");
+  //Add category
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Create FormData object
+    const formData = new FormData(this);
+    const categoryname = $("#category-name").val();
+
+    if (categoryname === "") {
+      toastr.error("Please Enter category name");
+      return;
+    }
+
+    // Send AJAX request
+    fetch("php/add-category-process.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status === "success") {
+          $('#create-modal').modal('hide');
+          
+          loadCategories();
+          toastr.success(data.message);
+          form.reset();
+          document.getElementById("preview").style.display = "none";
+        } else {
+          toastr.error(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toastr.error("An error occurred. Please try again..");
+      });
+  });
+
+
+});

@@ -2,13 +2,16 @@
 
   <div class="header-left active">
     <a href="/" class="logo logo-normal">
-      <img src="assets/img/logo.png" alt>
+      <!-- <img src="assets/img/logo.png" alt> -->
+       <span style="font-weight: 600px">POPSY BUBBLE TEA SHOP</span>
     </a>
     <a href="/" class="logo logo-white">
-      <img src="assets/img/logo-white.png" alt>
+      <!-- <img src="assets/img/logo-white.png" alt> -->
+      <span style="font-weight: 600px">POPSY BUBBLE TEA SHOP</span>
     </a>
     <a href="/" class="logo-small">
-      <img src="assets/img/logo-small.png" alt>
+      <!-- <img src="assets/img/logo-small.png" alt> -->
+      <span style="font-weight: 600px">POPSY BUBBLE TEA SHOP</span>
     </a>
     <a id="toggle_btn" href="javascript:void(0);">
       <i data-feather="chevrons-left" class="feather-16"></i>

@@ -19,9 +19,11 @@
 
     <div class="header">
         <div class="page-header">
-            <div class="page-btn mt-3">
-                <a href="/dashboard" class="btn btn-added">
-                    Go To Dashboard</a>
+            <div class="page-btn mt-3 mb-5">
+                <!-- <a href="/dashboard" class="btn btn-added">
+                    Go To Dashboard</a> -->
+                    <a href="javascript:void(0);" class="btn btn-added">
+                    <span style="font-size: 28px; font-weight:700;">POSPY BUBBLE TEA SHOP</span></a>
             </div>
         </div>
     </div>
@@ -137,3 +139,7 @@
 
 
     <?php include_once('includes/scripts.php') ?>
+
+    <script>
+        document.getElementById('customer-contact').addEventListener('keydown', allowOnlyNumbers);
+    </script>
