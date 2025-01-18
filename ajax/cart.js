@@ -254,16 +254,16 @@ function displayProducts(products, categoryId) {
                               style="width: 85%; height: 15vh; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover; margin-bottom:6px"/>
                           <span><i data-feather="check" class="feather-16"></i></span>
                       </a>
-                      <h6 class="cat-name mt-4"><a href="javascript:void(0);">${
+                      <h6 class="cat-name mt-5"><a href="javascript:void(0);">${
                         product.category_name
                       }</a></h6>
                       <h6 class="product-name"><a href="javascript:void(0);">${
                         product.name
                       }</a></h6>
                       <div class="d-flex align-items-center justify-content-between price">
-                          <span>${product.quantity || "N/A"} ${
-        product.unit || "Pcs"
-      }</span>
+                          <span>
+                          
+                          </span>
                           <p>GHS ${parseFloat(product.price).toFixed(2)}</p>
                       </div>
                   </div>
