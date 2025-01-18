@@ -56,7 +56,6 @@
 	<script src="ajax/orders.js" ></script>
 	<script src="ajax/notifications.js"></script>
 	<script src="ajax/auth.js"></script>
-	<script src="ajax/category.js"></script>
 	<script src="ajax/product-pricing.js"></script>
 </body>
 

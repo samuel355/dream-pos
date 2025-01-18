@@ -23,6 +23,8 @@ function loadOrders() {
 //Display orders
 function displayOrders(orders) {
   const tbody = document.getElementById("ordersTableBody");
+  if(tbody === null) return;
+  
   let html = "";
 
   orders.forEach((order) => {

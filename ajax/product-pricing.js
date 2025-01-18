@@ -71,6 +71,7 @@ function loadProductPricing() {
 
 function displayProductPricings(data) {
   const pricingList = document.querySelector(".product-pricing-content");
+  if(pricingList === null) return
 
   let html = "";
   data.forEach((dt, i) => {
@@ -113,8 +114,6 @@ function deleteProductPrice(id) {
   formData.append("price_id", id);
   if (!confirm("Are you sure you want to delete?. Do you want to proceded"))
     return;
-
-  console.log(formData)
 
   fetch("php/delete-product-pricing.php", {
     method: "POST",

@@ -44,9 +44,10 @@ function displayTableCategories(categories) {
             <td>${category.name}</td>
             <td>${category.created_by ?? "Admin"}</td>
             <td>
-              <a class="me-3" href="#">
+              <a class="me-3" onclick="editCategoryModal(${category.id})">
                 <img src="assets/img/icons/edit.svg" alt="img">
               </a>
+
               <a onclick="deleteCategory(${
                 category.id
               })" class="me-3 confirm-text" href="javascript:void(0);">
@@ -63,6 +64,31 @@ function displayTableCategories(categories) {
   }
 
   categoriesList.innerHTML = html;
+}
+
+// Open Edit Category Modal with category Details
+function editCategoryModal(categoryId) {
+  const formData = new FormData();
+  formData.append("category_id", categoryId);
+
+  fetch("php/get-single-category.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.status === "success") {
+        $("#edit-category-modal").modal("show");
+        document.getElementById("category-name-edt").value = data.category.name;
+        document.getElementById("cat-preview").src = data.category.image;
+
+        //Store category ID for update
+        document.getElementById("edit-category-form").dataset.categoryId =
+          categoryId;
+      }
+    });
 }
 
 // Function to display categories on POS page
@@ -593,18 +619,20 @@ function previewReceipt(
             <div class="items">
     `;
 
-            cartData.items.forEach((item) => {
-              html += `
+  cartData.items.forEach((item) => {
+    html += `
                       <div class="item">
                           <div>${item.name}</div>
                           <div style="margin-left:8px">${item.quantity} x 
-                          ${item.price} = ${(item.quantity * item.price).toFixed(2)}</div>
+                          ${item.price} = ${(
+      item.quantity * item.price
+    ).toFixed(2)}</div>
                           <hr />
                       </div>
                   `;
-            });
+  });
 
-            html += `
+  html += `
                       </div>
                       
                       <div class="totals">
@@ -709,8 +737,8 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((data) => {
         if (data.status === "success") {
-          $('#create-modal').modal('hide');
-          
+          $("#create-modal").modal("hide");
+
           loadCategories();
           toastr.success(data.message);
           form.reset();
@@ -725,5 +753,41 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 
+  // Handle Update Category
+  document
+    .getElementById("edit-category-form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
 
+      const categoryId = this.dataset.categoryId;
+      const category_name = $("#category-name-edt").val();
+      const formData = new FormData(this);
+      formData.append("category_id", categoryId);
+
+      if (category_name === "") {
+        return toastr.error("Enter Category Name");
+      }
+
+      fetch("php/update-category.php", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            // Close modal
+            $("#edit-category-modal").modal("hide");
+
+            // Show success message
+            loadCategories();
+            toastr.success("Category updated successfully!");
+          } else {
+            alert("Error updating category: " + data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while updating the category");
+        });
+    });
 });

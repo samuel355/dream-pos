@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   
   const form = document.getElementById("add-user-form");
+  if(form === null) return;
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
