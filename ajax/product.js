@@ -194,11 +194,11 @@ function deleteProduct(productId) {
 }
 
 // Open Edit Category Modal with category Details
-function editCategoryModal(product_id) {
+function editProductModal(product_id) {
   const formData = new FormData();
   formData.append("product_id", product_id);
 
-  fetch("php/get-single-category.php", {
+  fetch("php/get-single-product.php", {
     method: "POST",
     body: formData,
   })
@@ -208,12 +208,15 @@ function editCategoryModal(product_id) {
     .then((data) => {
       if (data.status === "success") {
         $("#edit-product-modal").modal("show");
-        document.getElementById("category-name-edt").value = data.category.name;
-        document.getElementById("cat-preview").src = data.category.image;
+        document.getElementById("product-name-edt").value = data.product.name;
+        document.getElementById("product-image-preview").src = data.product.image;
+        document.getElementById("product-price").value = data.product.price;
 
-        //Store category ID for update
-        document.getElementById("edit-category-form").dataset.categoryId =
-          categoryId;
+        // Store product ID for update
+        document.getElementById("edit-product-form").dataset.productId = data.product.id;
+        document.getElementById("product_size").value = data.product.size;
+        document.getElementById("product_category_id").value = data.product.category_name;
+
       }
     });
 }
