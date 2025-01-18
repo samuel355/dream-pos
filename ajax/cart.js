@@ -182,6 +182,8 @@ function initializeCategoryEvents() {
 function loadProducts(categoryId) {
   const productsContainer = document.querySelector(".tabs_container");
 
+  if(productsContainer === null) return;
+
   // Show loading state
   const loadingHtml = `
       <div class="tab_content active" data-tab="category-${categoryId}">
@@ -304,7 +306,9 @@ function addToCart(productId, quantity = 1) {
 //Fetch cart items
 function updateCart() {
   fetch("php/get-cart.php")
-    .then((response) => response.json())
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
       if (data.status === "success") {
         const cartData = data.data;

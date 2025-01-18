@@ -11,9 +11,21 @@ function addToCart($conn, $product_id, $quantity = 1)
   $quantity = (int)$quantity;
 
   // Get product price
-  $query = "SELECT price FROM products WHERE id = '$product_id'";
+$query = "SELECT price FROM products WHERE id = '$product_id'";
+  // $query = "SELECT 
+  //           pp.id AS product_pricing_id,
+  //           pp.price,
+  //           pp.size_name,
+  //           pp.category_id AS product_pricing_catId,
+  //           p.id AS product_id,
+  //           p.category_id AS product_catId
+  //         FROM product_pricing pp
+  //         JOIN products p ON pp.category_id = p.category_id  -- both tables link by category_id
+  //         WHERE p.id = '$product_id'";
+
   $result = mysqli_query($conn, $query);
   $product = mysqli_fetch_assoc($result);
+
 
   if (!$product) {
     sendResponse('error', 'Product not found');
@@ -34,8 +46,8 @@ function addToCart($conn, $product_id, $quantity = 1)
     mysqli_query($conn, $update_query);
   } else {
     // Insert new item
-    $insert_query = "INSERT INTO cart_items (session_id, product_id, quantity, price) 
-                      VALUES ('$session_id', '$product_id', '$quantity', '{$product['price']}')";
+    $insert_query = "INSERT INTO cart_items (session_id, product_id, quantity, price, size) 
+                      VALUES ('$session_id', '$product_id', '$quantity', '{$product['price']}', '{$product['size_name']}')";
     mysqli_query($conn, $insert_query);
   }
 

@@ -57,6 +57,7 @@
 	<script src="ajax/notifications.js"></script>
 	<script src="ajax/auth.js"></script>
 	<script src="ajax/product-pricing.js"></script>
+	<script src="ajax/product.js"></script>
 </body>
 
 </html>

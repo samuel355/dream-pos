@@ -19,6 +19,28 @@ function getCartItems($conn)
             JOIN products p ON ci.product_id = p.id
             WHERE ci.session_id = ?";
 
+  // $query = "SELECT 
+  //           ci.id AS cart_id,
+  //           ci.quantity,
+
+  //           p.id AS product_id,
+  //           p.name AS product_name,
+  //           p.category_id,
+  //           p.image,
+
+  //           pp.id AS product_pricing_id,
+  //           pp.category_id AS pricing_category_id,
+  //           pp.size_name,
+  //           pp.price
+
+  //         FROM cart_items ci 
+          
+  //         JOIN products p ON ci.product_id = p.id
+  //         JOIN product_pricing pp ON p.category_id = pricing_category_id
+  //         WHERE ci.session_id = ?
+  //         ";
+
+
   $stmt = mysqli_prepare($conn, $query);
   mysqli_stmt_bind_param($stmt, "s", $session_id);
   mysqli_stmt_execute($stmt);
