@@ -1,8 +1,8 @@
 <?php
-  include_once('includes/head.php');
-  include_once('includes/auth.php');
+include_once('includes/head.php');
+include_once('includes/auth.php');
 
-  requireAdmin();
+requireAdmin();
 ?>
 
 <body>
@@ -20,7 +20,7 @@
       <div class="content">
         <div class="page-header">
           <div class="page-title">
-            <h4>Product  list</h4>
+            <h4>Product list</h4>
             <h6>View Products </h6>
           </div>
           <div class="page-btn">
@@ -71,39 +71,80 @@
           <div class="content">
             <div class="page-header">
               <div class="page-title">
-                <h4>Product Add Category</h4>
-                <h6>Create new product Category</h6>
+                <h4>Add Product</h4>
+                <h6>Create New Product</h6>
               </div>
             </div>
 
             <div class="card">
               <div class="card-body">
-                <form id="add-category-form" class="row" enctype="multipart/form-data" method="post">
-                  <div class="col-lg-6 col-sm-6 col-12">
-                    <div class="form-group">
-                      <label>Category Name</label>
-                      <input type="text" name="category-name" id="category-name">
+                <form id="add-product-form" enctype="multipart/form-data" method="post" class="row">
+                  <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Product Name</label>
+                        <input placeholder="Product Name" id="product-name" name="product-name" type="text">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label> Product Image</label>
-                      <div class="image-upload">
-                        <input type="file"
-                          id="image"
-                          name="image"
-                          accept="image/*"
-                          onchange="previewImage(this);">
-                        <div class="image-uploads">
-                          <img src="assets/img/icons/upload.svg" alt="img">
-                          <h4>Drag and drop a file to upload</h4>
-                          <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="preview" class="preview-image">
-                        </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select class="select" id="category-id" name="category-id">
+                          <option value="Choose Category">Choose Category</option>
+                          <?php
+                          // Include database connection
+                          include_once('includes/db_connection.php');
+
+                          // Fetch categories from database
+                          $query = "SELECT * FROM categories ORDER BY name";
+                          $result = mysqli_query($conn, $query);
+
+                          while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                          }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Select Size</label>
+                        <select class="select" id="size" name="size">
+                          <option value="Select Size">Select Size</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Large">Large</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Price (GHS)</label>
+                        <input placeholder="Price (GHS)" type="text" name="price" id="price">
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-12">
-                    <button type="submit" class="btn btn-submit me-2">Submit</button>
+                  <div class="row">
+                    <div class="col-lg-12 col-12">
+                      <div class="form-group">
+                        <label> Product Image</label>
+                        <div class="image-upload">
+                          <input type="file"
+                            id="image"
+                            name="image"
+                            accept="image/*"
+                            onchange="previewImage(this);">
+                          <div class="image-uploads">
+                            <img src="assets/img/icons/upload.svg" alt="img">
+                            <h4>Drag and drop a file to upload</h4>
+                            <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="preview" class="preview-image">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -135,32 +176,73 @@
 
             <div class="card">
               <div class="card-body">
-                <form id="edit-category-form" class="row" enctype="multipart/form-data" method="post">
-                  <div class="col-lg-6 col-sm-6 col-12">
-                    <div class="form-group">
-                      <label>Category Name</label>
-                      <input type="text" name="category-name" id="category-name-edt">
+                <form id="add-product-form" enctype="multipart/form-data" method="post" class="row">
+                  <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Product Name</label>
+                        <input placeholder="Product Name" id="product-name" name="product-name" type="text">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="form-group">
-                      <label> Product Image</label>
-                      <div class="image-upload">
-                        <input type="file"
-                          id="image"
-                          name="image"
-                          accept="image/*"
-                          onchange="previewImage(this);">
-                        <div class="image-uploads">
-                          <img src="assets/img/icons/upload.svg" alt="img">
-                          <h4>Drag and drop an image file to change the existing image</h4>
-                          <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="cat-preview" class="preview-image">
-                        </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Category</label>
+                        <select class="select form-group" id="category-id" name="category-id">
+                          <option value="Choose Category">Choose Category</option>
+                          <?php
+                          // Include database connection
+                          include_once('includes/db_connection.php');
+
+                          // Fetch categories from database
+                          $query = "SELECT * FROM categories ORDER BY name";
+                          $result = mysqli_query($conn, $query);
+
+                          while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                          }
+                          ?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Select Size</label>
+                        <select class="select" id="size" name="size">
+                          <option value="Select Size">Select Size</option>
+                          <option value="Medium">Medium</option>
+                          <option value="Large">Large</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                      <div class="form-group">
+                        <label>Price (GHS)</label>
+                        <input placeholder="Price (GHS)" type="text" name="price" id="price">
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-12">
-                    <button type="submit" class="btn btn-submit me-2">Submit</button>
+                  <div class="row">
+                    <div class="col-lg-12 col-12">
+                      <div class="form-group">
+                        <label> Product Image</label>
+                        <div class="image-upload">
+                          <input type="file"
+                            id="image"
+                            name="image"
+                            accept="image/*"
+                            onchange="previewImage(this);">
+                          <div class="image-uploads">
+                            <img src="assets/img/icons/upload.svg" alt="img">
+                            <h4>Drag and drop a file to upload</h4>
+                            <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="preview" class="preview-image">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-12">
+                      <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                    </div>
                   </div>
                 </form>
               </div>

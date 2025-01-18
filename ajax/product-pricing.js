@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //Create new product size
   const form = document.getElementById("add-product-pricing-form");
+
   //Add product size
   form.addEventListener("submit", function (e) {
     e.preventDefault();

@@ -30,6 +30,7 @@ try {
   $check_prdt = mysqli_query($conn, "SELECT id FROM products WHERE name = '$product_name'");
   if (mysqli_num_rows($check_prdt) > 0) {
     sendResponse('error', 'Sorry product name already exist');
+    exit;
   }
 
   // Handle image upload

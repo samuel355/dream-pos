@@ -361,6 +361,8 @@ function updateCart() {
 // Function to display cart
 function displayCart(cartData) {
   const cartContainer = document.querySelector(".product-wrap");
+  if(cartContainer === null)  return;
+
   const totalItems = document.querySelector(".count-items");
   const subtotalElement = document.querySelector(".cart-subtotal");
   const totalElement = document.querySelector(".cart-total-items");
