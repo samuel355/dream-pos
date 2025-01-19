@@ -35,7 +35,7 @@ requireAdmin();
           <div class="card-body">
 
             <div class="table-responsive">
-              <table class="table datanew">
+              <table class="table datanew" id="productsTable">
                 <thead>
                   <tr>
                     <th>Image</th>
@@ -236,4 +236,5 @@ requireAdmin();
     </div>
   </div>
 
+  
   <?php include_once('includes/scripts.php') ?>

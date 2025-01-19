@@ -1,56 +1,55 @@
 // Update your DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
-
   // Add styles to size select element
-  const sizeSelect = document.getElementById('size');
-  const categorySelect = document.getElementById('category-id');
-  
+  const sizeSelect = document.getElementById("size");
+  const categorySelect = document.getElementById("category-id");
+
   if (sizeSelect) {
-    sizeSelect.style.width = '100%';
-    sizeSelect.style.height = '40px'; 
-    sizeSelect.style.fontSize = '16px';
-    sizeSelect.style.padding = '5px';
-    sizeSelect.style.border = '1px solid #ccc';
-    sizeSelect.style.borderRadius = '5px';
+    sizeSelect.style.width = "100%";
+    sizeSelect.style.height = "40px";
+    sizeSelect.style.fontSize = "16px";
+    sizeSelect.style.padding = "5px";
+    sizeSelect.style.border = "1px solid #ccc";
+    sizeSelect.style.borderRadius = "5px";
   }
 
   if (categorySelect) {
-    categorySelect.style.width = '100%';
-    categorySelect.style.height = '40px'; 
-    categorySelect.style.fontSize = '16px';
-    categorySelect.style.padding = '5px';
-    categorySelect.style.border = '1px solid #ccc';
-    categorySelect.style.borderRadius = '5px';
+    categorySelect.style.width = "100%";
+    categorySelect.style.height = "40px";
+    categorySelect.style.fontSize = "16px";
+    categorySelect.style.padding = "5px";
+    categorySelect.style.border = "1px solid #ccc";
+    categorySelect.style.borderRadius = "5px";
   }
 
   const form = document.getElementById("add-product-form");
-  if(form === null) return;
+  if (form === null) return;
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Create FormData object
     const formData = new FormData(this);
-    const productname = $('#product-name').val()
-    const price = $('#price').val()
-    const category_id  = $('#category-id').val()
-    const size = $('#size').val();
+    const productname = $("#product-name").val();
+    const price = $("#price").val();
+    const category_id = $("#category-id").val();
+    const size = $("#size").val();
 
-    if(productname === ''){
-      toastr.error('Enter product name')
-      return
+    if (productname === "") {
+      toastr.error("Enter product name");
+      return;
     }
-    if(category_id === 'Choose Category' ){
-      toastr.error('Please Select Category name')
-      return
+    if (category_id === "Choose Category") {
+      toastr.error("Please Select Category name");
+      return;
     }
-    if(size === 'Select Size' || size === ''){
-      toastr.error('Select size')
-      return
+    if (size === "Select Size" || size === "") {
+      toastr.error("Select size");
+      return;
     }
-    if(isNaN(price) || price === ''){
-      toastr.error('Enter product price (numbers)')
-      return
+    if (isNaN(price) || price === "") {
+      toastr.error("Enter product price (numbers)");
+      return;
     }
 
     // Send AJAX request
@@ -59,11 +58,11 @@ document.addEventListener("DOMContentLoaded", function () {
       body: formData,
     })
       .then((response) => {
-        return response.json()
+        return response.json();
       })
       .then((data) => {
         if (data.status === "success") {
-          toastr.success(data.message)
+          toastr.success(data.message);
           form.reset();
           loadProducts();
           document.getElementById("preview").style.display = "none";
@@ -71,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error:", error);
-        toastr.error("An error occurred. Please try again..")
+        toastr.error("An error occurred. Please try again..");
       });
   });
 
@@ -110,8 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
   //   });
 });
 
-
-
 function loadProducts() {
   fetch("php/fetch-all-products.php")
     .then((response) => {
@@ -129,49 +126,72 @@ function loadProducts() {
 
 // Display products in tabular form
 function displayTableProducts(products) {
-  const productsList = document.querySelector(".products-content");
-  if (productsList === null) return;
+  const table = $("#productsTable");
 
-  let html = "";
-  products.forEach((product) => {
-    html += `
-          <tr>
-            <td class="productimgname">
-              <a href="javascript:void(0);" class="product-img">
-                <img src="${product.image}" alt="${product.name}">
-              </a>
-            </td>
-            <td>${product.name}</td>
-            <td>${product.category_name}</td>
-            <td>${product.price}</td>
-            <td>${product.size}</td>
-            <td>${product.created_by ?? "Admin"}</td>
-            <td>
-              <a class="me-3" onclick="editProductModal(${product.id})">
-                <img src="assets/img/icons/edit.svg" alt="img">
-              </a>
-
-              <a onclick="deleteProduct(${
-                product.id
-              })" class="me-3" href="javascript:void(0);">
-                <img src="assets/img/icons/delete.svg" alt="img">
-              </a>
-            </td>
-          </tr>
-      `;
-  });
-
-  if (products.length === 0) {
-    html =
-      '<li class="notification-message"><div class="media d-flex"><div class="media-body flex-grow-1"><p class="text-center">No Products</p></div></div></li>';
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable(table)) {
+    table.DataTable().destroy();
   }
 
-  productsList.innerHTML = html;
+  // Clear the table body
+  const tbody = table.find("tbody");
+  tbody.empty();
+
+  // Add new data
+  products.forEach((product) => {
+    tbody.append(`
+          <tr>
+              <td class="productimgname">
+                  <a href="javascript:void(0);" class="product-img">
+                      <img src="${product.image}" alt="${product.name}">
+                  </a>
+              </td>
+              <td>${product.name}</td>
+              <td>${product.category_name}</td>
+              <td>${product.price}</td>
+              <td>${product.size}</td>
+              <td>${product.created_by ?? "Admin"}</td>
+              <td>
+                  <a class="me-3" onclick="editProductModal(${product.id})">
+                      <img src="assets/img/icons/edit.svg" alt="img">
+                  </a>
+                  <a onclick="deleteProduct(${
+                    product.id
+                  })" class="me-3" href="javascript:void(0);">
+                      <img src="assets/img/icons/delete.svg" alt="img">
+                  </a>
+              </td>
+          </tr>
+      `);
+  });
+
+  // Initialize DataTable with options
+  table.DataTable({
+    responsive: true,
+    ordering: true,
+    searching: true,
+    paging: true,
+    pageLength: 10,
+    dom: "Bfrtip",
+    buttons: ["copy", "csv", "excel", "pdf", "print"],
+    language: {
+      emptyTable: "No products available",
+    },
+    columnDefs: [
+      {
+        targets: 0, // Image column
+        orderable: false,
+      },
+      {
+        targets: -1, // Action column
+        orderable: false,
+      },
+    ],
+  });
 }
 
 //Delete Product
 function deleteProduct(productId) {
-
   const formData = new FormData();
   formData.append("product_id", productId);
   if (!confirm("Are you sure you want to delete this product")) return;
@@ -209,17 +229,18 @@ function editProductModal(product_id) {
       if (data.status === "success") {
         $("#edit-product-modal").modal("show");
         document.getElementById("product-name-edt").value = data.product.name;
-        document.getElementById("product-image-preview").src = data.product.image;
+        document.getElementById("product-image-preview").src =
+          data.product.image;
         document.getElementById("product-price").value = data.product.price;
 
         // Store product ID for update
-        document.getElementById("edit-product-form").dataset.productId = data.product.id;
+        document.getElementById("edit-product-form").dataset.productId =
+          data.product.id;
         document.getElementById("product_size").value = data.product.size;
-        document.getElementById("product_category_id").value = data.product.category_name;
-
+        document.getElementById("product_category_id").value =
+          data.product.category_name;
       }
     });
 }
-
 
 loadProducts();
