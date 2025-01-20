@@ -115,70 +115,50 @@ requireAdmin()
           <div class="card-body">
             <h4 class="card-title">Recently Added Products</h4>
             <div class="table-responsive dataview">
-              <table class="table datatable ">
+              <table class="table">
                 <thead>
                   <tr>
-                    <th>SNo</th>
-                    <th>Product Code</th>
+                    <th>No</th>
                     <th>Product Name</th>
-                    <th>Brand Name</th>
-                    <th>Category Name</th>
-                    <th>Expiry Date</th>
+                    <th>Image</th>
+                    <th>Category</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td><a href="javascript:void(0);">IT0001</a></td>
-                    <td class="productimgname">
-                      <a class="product-img" href="productlist.html">
-                        <img src="assets/img/product/product2.jpg" alt="product">
-                      </a>
-                      <a href="productlist.html">Orange</a>
-                    </td>
-                    <td>N/D</td>
-                    <td>Fruits</td>
-                    <td>12-12-2022</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td><a href="javascript:void(0);">IT0002</a></td>
-                    <td class="productimgname">
-                      <a class="product-img" href="productlist.html">
-                        <img src="assets/img/product/product3.jpg" alt="product">
-                      </a>
-                      <a href="productlist.html">Pineapple</a>
-                    </td>
-                    <td>N/D</td>
-                    <td>Fruits</td>
-                    <td>25-11-2022</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td><a href="javascript:void(0);">IT0003</a></td>
-                    <td class="productimgname">
-                      <a class="product-img" href="productlist.html">
-                        <img src="assets/img/product/product4.jpg" alt="product">
-                      </a>
-                      <a href="productlist.html">Stawberry</a>
-                    </td>
-                    <td>N/D</td>
-                    <td>Fruits</td>
-                    <td>19-11-2022</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td><a href="javascript:void(0);">IT0004</a></td>
-                    <td class="productimgname">
-                      <a class="product-img" href="productlist.html">
-                        <img src="assets/img/product/product5.jpg" alt="product">
-                      </a>
-                      <a href="productlist.html">Avocat</a>
-                    </td>
-                    <td>N/D</td>
-                    <td>Fruits</td>
-                    <td>20-11-2022</td>
-                  </tr>
+                  <?php
+                  include_once('includes/db_connection.php');
+                  include_once('includes/sendResponse.php');
+                    $query = "SELECT p.*, c.name as category_name 
+                             FROM products p
+                             LEFT JOIN categories c ON p.category_id = c.id
+                             ORDER BY p.name LIMIT 8";
+                    $result = mysqli_query($conn, $query);
+
+                    if (mysqli_num_rows($result) > 0) {
+                      $count = 1;
+                      while($row = mysqli_fetch_assoc($result)) {
+                        ?>
+                        <tr>
+                          <td><?php echo $count++; ?></td>
+                          <td><a href="javascript:void(0);"><?php echo $row['name']; ?></a></td>
+                          <td class="productimgname">
+                            <a class="product-img" href="/products">
+                              <img src="php/<?php echo $row['image']; ?>" alt="product">
+                            </a>
+                            <a href="/products"><?php echo $row['name']; ?></a>
+                          </td>
+                          <td><?php echo $row['category_name']; ?></td>
+                        </tr>
+                        <?php
+                      }
+                    } else {
+                      ?>
+                      <tr>
+                        <td colspan="6" class="text-center">No products found</td>
+                      </tr>
+                      <?php
+                    }
+                  ?>
                 </tbody>
               </table>
             </div>
