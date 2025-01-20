@@ -182,7 +182,7 @@ function initializeCategoryEvents() {
 function loadProducts(categoryId) {
   const productsContainer = document.querySelector(".tabs_container");
 
-  if(productsContainer === null) return;
+  if (productsContainer === null) return;
 
   // Show loading state
   const loadingHtml = `
@@ -361,7 +361,7 @@ function updateCart() {
 // Function to display cart
 function displayCart(cartData) {
   const cartContainer = document.querySelector(".product-wrap");
-  if(cartContainer === null)  return;
+  if (cartContainer === null) return;
 
   const totalItems = document.querySelector(".count-items");
   const subtotalElement = document.querySelector(".cart-subtotal");
@@ -569,103 +569,139 @@ function previewReceipt(
   const receiptWindow = window.open("", "_blank", "width=400,height=600");
 
   let html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Receipt Preview</title>
-            <style>
-                body {
-                    font-family: monospace;
-                    padding: 20px;
-                    max-width: 400px;
-                    margin: 0 auto;
-                }
-                .header {
-                    text-align: center;
-                    margin-bottom: 20px;
-                }
-                .items {
-                    margin: 20px 0;
-                }
-                .item {
-                    margin: 5px 0;
-                }
-                .totals {
-                    margin-top: 20px;
-                    text-align: right;
-                }
-                .footer {
-                    text-align: center;
-                    margin-top: 20px;
-                }
-                @media print {
-                    .no-print {
-                        display: none;
-                    }
-                    body {
-                        width: 100%;
-                        margin: 0;
-                        padding: 10px;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <h2>POPSY BUBBLE TEA SHOP</h2>
-                <p>Ayeduase New Site - </p>
-                <small> Close to Liendaville Hostel </small>
-                <p>Tel: 0530975528</p>
-                <p>Date: ${new Date().toLocaleString()}</p>
-                <p>INV #: ${invoiceNumber}</p>
-                <p>Customer: ${customerName}</p>
-                <p>Contact: ${customerContact}</p>
-            </div>
-            
-            <div class="items">
-    `;
+      <!DOCTYPE html>
+      <html>
+      <head>
+          <title>Receipt Preview</title>
+          <style>
+            *{
+              margin: 0;
+              padding: 4px;
+              box-sizing: border-box;
+            }
+              body {
+                  font-family: monospace;
+                  padding: 20px;
+                  max-width: 400px;
+                  margin: 0 auto;
+              }
+              .header {
+                  text-align: center;
+                  margin-bottom: 20px;
+              }
+              .items-table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin: 20px 0;
+              }
+              .items-table th {
+                  border-bottom: 1px solid #000;
+                  padding: 5px;
+                  text-align: left;
+              }
+              .items-table td {
+                  padding: 5px;
+                  text-align: left;
+              }
+              .totals {
+                  font-weight: bold;
+                  margin-top: 20px;
+                  text-align: right;
+              }
+              .footer {
+                  text-align: center;
+                  margin-top: 20px;
+              }
+              @media print {
+                  .no-print {
+                      display: none;
+                  }
+                  body {
+                      width: 100%;
+                      margin: 0;
+                      padding: 10px;
+                  }
+              }
+          </style>
+      </head>
+      <body>
+          <div class="header">
+              <h2>POPSY BUBBLE TEA SHOP</h2>
+              <p>Ayeduase New Site - </p>
+              <small>Close to Liendaville Hostel</small>
+              <p>Tel: 0530975528</p>
+              <p>Date: ${new Date().toLocaleString()}</p>
+              <p>INV #: ${invoiceNumber}</p>
+              <p>Customer: ${customerName}</p>
+              <p>Contact: ${customerContact}</p>
+          </div>
+          
+          <table class="items-table">
+              <thead>
+                  <tr>
+                      <th>#</th>
+                      <th>Item</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Total</th>
+                  </tr>
+              </thead>
+              <tbody>
+  `;
 
-  cartData.items.forEach((item) => {
+  cartData.items.forEach((item, index) => {
+    const price = parseFloat(item.price);
+    const quantity = parseInt(item.quantity);
+    const total = price * quantity;
+
     html += `
-                      <div class="item">
-                          <div>${item.name}</div>
-                          <div style="margin-left:8px">${item.quantity} x 
-                          ${item.price} = ${(
-      item.quantity * item.price
-    ).toFixed(2)}</div>
-                          <hr />
-                      </div>
-                  `;
+          <tr>
+              <td>${index + 1}</td>
+              <td>${item.name}</td>
+              <td>${price.toFixed(2)}</td>
+              <td>${quantity}</td>
+              <td>${total.toFixed(2)}</td>
+          </tr>
+      `;
   });
 
-  html += `
-                      </div>
-                      
-                      <div class="totals">
-                          <p>Subtotal: GHS ${cartData.subtotal.toFixed(2)}</p>
-                          <p>Total: GHS ${cartData.total.toFixed(2)}</p>
-                      </div>
-                      
-                      <div class="footer">
-                          <p>Thank you for your purchase!</p>
-                          <p>Please come again</p>
-                      </div>
+  const subtotal = parseFloat(cartData.subtotal);
+  const total = parseFloat(cartData.total);
 
-                      <div class="no-print" style="text-align: center; margin-top: 20px;">
-                          <button onclick="window.print()" class="print-invoice" style="padding: 10px 20px;">Print Receipt</button>
-                      </div>
-                  </body>
-                  </html>
-            `;
+  html += `
+              </tbody>
+          </table>
+          
+          <div class="totals">
+              <p>Subtotal: GHS ${subtotal.toFixed(2)}</p>
+              <p>Total: GHS ${total.toFixed(2)}</p>
+          </div>
+          
+          <div class="footer">
+              <p>Thank you for your purchase!</p>
+              <p>Please come again</p>
+          </div>
+
+          <div class="no-print" style="text-align: center; margin-top: 20px;">
+              <button onclick="window.print()" class="print-invoice" 
+                      style="padding: 10px 20px;">Print Receipt</button>
+          </div>
+      </body>
+      </html>
+  `;
 
   receiptWindow.document.write(html);
   receiptWindow.document.close();
 
   const order_btn = document.querySelector(".order-btn-container");
+  receiptWindow.onclose = function() {
+    clearCart(); // Clear the cart
+    order_btn.disabled = false;
+  };
 
   receiptWindow.onafterprint = function () {
-    clearCart(); // Clear the cart
     receiptWindow.close();
+    clearCart(); // Clear the cart
     order_btn.disabled = false;
   };
 }

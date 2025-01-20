@@ -151,6 +151,13 @@ requireAdmin()
                         </tr>
                         <?php
                       }
+                      ?>
+                        <tr>
+                          <td colspan="4" class="text-center">
+                            <a href="/porducts"> View All products</a>
+                          </td>
+                        </tr>
+                      <?php
                     } else {
                       ?>
                       <tr>
