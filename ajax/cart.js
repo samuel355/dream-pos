@@ -413,79 +413,97 @@ function displayCart(cartData) {
           : "../assets/img/boba/boba-c.png";
       if (item.category_id === "1" || item.category_id === "3") {
         html += `
-        <div class="product-list d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                <a href="javascript:void(0);" class="img-bg">
-                    <img src="${imageSrc}" alt="${
+                <div class="product-list d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                        <a href="javascript:void(0);" class="img-bg">
+                            <img src="${imageSrc}" alt="${
           item.name
         }" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                </a>
-                <div class="info">
-                    <h4><a href="javascript:void(0);">${item.name}</a></h4>
-                    <p>GHS ${item.price}</p>
-                </div>
-            </div>
+                        </a>
+                        <div class="info">
+                            <h6><a href="javascript:void(0);">${
+                              item.name
+                            }</a></h6>
+                            <p>GHS ${item.price}</p>
+                            <p id="selected-boba-size" style="margin-top: -6px">${
+                              item.size
+                            }</p>
+                        </div>
+                    </div>
 
-            <div class="increment-decrement">
-                <div class="input-groups">
-                    <input onclick="updateQuantity(${item.cart_id}, ${
+                    <div class="increment-decrement">
+                        <div class="input-groups">
+                            <input onclick="updateQuantity(${item.cart_id}, ${
           item.quantity - 1
         })" type="button" value="-"
-                        class="button-minus dec button">
-                    <input type="text" name="child" value="${
-                      item.quantity
-                    }" readonly
-                        class="quantity-field">
-                    <input onclick="updateQuantity(${item.cart_id}, ${
+                                class="button-minus dec button">
+                            <input type="text" name="child" value="${
+                              item.quantity
+                            }" readonly
+                                class="quantity-field">
+                            <input onclick="updateQuantity(${item.cart_id}, ${
           item.quantity + 1
         })" type="button" value="+"
-                    class="button-plus inc button ">
+                            class="button-plus inc button ">
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center action">
+                        <a data-bs-toggle="modal" id="cart_id" data-id="${
+                          item.cart_id
+                        }" data-bs-target="#change-boba-size-modal" href="javascript:void(0);" onclick="openChangeSizeModal(${
+          item.cart_id
+        })" class="confirm-text">
+                            <img src="assets/img/icons/edit.svg" alt="Change Size">
+                        </a>
+                    </div>
+
+                    <div class="d-flex align-items-center action">
+                        <a href="javascript:void(0);" 
+                          onclick="deleteCartItem(${item.cart_id})"
+                          class="confirm-text">
+                            <img src="assets/img/icons/delete-2.svg" alt="Delete">
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="d-flex align-items-center action">
-                <a href="javascript:void(0);" 
-                   onclick="deleteCartItem(${item.cart_id})"
-                   class="confirm-text">
-                    <img src="assets/img/icons/delete-2.svg" alt="Delete">
-                </a>
-            </div>
-        </div>
-    `;
+            `;
       } else {
         html += `
-        <div class="product-list d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                <div class="info">
-                    <h4><a href="javascript:void(0);">${item.name}</a></h4>
-                    <p>GHS ${item.price}</p>
-                </div>
-            </div>
+              <div class="product-list d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                      <div class="info">
+                          <h6><a href="javascript:void(0);">${
+                            item.name
+                          }</a></h6>
+                          <p>GHS ${item.price}</p>
+                      </div>
+                  </div>
 
-            <div class="increment-decrement">
-                <div class="input-groups">
-                    <input onclick="updateQuantity(${item.cart_id}, ${
+                  <div class="increment-decrement">
+                      <div class="input-groups">
+                          <input onclick="updateQuantity(${item.cart_id}, ${
           item.quantity - 1
         })" type="button" value="-"
-                        class="button-minus dec button">
-                    <input type="text" name="child" value="${
-                      item.quantity
-                    }" readonly
-                        class="quantity-field">
-                    <input onclick="updateQuantity(${item.cart_id}, ${
+                              class="button-minus dec button">
+                          <input type="text" name="child" value="${
+                            item.quantity
+                          }" readonly
+                              class="quantity-field">
+                          <input onclick="updateQuantity(${item.cart_id}, ${
           item.quantity + 1
         })" type="button" value="+"
-                    class="button-plus inc button ">
-                </div>
-            </div>
-            <div class="d-flex align-items-center action">
-                <a href="javascript:void(0);" 
-                   onclick="deleteCartItem(${item.cart_id})"
-                   class="confirm-text">
-                    <img src="assets/img/icons/delete-2.svg" alt="Delete">
-                </a>
-            </div>
-        </div>
-    `;
+                          class="button-plus inc button ">
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-center action">
+                      <a href="javascript:void(0);" 
+                        onclick="deleteCartItem(${item.cart_id})"
+                        class="confirm-text">
+                          <img src="assets/img/icons/delete-2.svg" alt="Delete">
+                      </a>
+                  </div>
+              </div>
+          `;
       }
     });
   }
@@ -503,6 +521,45 @@ function displayCart(cartData) {
   createOrderBtn.onclick = () => {
     createOrder(cartData);
   };
+}
+
+//Change boba size [medium or Large]
+function changeBobaSize(cartId) {
+  const selectSize = document.getElementById("change-boba-size");
+  sizeValue = selectSize.value;
+
+  const formData = new FormData();
+  formData.append("boba_size", sizeValue);
+  formData.append("cart_id", cartId);
+
+  console.log(`Sending: boba-size=${sizeValue}, cart_id=${cartId}`);
+  if (sizeValue === "Change Size") {
+    return toastr.error("Select Large or Medium");
+  }
+
+  fetch("php/update-boba-size.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        console.log(data);
+
+        updateCart();
+        selectSize.innerHTML = `
+          <option value="Change Size">Change Size</option>
+          <option value="Medium">Medium</option>
+          <option value="Large">Large</option>
+        `;
+      } else {
+        toastr.error(data.message || "Error updating size.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      toastr.error("An error occurred while updating the size.");
+    });
 }
 
 // Function to delete cart item
@@ -900,3 +957,56 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+let currentCartId = null;
+
+function openChangeSizeModal(cartId) {
+  document.getElementById("cart_id_input").value = cartId;
+}
+
+function updateSize() {
+  const cartId = document.getElementById("cart_id_input").value;
+  const newSize = document.getElementById("boba-new-size").value;
+
+  // Create FormData object
+  const formData = new FormData();
+  formData.append("cart_id", cartId);
+  formData.append("new_size", newSize);
+  formData.append("action", "update_size");
+
+  // Show loading indicator
+  document.querySelector(
+    "#change-boba-size-modal button.btn-primary"
+  ).innerHTML = "Updating...";
+
+  // Make AJAX call
+  fetch("php/update-boba-size.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => {
+      console.log(response)
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data)
+      if (data.status  === 'success') {
+        // Close modal
+        $('#change-boba-size-modal').modal('hide')
+        toastr.success("Size updated successfully!");
+        updateCart();
+      } else {
+        toastr.error(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      toastr.error("An error occurred while updating the size.");
+    })
+    .finally(() => {
+      // Reset button text
+      document.querySelector(
+        "#change-boba-size-modal button.btn-primary"
+      ).innerHTML = "Update Size";
+    });
+}

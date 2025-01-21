@@ -5,6 +5,8 @@ include_once('includes/auth.php');
 requireAdmin();
 ?>
 
+
+
 <body>
   <div id="global-loader">
     <div class="whirly-loader"> </div>
@@ -237,5 +239,5 @@ requireAdmin();
     </div>
   </div>
 
-  
+
   <?php include_once('includes/scripts.php') ?>

@@ -17,6 +17,16 @@
 
 <body>
 
+    <!-- <div>
+        <select onchange=changeBobaSize(${
+            item.cart_id
+            }) style="margin-left: 2px; margin-right: 2px" class="select" id="change-boba-size" name="change-boba-size">
+            <option value="Change Size">Change Size</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+        </select>
+    </div> -->
+
     <div class="header">
         <div class="page-header">
             <div class="page-btn mt-3 mb-5">
@@ -135,6 +145,126 @@
     </div>
     <!-- /Main Wrapper -->
 
+    <div class="modal fade" id="create-product-modal" tabindex="-1" aria-labelledby="create" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="content">
+                        <div class="page-header">
+                            <div class="page-title">
+                                <h4>Add Product</h4>
+                                <h6>Create New Product</h6>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="add-product-form" enctype="multipart/form-data" method="post" class="row">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Product Name</label>
+                                                <input placeholder="Product Name" id="product-name" name="product-name" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Change Category</label>
+                                                <select class="select" id="new-category-id" name="new-category-id">
+                                                    <option value="Choose Category">Choose Category</option>
+                                                    <?php
+                                                    // Include database connection
+                                                    include_once('includes/db_connection.php');
+
+                                                    // Fetch categories from database
+                                                    $query = "SELECT * FROM categories ORDER BY id";
+                                                    $result = mysqli_query($conn, $query);
+
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                        echo "<option value='" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Change Size</label>
+                                                <select class="select" id="new-size" name="new-size">
+                                                    <option value="Select Size">Select Size</option>
+                                                    <option value="Medium">Medium</option>
+                                                    <option value="Large">Large</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label>Price (GHS)</label>
+                                                <input placeholder="Price (GHS)" type="text" name="price" id="price">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12">
+                                            <div class="form-group">
+                                                <label> Product Image</label>
+                                                <div class="image-upload">
+                                                    <input type="file"
+                                                        id="image"
+                                                        name="image"
+                                                        accept="image/*"
+                                                        onchange="previewImage(this);">
+                                                    <div class="image-uploads">
+                                                        <img src="assets/img/icons/upload.svg" alt="img">
+                                                        <h4>Drag and drop a file to upload</h4>
+                                                        <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="preview" class="preview-image">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="change-boba-size-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Change Size</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="cart_id_input">
+                    <select id="boba-new-size" class="form-select">
+                        <option value="Choose Size">Choose Size</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Large">Large</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateSize()">Update Size</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <?php include_once('includes/scripts.php') ?>
 
