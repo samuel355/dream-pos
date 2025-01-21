@@ -16,7 +16,7 @@ function getCategories($conn)
   $query = "SELECT p.*, c.name as category_name
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id
-            ORDER BY p.name";
+            ORDER BY p.id";
   $result = mysqli_query($conn, $query);
 
   if (!$result) {

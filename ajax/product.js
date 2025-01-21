@@ -1,5 +1,7 @@
 // Update your DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
+
+  
   // Add styles to size select element
   const sizeSelect = document.getElementById("size");
   const categorySelect = document.getElementById("category-id");
@@ -32,8 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const formData = new FormData(this);
     const productname = $("#product-name").val();
     const price = $("#price").val();
-    const category_id = $("#category-id").val();
-    const size = $("#size").val();
+    const category_id = $("#new-category-id").val();
+    const size = $("#new-size").val();
 
     if (productname === "") {
       toastr.error("Enter product name");
@@ -64,7 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === "success") {
           toastr.success(data.message);
           form.reset();
-          loadProducts();
+          $("#create-product-mal").modal("hide");
+          window.location.reload();
+
           document.getElementById("preview").style.display = "none";
         }
       })
@@ -109,6 +113,8 @@ document.addEventListener("DOMContentLoaded", function () {
   //   });
 });
 
+loadProducts();
+
 function loadProducts() {
   fetch("php/fetch-all-products.php")
     .then((response) => {
@@ -138,12 +144,15 @@ function displayTableProducts(products) {
   tbody.empty();
 
   // Add new data
-  products.forEach((product) => {
+  products.forEach((product, i) => {
+    const imageSrc = product.image !== 'php/' ? product.image : "../assets/img/boba/boba-c.png";
+
     tbody.append(`
           <tr>
+            <td>${i +1}</td>
               <td class="productimgname">
-                  <a href="javascript:void(0);" class="product-img">
-                      <img src="${product.image}" alt="${product.name}">
+                  <a href="javascript:void(0);" class="product-img">                      
+                      <img src="${imageSrc}" alt="${product.name}">
                   </a>
               </td>
               <td>${product.name}</td>
@@ -243,4 +252,3 @@ function editProductModal(product_id) {
     });
 }
 
-loadProducts();

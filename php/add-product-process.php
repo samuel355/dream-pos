@@ -4,32 +4,32 @@ include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
 header('Content-Type: application/json');
 
-// if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-//   sendResponse('error', 'unauthorized accesss');
-//   exit();
-// }
+if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+  sendResponse('error', 'unauthorized accesss');
+  exit();
+}
 
 try {
-  if (empty($_POST['product-name']) || empty($_POST['price']) || empty($_POST['size'])) {
+  if (empty($_POST['product-name']) || empty($_POST['price']) || empty($_POST['new-size'])) {
     sendResponse('error', 'Fill all fields');
     exit;
   }
 
-  $cat_id = $_POST['category-id'];
+  $cat_id = $_POST['new-category-id'];
   if (empty($cat_id) || $cat_id === 'Choose Category') {
     sendResponse('error', 'Select Product Category');
   }
 
   $product_name = mysqli_real_escape_string($conn, trim($_POST['product-name']));
-  $cat_id = mysqli_real_escape_string($conn, trim($_POST['category-id']));
+  $cat_id = mysqli_real_escape_string($conn, trim($_POST['new-category-id']));
   $price = mysqli_real_escape_string($conn, trim($_POST['price']));
-  $size = mysqli_real_escape_string($conn, trim($_POST['size']));
+  $size = mysqli_real_escape_string($conn, trim($_POST['new-size']));
   $created_by = null;
 
   // Check if product name already exists
   $check_prdt = mysqli_query($conn, "SELECT id FROM products WHERE name = '$product_name'");
   if (mysqli_num_rows($check_prdt) > 0) {
-    sendResponse('error', 'Sorry product name already exist');
+    sendResponse('error', 'Sorry product name already exist. Add different product');
     exit;
   }
 
@@ -43,6 +43,10 @@ try {
   $row = mysqli_fetch_assoc($query_cat_name);
   $cat_name = $row['name'];
 
+  if (!$row || empty($cat_name)) {
+    sendResponse('error', 'Invalid category selected');
+    exit;
+  }
   //insert data
   $query = "INSERT INTO products(category_id, category_name, name, size, price, created_by, image)
             VALUES(?, ?, ?, ?, ?, ?, ?)";

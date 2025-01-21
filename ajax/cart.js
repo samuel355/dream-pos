@@ -244,24 +244,27 @@ function displayProducts(products, categoryId) {
       `;
   } else {
     products.forEach((product) => {
-      html += `
+      const imageSrc = product.image !== null ? `../php/${product.image}` : "../assets/img/boba/boba-c.png";
+      if(product.category_id === '1' || product.category_id === '3'){
+        html += `
               <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                   <div class="product-info default-cover card" onclick="addToCart(${
                     product.id
                   })">
+
                       <a href="javascript:void(0);" class="img-bg">
-                          <img src="../php/${product.image}" 
+                          <img src="${imageSrc}" 
                               alt="${product.name}"
                               onerror="this.src='assets/img/products/default.png'"
                               style="width: 85%; height: 15vh; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover; margin-bottom:6px"/>
                           <span><i data-feather="check" class="feather-16"></i></span>
                       </a>
-                      <h6 class="cat-name mt-5"><a href="javascript:void(0);">${
+                      <small class="cat-name mt-5"><a href="javascript:void(0);">${
                         product.category_name
-                      }</a></h6>
-                      <h6 class="product-name"><a href="javascript:void(0);">${
+                      }</a></small>
+                      <h4 style="margin-top: 8px" class="product-name"><a href="javascript:void(0);">${
                         product.name
-                      }</a></h6>
+                      }</a></h4>
                       <div class="d-flex align-items-center justify-content-between price">
                           <span>
                           
@@ -271,6 +274,29 @@ function displayProducts(products, categoryId) {
                   </div>
               </div>
           `;
+      }else{
+        html += `
+              <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
+                  <div class="product-info default-cover card" onclick="addToCart(${
+                    product.id
+                  })">
+                      <small class="cat-name mt-5"><a href="javascript:void(0);">${
+                        product.category_name
+                      }</a></small>
+                      <h4 style="margin-top: 8px" class="product-name"><a href="javascript:void(0);">${
+                        product.name
+                      }</a></h4>
+                      <div class="d-flex align-items-center justify-content-between price">
+                          <span>
+                          
+                          </span>
+                          <p>GHS ${parseFloat(product.price).toFixed(2)}</p>
+                      </div>
+                  </div>
+              </div>
+          `;
+      }
+      
     });
   }
 
@@ -388,9 +414,9 @@ function displayCart(cartData) {
       }" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;">
                         </a>
                         <div class="info">
-                            <h6><a href="javascript:void(0);">${
+                            <h4><a href="javascript:void(0);">${
                               item.name
-                            }</a></h6>
+                            }</a></h4>
                             <p>GHS ${item.price}</p>
                         </div>
                     </div>

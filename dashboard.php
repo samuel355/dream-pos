@@ -154,7 +154,7 @@ requireAdmin()
                       ?>
                         <tr>
                           <td colspan="4" class="text-center">
-                            <a href="/porducts"> View All products</a>
+                            <a href="/products"> View All products</a>
                           </td>
                         </tr>
                       <?php

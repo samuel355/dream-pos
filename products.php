@@ -38,6 +38,7 @@ requireAdmin();
               <table class="table datanew" id="productsTable">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>Image</th>
                     <th>Product Name</th>
                     <th>Category name</th>
@@ -96,7 +97,7 @@ requireAdmin();
                           include_once('includes/db_connection.php');
 
                           // Fetch categories from database
-                          $query = "SELECT * FROM categories ORDER BY name";
+                          $query = "SELECT * FROM categories ORDER BY id";
                           $result = mysqli_query($conn, $query);
 
                           while ($row = mysqli_fetch_assoc($result)) {
