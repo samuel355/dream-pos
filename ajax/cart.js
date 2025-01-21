@@ -106,13 +106,12 @@ function displayCategories(categories) {
           <li class="${index === 0 ? "active" : ""}" id="category-${
       category.id
     }" 
-              data-category-id="${category.id}">
+              data-category-id="${category.id}" >
               <a href="javascript:void(0);"> 
               <img style="width:100%; height:60px; object-fit: contain; border-radius: 20px" src="${
                 category.image
               }" alt="${category.name}"> </a>
-              <h6 class="text-center">${category.name}</h6>
-              <p class="text-center">4 Items</p>
+              <h6 style="margin-bottom: 8px" class="text-center">${category.name}</h6>
           </li>
       `;
   });
@@ -323,7 +322,6 @@ function addToCart(productId, quantity = 1) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data.status)
       if (data.status === "success") {
         toastr.success("Product added to cart");
         updateCart();
@@ -990,11 +988,9 @@ function updateSize() {
     body: formData,
   })
     .then((response) => {
-      console.log(response)
       return response.json();
     })
     .then((data) => {
-      console.log(data)
       if (data.status  === 'success') {
         // Close modal
         $('#change-boba-size-modal').modal('hide')

@@ -16,12 +16,10 @@ function addToCart($conn, $product_id, $quantity = 1)
   $result = mysqli_query($conn, $query);
   $product = mysqli_fetch_assoc($result);
 
-
   if (!$product) {
     sendResponse('error', 'Product not found');
   }
 
-  //TODO: check if product of category of id 1, 3 and 5 are already in cart, if they are in cart prevent and tell user to remove the already exiting main flavor
   if (in_array($product['category_id'], [1, 3, 5])) {
     // Check if any product from these categories already exists in cart
     $check_category_query = "SELECT ci.*, p.category_id, p.name as product_name 
