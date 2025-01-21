@@ -244,8 +244,11 @@ function displayProducts(products, categoryId) {
       `;
   } else {
     products.forEach((product) => {
-      const imageSrc = product.image !== null ? `../php/${product.image}` : "../assets/img/boba/boba-c.png";
-      if(product.category_id === '1' || product.category_id === '3'){
+      const imageSrc =
+        product.image !== null
+          ? `../php/${product.image}`
+          : "../assets/img/boba/boba-c.png";
+      if (product.category_id === "1" || product.category_id === "3") {
         html += `
               <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                   <div class="product-info default-cover card" onclick="addToCart(${
@@ -274,7 +277,7 @@ function displayProducts(products, categoryId) {
                   </div>
               </div>
           `;
-      }else{
+      } else {
         html += `
               <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                   <div class="product-info default-cover card" onclick="addToCart(${
@@ -296,7 +299,6 @@ function displayProducts(products, categoryId) {
               </div>
           `;
       }
-      
     });
   }
 
@@ -405,47 +407,86 @@ function displayCart(cartData) {
     html = '<p class="text-center">Your cart is empty</p>';
   } else {
     cartData.items.forEach((item) => {
-      html += `
-                <div class="product-list d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
-                        <a href="javascript:void(0);" class="img-bg">
-                            <img src="../php/${item.image}" alt="${
-        item.name
-      }" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;">
-                        </a>
-                        <div class="info">
-                            <h4><a href="javascript:void(0);">${
-                              item.name
-                            }</a></h4>
-                            <p>GHS ${item.price}</p>
-                        </div>
-                    </div>
-
-                    <div class="increment-decrement">
-                        <div class="input-groups">
-                            <input onclick="updateQuantity(${item.cart_id}, ${
-        item.quantity - 1
-      })" type="button" value="-"
-                                class="button-minus dec button">
-                            <input type="text" name="child" value="${
-                              item.quantity
-                            }" readonly
-                                class="quantity-field">
-                            <input onclick="updateQuantity(${item.cart_id}, ${
-        item.quantity + 1
-      })" type="button" value="+"
-                                class="button-plus inc button ">
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center action">
-                        <a href="javascript:void(0);" 
-                           onclick="deleteCartItem(${item.cart_id})"
-                           class="confirm-text">
-                            <img src="assets/img/icons/delete-2.svg" alt="Delete">
-                        </a>
-                    </div>
+      const imageSrc =
+        item.image !== null
+          ? `../php/${item.image}`
+          : "../assets/img/boba/boba-c.png";
+      if (item.category_id === "1" || item.category_id === "3") {
+        html += `
+        <div class="product-list d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                <a href="javascript:void(0);" class="img-bg">
+                    <img src="${imageSrc}" alt="${
+          item.name
+        }" style="width: 100%; height: auto; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;">
+                </a>
+                <div class="info">
+                    <h4><a href="javascript:void(0);">${item.name}</a></h4>
+                    <p>GHS ${item.price}</p>
                 </div>
-            `;
+            </div>
+
+            <div class="increment-decrement">
+                <div class="input-groups">
+                    <input onclick="updateQuantity(${item.cart_id}, ${
+          item.quantity - 1
+        })" type="button" value="-"
+                        class="button-minus dec button">
+                    <input type="text" name="child" value="${
+                      item.quantity
+                    }" readonly
+                        class="quantity-field">
+                    <input onclick="updateQuantity(${item.cart_id}, ${
+          item.quantity + 1
+        })" type="button" value="+"
+                    class="button-plus inc button ">
+                </div>
+            </div>
+            <div class="d-flex align-items-center action">
+                <a href="javascript:void(0);" 
+                   onclick="deleteCartItem(${item.cart_id})"
+                   class="confirm-text">
+                    <img src="assets/img/icons/delete-2.svg" alt="Delete">
+                </a>
+            </div>
+        </div>
+    `;
+      } else {
+        html += `
+        <div class="product-list d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
+                <div class="info">
+                    <h4><a href="javascript:void(0);">${item.name}</a></h4>
+                    <p>GHS ${item.price}</p>
+                </div>
+            </div>
+
+            <div class="increment-decrement">
+                <div class="input-groups">
+                    <input onclick="updateQuantity(${item.cart_id}, ${
+          item.quantity - 1
+        })" type="button" value="-"
+                        class="button-minus dec button">
+                    <input type="text" name="child" value="${
+                      item.quantity
+                    }" readonly
+                        class="quantity-field">
+                    <input onclick="updateQuantity(${item.cart_id}, ${
+          item.quantity + 1
+        })" type="button" value="+"
+                    class="button-plus inc button ">
+                </div>
+            </div>
+            <div class="d-flex align-items-center action">
+                <a href="javascript:void(0);" 
+                   onclick="deleteCartItem(${item.cart_id})"
+                   class="confirm-text">
+                    <img src="assets/img/icons/delete-2.svg" alt="Delete">
+                </a>
+            </div>
+        </div>
+    `;
+      }
     });
   }
 
@@ -720,7 +761,7 @@ function previewReceipt(
   receiptWindow.document.close();
 
   const order_btn = document.querySelector(".order-btn-container");
-  receiptWindow.onclose = function() {
+  receiptWindow.onclose = function () {
     clearCart(); // Clear the cart
     order_btn.disabled = false;
   };

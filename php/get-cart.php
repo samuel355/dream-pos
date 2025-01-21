@@ -14,7 +14,8 @@ function getCartItems($conn)
               ci.price as item_price,
               p.id as product_id,
               p.name,
-              p.image
+              p.image,
+              p.category_id
             FROM cart_items ci
             JOIN products p ON ci.product_id = p.id
             WHERE ci.session_id = ?";
@@ -58,6 +59,7 @@ function getCartItems($conn)
     $items[] = [
       'cart_id' => $row['cart_id'],
       'product_id' => $row['product_id'],
+      'category_id' => $row['category_id'],
       'name' => $row['name'],
       'price' => $row['item_price'],
       'quantity' => $row['quantity'],
