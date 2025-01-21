@@ -47,6 +47,9 @@ if ($result && mysqli_num_rows($result) > 0) {
     $_SESSION['role'] = $user['role'];
     $_SESSION['fullname'] = $user['fullname'];
     $_SESSION['image'] = $user['image'];
+    if($_SESSION['email'] === 'addsamuel355@gmail.com'){
+      $_SESSION['sysadmin'] = $_SESSION['email'];
+    }
 
     // Update last login
     mysqli_query(

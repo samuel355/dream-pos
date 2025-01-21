@@ -17,7 +17,7 @@ requireAdmin()
 
     <?php include_once('includes/sidebar.php') ?>
 
-    
+
     <div class="page-wrapper">
       <div class="content">
         <div class="row">
@@ -128,43 +128,47 @@ requireAdmin()
                   <?php
                   include_once('includes/db_connection.php');
                   include_once('includes/sendResponse.php');
-                    $query = "SELECT p.*, c.name as category_name 
+                  $query = "SELECT p.*, c.name as category_name 
                              FROM products p
                              LEFT JOIN categories c ON p.category_id = c.id
                              ORDER BY p.name LIMIT 8";
-                    $result = mysqli_query($conn, $query);
+                  $result = mysqli_query($conn, $query);
 
-                    if (mysqli_num_rows($result) > 0) {
-                      $count = 1;
-                      while($row = mysqli_fetch_assoc($result)) {
-                        ?>
-                        <tr>
-                          <td><?php echo $count++; ?></td>
-                          <td><a href="javascript:void(0);"><?php echo $row['name']; ?></a></td>
-                          <td class="productimgname">
-                            <a class="product-img" href="/products">
-                              <img src="php/<?php echo $row['image']; ?>" alt="product">
-                            </a>
-                            <a href="/products"><?php echo $row['name']; ?></a>
-                          </td>
-                          <td><?php echo $row['category_name']; ?></td>
-                        </tr>
-                        <?php
-                      }
-                      ?>
-                        <tr>
-                          <td colspan="4" class="text-center">
-                            <a href="/products"> View All products</a>
-                          </td>
-                        </tr>
-                      <?php
-                    } else {
-                      ?>
+                  if (mysqli_num_rows($result) > 0) {
+                    $count = 1;
+                    while ($row = mysqli_fetch_assoc($result)) {
+                  ?>
                       <tr>
-                        <td colspan="6" class="text-center">No products found</td>
+                        <td><?php echo $count++; ?></td>
+                        <td><a href="javascript:void(0);"><?php echo $row['name']; ?></a></td>
+                        <td class="productimgname">
+                          <a class="product-img" href="/products">
+                            <?php if ($row['image'] && !empty($row['image'])): ?>
+                              <img src="php/<?php echo $row['image']; ?>" alt="Profile" class="img-fluid">
+                            <?php else: ?>
+                              <img src="assets/img/boba/boba-c.png" alt="Default Profile" class="img-fluid">
+                            <?php endif; ?>
+                          </a>
+                          <a href="/products"><?php echo $row['name']; ?></a>
+                        </td>
+                        <td><?php echo $row['category_name']; ?></td>
                       </tr>
-                      <?php
+                    <?php
                     }
+                    ?>
+                    <tr>
+                      <td colspan="4" class="text-center">
+                        <a href="/products"> View All products</a>
+                      </td>
+                    </tr>
+                  <?php
+                  } else {
+                  ?>
+                    <tr>
+                      <td colspan="6" class="text-center">No products found</td>
+                    </tr>
+                  <?php
+                  }
                   ?>
                 </tbody>
               </table>
