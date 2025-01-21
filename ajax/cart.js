@@ -323,9 +323,13 @@ function addToCart(productId, quantity = 1) {
   })
     .then((response) => response.json())
     .then((data) => {
+      console.log(data.status)
       if (data.status === "success") {
         toastr.success("Product added to cart");
         updateCart();
+      }
+      if(data.status === 'info'){
+        toastr.info(data.message)
       }
     })
     .catch((error) => console.error("Error:", error));
@@ -603,8 +607,9 @@ function updateQuantity(cartId, newQuantity) {
     .then((data) => {
       if (data.status === "success") {
         updateCart(); // Refresh cart display
-      } else {
-        alert(data.message);
+      }
+      if(data.status === 'info'){
+        toastr.info(data.message)
       }
     })
     .catch((error) => console.error("Error:", error));
