@@ -145,15 +145,69 @@ function createOrder($conn, $data, $total_amount) {
 }
 
 function addCustomer($conn, $data) {
-    $customer_query = "INSERT INTO customers(name, contact) VALUES(?, ?)";
-    $stmt = mysqli_prepare($conn, $customer_query);
-    mysqli_stmt_bind_param($stmt, "ss", $data['customer_name'], $data['customer_phone']);
-    
-    if (!mysqli_stmt_execute($stmt)) {
-        return ['status' => 'error', 'message' => 'Error adding customer'];
+    try {
+        // Get cart items to combine
+        $session_id = session_id();
+        $cart_query = "SELECT ci.*, p.name as product_name 
+                      FROM cart_items ci 
+                      JOIN products p ON ci.product_id = p.id 
+                      WHERE ci.session_id = ?";
+        
+        $stmt = mysqli_prepare($conn, $cart_query);
+        mysqli_stmt_bind_param($stmt, "s", $session_id);
+        mysqli_stmt_execute($stmt);
+        $cart_items = mysqli_stmt_get_result($stmt);
+
+        // Combine items and calculate total
+        $items_array = [];
+        $total = 0;
+        
+        while ($item = mysqli_fetch_assoc($cart_items)) {
+            // Add item to combined string
+            $items_array[] = $item['quantity'] . "x " . $item['product_name'];
+            
+            // Calculate total
+            $total += ($item['quantity'] * $item['price']);
+        }
+
+        // Convert items array to string
+        $combined_items = implode(", ", $items_array);
+
+        // Insert into customers table
+        $customer_query = "INSERT INTO customers (
+            name, 
+            contact, 
+            items, 
+            total,
+            created_at
+        ) VALUES (?, ?, ?, ?, NOW())";
+
+        $stmt = mysqli_prepare($conn, $customer_query);
+        mysqli_stmt_bind_param(
+            $stmt, 
+            "sssd", 
+            $data['customer_name'],
+            $data['customer_phone'],
+            $combined_items,
+            $total
+        );
+        
+        if (!mysqli_stmt_execute($stmt)) {
+            throw new Exception('Error adding customer: ' . mysqli_error($conn));
+        }
+        
+        return [
+            'status' => 'success',
+            'message' => 'Customer added successfully',
+            'customer_id' => mysqli_insert_id($conn)
+        ];
+
+    } catch (Exception $e) {
+        return [
+            'status' => 'error',
+            'message' => $e->getMessage()
+        ];
     }
-    
-    return ['status' => 'success'];
 }
 
 function addOrderItems($conn, $order_id, $items) {
