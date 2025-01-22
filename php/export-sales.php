@@ -6,9 +6,12 @@ include_once('../includes/auth.php');
 requireAdmin();
 
 try {
-    $dateRange = $_GET['dateRange'] ?? 'today';
-    
-    // Build date condition with specific table alias 'o'
+    // Get POST data
+    $dateRange = $_POST['dateRange'] ?? 'today';
+    $startDate = $_POST['startDate'] ?? '';
+    $endDate = $_POST['endDate'] ?? '';
+
+    // Build date condition
     switch($dateRange) {
         case 'today':
             $dateCondition = "DATE(o.created_at) = CURRENT_DATE()";
@@ -23,15 +26,19 @@ try {
             $dateCondition = "YEAR(o.created_at) = YEAR(CURRENT_DATE()) AND MONTH(o.created_at) = MONTH(CURRENT_DATE())";
             break;
         case 'custom':
-            $startDate = $_GET['startDate'];
-            $endDate = $_GET['endDate'];
-            $dateCondition = "DATE(o.created_at) BETWEEN '$startDate' AND '$endDate'";
+            if ($startDate && $endDate) {
+                $startDate = mysqli_real_escape_string($conn, $startDate);
+                $endDate = mysqli_real_escape_string($conn, $endDate);
+                $dateCondition = "DATE(o.created_at) BETWEEN '$startDate' AND '$endDate'";
+            } else {
+                $dateCondition = "1=1";
+            }
             break;
         default:
             $dateCondition = "1=1";
     }
 
-    // Get sales data with specific table aliases
+    // Get sales data
     $query = "SELECT 
                 o.id,
                 o.created_at,
@@ -46,18 +53,20 @@ try {
               LEFT JOIN order_items oi ON o.id = oi.order_id
               LEFT JOIN products p ON oi.product_id = p.id
               WHERE $dateCondition
-              GROUP BY o.id, o.created_at, o.customer_name, o.customer_phone, o.total_amount
+              GROUP BY o.id
               ORDER BY o.created_at DESC";
-    
-    $result = mysqli_query($conn, $query);
 
+    $result = mysqli_query($conn, $query);
     if (!$result) {
         throw new Exception("Query error: " . mysqli_error($conn));
     }
 
+    // Prepare filename
+    $filename = 'sales_report_' . date('Y-m-d_H-i-s') . '.csv';
+
     // Set headers for CSV download
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="sales_report_' . date('Y-m-d') . '.csv"');
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
 
     // Create output stream
     $output = fopen('php://output', 'w');
@@ -65,10 +74,18 @@ try {
     // Add UTF-8 BOM for proper Excel encoding
     fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
 
+    // Add report title and date range
+    fputcsv($output, ['Sales Report']);
+    fputcsv($output, ['Date Range:', $dateRange]);
+    if ($dateRange === 'custom') {
+        fputcsv($output, ['From:', $startDate, 'To:', $endDate]);
+    }
+    fputcsv($output, []); // Empty line
+
     // Add headers
     fputcsv($output, [
         'Order ID',
-        'Date',
+        'Date & Time',
         'Customer Name',
         'Contact',
         'Items',
@@ -76,16 +93,22 @@ try {
     ]);
 
     // Add data rows
+    $totalAmount = 0;
     while ($row = mysqli_fetch_assoc($result)) {
         fputcsv($output, [
-            $row['id'],
+            '#' . $row['id'],
             date('Y-m-d H:i', strtotime($row['created_at'])),
             $row['customer_name'],
             $row['customer_phone'],
             $row['items'],
             number_format($row['total_amount'], 2)
         ]);
+        $totalAmount += $row['total_amount'];
     }
+
+    // Add summary
+    fputcsv($output, []); // Empty line
+    fputcsv($output, ['Total:', '', '', '', '', number_format($totalAmount, 2)]);
 
     // Close the output stream
     fclose($output);
