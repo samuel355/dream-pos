@@ -62,6 +62,7 @@
 	<script src="ajax/dashboard.js"></script>
 	<script src="ajax/sales.js"></script>
 	<script src="ajax/users.js"></script>
+	<script src="ajax/customers.js" ></script>
 </body>
 
 </html>
