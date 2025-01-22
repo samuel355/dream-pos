@@ -49,7 +49,6 @@ function loadSales() {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Response:", data); // For debugging
       if (data.status === "success") {
         updateSalesDisplay(data.data);
       } else {
@@ -134,35 +133,12 @@ function updateSalesDisplay(data) {
   }
 }
 
-function formatCurrency(amount) {
-  return "GHS " + parseFloat(amount || 0).toFixed(2);
-}
-
-function formatDate(dateString) {
-  if (!dateString) return "";
-  return new Date(dateString).toLocaleString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
-function escapeHtml(str) {
-  if (!str) return "";
-  const div = document.createElement("div");
-  div.textContent = str;
-  return div.innerHTML;
-}
-
 function viewSaleDetails(saleId) {
   fetch(`php/get-order-details.php?id=${saleId}`)
     .then((response) => response.json())
     .then((data) => {
       if (data.status === "success") {
-        console.log(data.data)
-        showOrderDetailsModal(data.data); 
+        showOrderDetailsModal(data); 
       } else {
         toastr.error(data.message || "Error loading order details");
       }
@@ -173,77 +149,88 @@ function viewSaleDetails(saleId) {
     });
 }
 
-function printReceipt(saleId) {
-  window.open(`print-receipt.php?id=${saleId}`, "_blank");
-}
+function showOrderDetailsModal(order) { 
+  if (!order || !order.id) {
+      toastr.error('Invalid order data');
+      return;
+  }
 
-function exportSalesReport() {
-  const dateRange = document.getElementById("dateRange").value;
-  const startDate = document.getElementById("startDate")?.value || "";
-  const endDate = document.getElementById("endDate")?.value || "";
+  const modalHtml = `
+      <div class="modal fade" id="orderModal">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Order #${order.id}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="order-info mb-3">
+                          <p><strong>Customer:</strong> ${order.customer_name || 'N/A'}</p>
+                          <p><strong>Phone:</strong> ${order.customer_phone || 'N/A'}</p>
+                          <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleString()}</p>
+                      </div>
+                      <div class="order-items">
+                          <h6>Order Items</h6>
+                          <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th>Item</th>
+                                      <th>Quantity</th>
+                                      <th>Price</th>
+                                      <th>Total</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  ${order.items ? order.items.map(item => `
+                                      <tr>
+                                          <td>${item.product_name}</td>
+                                          <td>${item.quantity}</td>
+                                          <td>GHS ${item.price}</td>
+                                          <td>GHS ${(item.quantity * item.price).toFixed(2)}</td>
+                                      </tr>
+                                  `).join('') : '<tr><td colspan="4">No items found</td></tr>'}
+                              </tbody>
+                              <tfoot>
+                                  <tr>
+                                      <th colspan="3">Total</th>
+                                      <th>GHS ${order.total_amount || '0.00'}</th>
+                                  </tr>
+                              </tfoot>
+                          </table>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" onclick="printReceipt(${order.id})">
+                          Print Receipt
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  `;
 
-  // Show loading toast
-  toastr.info("Preparing export...");
+  // Remove existing modal if any
+  const existingModal = document.getElementById('orderModal');
+  if (existingModal) {
+      existingModal.remove();
+  }
 
-  // Build the URL with parameters
-  const params = new URLSearchParams({
-    dateRange: dateRange,
-    startDate: startDate,
-    endDate: endDate,
-  });
+  // Add new modal
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
 
-  // Create a hidden form and submit it (better for handling POST requests)
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = "php/export-sales.php";
-
-  // Add the parameters as hidden inputs
-  Object.entries({
-    dateRange,
-    startDate,
-    endDate,
-  }).forEach(([key, value]) => {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = value;
-    form.appendChild(input);
-  });
-
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
-}
-
-function viewSaleDetails(saleId) {
-  // Show loading state
-  toastr.info("Loading order details...");
-
-  fetch(`php/get-order-details.php?id=${saleId}`)
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data)
-      if (data.status === "success") {
-        showOrderDetailsModal(data.data);
-      } else {
-        toastr.error(data.message || "Error loading order details");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      toastr.error("Error loading order details");
-    });
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+  modal.show();
 }
 
 function printReceipt(saleId) {
   fetch(`php/get-order-details.php?id=${saleId}`)
       .then(response => response.json())
       .then(data => {
-          if (data.status === 'success' && data.data) {
+          if (data.status === 'success' && data) {
               const printWindow = window.open('', '_blank', 'width=600,height=800');
-              const order = data.data;
+              const order = data;
 
               const receiptHtml = `
                   <!DOCTYPE html>
@@ -326,80 +313,68 @@ function printReceipt(saleId) {
       });
 }
 
-function showOrderDetailsModal(order) { 
-  if (!order || !order.id) {
-      toastr.error('Invalid order data');
-      return;
-  }
-
-  const modalHtml = `
-      <div class="modal fade" id="orderModal">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title">Order #${order.id}</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="order-info mb-3">
-                          <p><strong>Customer:</strong> ${order.customer_name || 'N/A'}</p>
-                          <p><strong>Phone:</strong> ${order.customer_phone || 'N/A'}</p>
-                          <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleString()}</p>
-                      </div>
-                      <div class="order-items">
-                          <h6>Order Items</h6>
-                          <table class="table">
-                              <thead>
-                                  <tr>
-                                      <th>Item</th>
-                                      <th>Quantity</th>
-                                      <th>Price</th>
-                                      <th>Total</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  ${order.items ? order.items.map(item => `
-                                      <tr>
-                                          <td>${item.product_name}</td>
-                                          <td>${item.quantity}</td>
-                                          <td>GHS ${item.price}</td>
-                                          <td>GHS ${(item.quantity * item.price).toFixed(2)}</td>
-                                      </tr>
-                                  `).join('') : '<tr><td colspan="4">No items found</td></tr>'}
-                              </tbody>
-                              <tfoot>
-                                  <tr>
-                                      <th colspan="3">Total</th>
-                                      <th>GHS ${order.total_amount || '0.00'}</th>
-                                  </tr>
-                              </tfoot>
-                          </table>
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" onclick="printReceipt(${order.id})">
-                          Print Receipt
-                      </button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  `;
-
-  // Remove existing modal if any
-  const existingModal = document.getElementById('orderModal');
-  if (existingModal) {
-      existingModal.remove();
-  }
-
-  // Add new modal
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-
-  // Show modal
-  const modal = new bootstrap.Modal(document.getElementById('orderModal'));
-  modal.show();
+function formatCurrency(amount) {
+  return "GHS " + parseFloat(amount || 0).toFixed(2);
 }
+
+function formatDate(dateString) {
+  if (!dateString) return "";
+  return new Date(dateString).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+
+function exportSalesReport() {
+  const dateRange = document.getElementById("dateRange").value;
+  const startDate = document.getElementById("startDate")?.value || "";
+  const endDate = document.getElementById("endDate")?.value || "";
+
+  // Show loading toast
+  toastr.info("Preparing export...");
+
+  // Build the URL with parameters
+  const params = new URLSearchParams({
+    dateRange: dateRange,
+    startDate: startDate,
+    endDate: endDate,
+  });
+
+  // Create a hidden form and submit it (better for handling POST requests)
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = "php/export-sales.php";
+
+  // Add the parameters as hidden inputs
+  Object.entries({
+    dateRange,
+    startDate,
+    endDate,
+  }).forEach(([key, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+
+
 
 function generateReceiptHTML(order, receiptWindow) {
   const html = `
