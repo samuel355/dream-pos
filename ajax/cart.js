@@ -245,9 +245,9 @@ function displayProducts(products, categoryId) {
     products.forEach((product) => {
       const imageSrc =
         product.image !== null
-          ? `../php/${product.image}`
+          ? `php/${product.image}`
           : "../assets/img/boba/boba-c.png";
-      if (product.category_id === "1" || product.category_id === "3") {
+      if (product.category_id === "1" || product.category_id === "3" || product.category_id === '5') {
         html += `
               <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                   <div class="product-info default-cover card" onclick="addToCart(${
@@ -413,7 +413,7 @@ function displayCart(cartData) {
         item.image !== null
           ? `../php/${item.image}`
           : "../assets/img/boba/boba-c.png";
-      if (item.category_id === "1" || item.category_id === "3") {
+      if (item.category_id === "1" || item.category_id === "3" || item.category_id === "5") {
         html += `
                 <div class="product-list d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">

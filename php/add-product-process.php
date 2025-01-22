@@ -27,7 +27,7 @@ try {
   $created_by = null;
 
   // Check if product name already exists
-  $check_prdt = mysqli_query($conn, "SELECT id FROM products WHERE name = '$product_name'");
+  $check_prdt = mysqli_query($conn, "SELECT id, category_id FROM products WHERE name = '$product_name' AND category_id = '$cat_id' ");
   if (mysqli_num_rows($check_prdt) > 0) {
     sendResponse('error', 'Sorry product name already exist. Add different product');
     exit;
