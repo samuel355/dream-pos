@@ -51,7 +51,7 @@
 	<script src="ajax/product.js"></script>
 	<script src="ajax/helpers.js" ></script>
   <script src="ajax/add-product.js"></script>
-  <script src="ajax/add-user.js"></script>
+  <!-- <script src="ajax/add-user.js"></script> -->
   <script src="ajax/cart.js"></script>
   <script src="ajax/login.js"></script>
   <script src="ajax/previewImage.js"></script>
@@ -61,6 +61,7 @@
 	<script src="ajax/product-pricing.js"></script>
 	<script src="ajax/dashboard.js"></script>
 	<script src="ajax/sales.js"></script>
+	<script src="ajax/users.js"></script>
 </body>
 
 </html>
