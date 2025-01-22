@@ -42,8 +42,8 @@ function initializeCustomersDataTable() {
         render: function (data) {
           return `
                       <div class="btn-group">
-                          <button class="btn btn-sm btn-warning" onclick="editCustomer(${data.id})">
-                              <i data-feather="edit-3"></i>
+                          <button class="btn btn-sm btn-danger" onclick="deleteCustomer(${data.id})">
+                              <i data-feather="trash-2"></i>
                           </button>
                       </div>
                   `;
@@ -71,6 +71,7 @@ function loadCustomers() {
       toastr.error("Error loading customers");
     });
 }
+
 
 function deleteCustomer(customerId) {
   if (confirm("Are you sure you want to delete this customer?")) {

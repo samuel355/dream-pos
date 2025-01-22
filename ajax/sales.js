@@ -140,6 +140,7 @@ function viewSaleDetails(saleId) {
     .then((data) => {
       if (data.status === "success") {
         showOrderDetailsModal(data); 
+        console.log(data)
       } else {
         toastr.error(data.message || "Error loading order details");
       }
@@ -186,8 +187,8 @@ function showOrderDetailsModal(order) {
                                       <tr>
                                           <td>${item.product_name}</td>
                                           <td>${item.quantity}</td>
-                                          <td>GHS ${item.price}</td>
-                                          <td>GHS ${(item.quantity * item.price).toFixed(2)}</td>
+                                          <td>GHS ${item.total_price}</td>
+                                          <td>GHS ${(item.quantity * item.total_price).toFixed(2)}</td>
                                       </tr>
                                   `).join('') : '<tr><td colspan="4">No items found</td></tr>'}
                               </tbody>
@@ -278,7 +279,7 @@ function printReceipt(saleId) {
                           ${order.items ? order.items.map(item => `
                               <div>
                                   ${item.product_name}<br>
-                                  ${item.quantity} x GHS ${item.price} = GHS ${(item.quantity * item.price).toFixed(2)}
+                                  ${item.quantity} x GHS ${item.total_price} = GHS ${(item.quantity * item.total_price).toFixed(2)}
                               </div>
                               <br>
                           `).join('') : 'No items found'}

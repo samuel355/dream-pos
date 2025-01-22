@@ -26,7 +26,7 @@ requireAdmin();
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table datanew" id="customersTable">
+                            <table class="table" id="customersTable">
                                 <thead>
                                     <tr>
                                         <th>#</th>

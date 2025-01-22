@@ -31,7 +31,7 @@ requireAdmin();
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table datanew" id="usersTable">
+              <table class="table" id="usersTable">
                 <thead>
                   <tr>
                     <th>#</th>
