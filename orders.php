@@ -4,6 +4,40 @@ include_once('includes/auth.php');
 requireAdmin();
 ?>
 
+<style>
+  .dataTables_wrapper .dt-buttons {
+    margin-bottom: 1rem;
+  }
+
+  .dt-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+  }
+
+  .dataTables_processing {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+
+  .table.dataTable {
+    margin-top: 1rem !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: #7367f0 !important;
+    color: white !important;
+    border: 1px solid #7367f0 !important;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #7367f0 !important;
+    color: white !important;
+    border: 1px solid #7367f0 !important;
+  }
+</style>
+
 <body>
   <div id="global-loader">
     <div class="whirly-loader"> </div>
@@ -42,83 +76,26 @@ requireAdmin();
               <div class="wordset">
                 <ul>
                   <li>
-                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="pdf"><img
-                        src="assets/img/icons/pdf.svg" alt="img"></a>
+                    <a href="php/export-orders.php?type=pdf" target="_blank" data-bs-toggle="tooltip" data-bs-placement="top" title="pdf">
+                      <img src="assets/img/icons/pdf.svg" alt="pdf">
+                    </a>
                   </li>
                   <li>
-                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="excel"><img
-                        src="assets/img/icons/excel.svg" alt="img"></a>
+                    <a href="php/export-orders.php" data-bs-toggle="tooltip" data-bs-placement="top" title="excel">
+                      <img src="assets/img/icons/excel.svg" alt="excel">
+                    </a>
                   </li>
                   <li>
-                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="print"><img
-                        src="assets/img/icons/printer.svg" alt="img"></a>
+                    <a href="javascript:void(0);" onclick="window.print()" data-bs-toggle="tooltip" data-bs-placement="top" title="print">
+                      <img src="assets/img/icons/printer.svg" alt="print">
+                    </a>
                   </li>
                 </ul>
               </div>
             </div>
 
-            <!-- Search -->
-            <div class="card mb-0" id="filter_inputs">
-              <div class="card-body pb-0">
-                <div class="row">
-                  <div class="col-lg-12 col-sm-12">
-                    <div class="row">
-                      <div class="col-lg col-sm-6 col-12">
-                        <div class="form-group">
-                          <select class="select">
-                            <option>Choose Product</option>
-                            <option>Macbook pro</option>
-                            <option>Orange</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg col-sm-6 col-12">
-                        <div class="form-group">
-                          <select class="select">
-                            <option>Choose Category</option>
-                            <option>Computers</option>
-                            <option>Fruits</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg col-sm-6 col-12">
-                        <div class="form-group">
-                          <select class="select">
-                            <option>Choose Sub Category</option>
-                            <option>Computer</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg col-sm-6 col-12">
-                        <div class="form-group">
-                          <select class="select">
-                            <option>Brand</option>
-                            <option>N/D</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg col-sm-6 col-12 ">
-                        <div class="form-group">
-                          <select class="select">
-                            <option>Price</option>
-                            <option>150.00</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-1 col-sm-6 col-12">
-                        <div class="form-group">
-                          <a class="btn btn-filters ms-auto"><img
-                              src="assets/img/icons/search-whites.svg" alt="img"></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div class="table-responsive">
-              <table class="table datanew">
+              <table class="table" id="ordersTable">
                 <thead>
                   <tr>
                     <th>
@@ -129,15 +106,14 @@ requireAdmin();
                     </th>
                     <th>Invoice No</th>
                     <th>Customer Name</th>
-                    <th>Customer Contact </th>
+                    <th>Customer Contact</th>
                     <th>Amount</th>
-                    <th>Details</th>
                     <th>Date</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody id="ordersTableBody">
-                  
+                  <!-- Data will be loaded here -->
                 </tbody>
               </table>
             </div>
