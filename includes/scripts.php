@@ -60,6 +60,7 @@
 	<script src="ajax/auth.js"></script>
 	<script src="ajax/product-pricing.js"></script>
 	<script src="ajax/dashboard.js"></script>
+	<script src="ajax/sales.js"></script>
 </body>
 
 </html>

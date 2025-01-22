@@ -19,12 +19,8 @@ requireAdmin();
       <div class="content">
         <div class="page-header">
           <div class="page-title">
-            <h4>Product List</h4>
-            <h6>Manage your products</h6>
-          </div>
-          <div class="page-btn">
-            <a href="addproduct.html" class="btn btn-added"><img src="assets/img/icons/plus.svg" alt="img"
-                class="me-1">Add New Product</a>
+            <h4>Orders List</h4>
+            <h6>Manage Your Orders</h6>
           </div>
         </div>
 
@@ -122,7 +118,7 @@ requireAdmin();
             </div>
 
             <div class="table-responsive">
-              <table class="table  datanew">
+              <table class="table datanew">
                 <thead>
                   <tr>
                     <th>
