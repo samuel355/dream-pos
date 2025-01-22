@@ -2,13 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeDateRangeFilter();
   loadSales();
 
-  if (typeof feather !== "undefined") {
-    feather.replace();
-  }
+  const exportButton = document.getElementById("data-export-report");
 
-  const exportButton = document.querySelector("[data-export-report]");
   if (exportButton) {
     exportButton.addEventListener("click", exportSalesReport);
+  }
+
+  if (typeof feather !== "undefined") {
+    feather.replace();
   }
 });
 
@@ -337,6 +338,7 @@ function escapeHtml(str) {
 
 
 function exportSalesReport() {
+  console.log('clicked in')
   const dateRange = document.getElementById("dateRange").value;
   const startDate = document.getElementById("startDate")?.value || "";
   const endDate = document.getElementById("endDate")?.value || "";
@@ -373,7 +375,6 @@ function exportSalesReport() {
   form.submit();
   document.body.removeChild(form);
 }
-
 
 
 function generateReceiptHTML(order, receiptWindow) {

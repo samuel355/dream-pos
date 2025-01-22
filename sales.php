@@ -19,12 +19,14 @@ requireAdmin();
         <!-- Page Header -->
         <div class="page-header">
           <div class="row">
-            <div class="col">
+            <div class="col-12">
               <h3 class="page-title">Sales Report</h3>
             </div>
-            <div class="col-auto">
-              <button type="button" class="btn btn-primary" data-export-report">
-                <i data-feather="download"></i> Export
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button id="data-export-report" type="button" class="btn btn-primary">
+                <i data-feather="download"></i> Export as Excel
               </button>
             </div>
           </div>
