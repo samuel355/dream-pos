@@ -1,4 +1,7 @@
-<?php include_once('includes/head.php') ?>
+<?php include_once('includes/head.php');
+include_once('includes/auth.php');
+requireLogin(); ?>
+
 <style>
     .col-lg-8 {
         transition: all 0.3s ease;

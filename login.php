@@ -49,10 +49,6 @@
             <div class="form-login">
               <button type="submit" class="btn btn-login" id="btn-login">Sign In</button>
             </div>
-
-            <div class="form-login">
-              <a href="/pos" type="button" class="btn btn-login">View POS</a>
-            </div>
           </form>
         </div>
         <div class="login-img">

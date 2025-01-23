@@ -69,7 +69,7 @@ if ($result && mysqli_num_rows($result) > 0) {
     // Return success response
     echo json_encode([
       'status' => 'success',
-      'redirect' => $user['role'] === 'admin' ? '/' : '/'
+      'redirect' => $user['role'] === 'admin' ? '/dashboard' : '/pos'
     ]);
   } else {
 
