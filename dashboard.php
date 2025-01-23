@@ -114,11 +114,11 @@ requireLogin()
         </div>
 
         <!-- Today's Customers Table -->
-        <div class="card mb-5">
+        <div class="card">
           <div class="card-body">
             <h4 class="card-title">Today's Customers</h4>
             <div class="table-responsive dataview">
-              <table class="table">
+              <table class="table" id="dashboard-customers">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -129,7 +129,7 @@ requireLogin()
                     <th>Time</th>
                   </tr>
                 </thead>
-                <tbody id="todaysCustomersTable">
+                <tbody>
                   <!-- Table content will be loaded dynamically -->
                 </tbody>
               </table>

@@ -33,32 +33,60 @@ function updateDashboard(data) {
   document.getElementById("total_cashiers").textContent = data.total_cashiers;
 
   // Update customers table
-  updateCustomersTable(data.todays_orders_list);
+  showCustomersInTable(data.todays_orders_list);
 }
 
-function updateCustomersTable(orders) {
-  const tbody = document.getElementById("todaysCustomersTable");
-  if (!orders || orders.length === 0) {
-    tbody.innerHTML =
-      '<tr><td colspan="6" class="text-center">No orders today</td></tr>';
-    return;
+
+function showCustomersInTable(orders) {
+  const table = $("#dashboard-customers");
+
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable(table)) {
+    table.DataTable().destroy();
   }
 
-  let html = "";
-  orders.forEach((order, index) => {
-    html += `
-          <tr>
-              <td>${index + 1}</td>
-              <td>${escapeHtml(order.customer_name)}</td>
-              <td>${escapeHtml(order.customer_phone)}</td>
-              <td>${escapeHtml(order.items || "No items")}</td>
-              <td>GHS ${formatNumber(order.total_amount)}</td>
-              <td>${formatTime(order.created_at)}</td>
-          </tr>
-      `;
+  const tbody = table.find("tbody");
+  tbody.empty();
+
+  orders.forEach((order, i) => {
+
+    tbody.append(
+      `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${escapeHtml(order.customer_name)}</td>
+          <td>${escapeHtml(order.customer_phone)}</td>
+          <td>${escapeHtml(order.items || "No items")}</td>
+          <td>GHS ${formatNumber(order.total_amount)}</td>
+          <td>${formatTime(order.created_at)}</td>
+        </tr>
+      `
+    );
   });
 
-  tbody.innerHTML = html;
+  //Initialize datatable
+  table.DataTable({
+    responsive: true,
+    ordering: true,
+    searching: true,
+    paging: true,
+    pageLength: 10,
+    dom: "Bfrtip",
+    buttons: ["copy", "csv", "excel", "pdf", "print"],
+    language: {
+      emptyTable: "No customers available",
+    },
+    columnDefs: [
+      {
+        targets: 0, // Image column
+        orderable: false,
+      },
+      {
+        targets: -1, // Action column
+        orderable: false,
+      },
+    ],
+  });
 }
 
 function formatNumber(number) {

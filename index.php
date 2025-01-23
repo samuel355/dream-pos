@@ -1,13 +1,15 @@
 <?php
   include_once('includes/head.php');
   include_once('includes/auth.php');
+  requireLogin();
 
-  if(!isAdmin()){
+  if(!isAdmin() || !isSysAdmin()){
     header('Location: /pos');
     exit();
   }
-  if(isAdmin()){
+  if(isAdmin() || isSysAdmin()){
     header('Location: /dashboard');
+    exit;
   }
 ?>
 

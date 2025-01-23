@@ -3,7 +3,12 @@ session_start();
 include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
 header('Content-Type: application/json');
+include_once('../includes/auth.php');
 
+
+if(!isAdmin() || !isSysAdmin()){
+  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
+}
 try {
   // Get POST data
   $data = json_decode(file_get_contents('php://input'), true);

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
 include_once('../includes/auth.php');

@@ -2,6 +2,12 @@
 session_start();
 include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
+include_once('../includes/auth.php');
+
+
+if(!isAdmin() || !isSysAdmin()){
+  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
+}
 
 try {
   $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;

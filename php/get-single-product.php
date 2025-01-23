@@ -4,11 +4,6 @@ session_start();
 include_once('../includes/db_connection.php');
 header('Content-Type: application/json');
 include_once('../includes/sendResponse.php');
-include_once('../includes/auth.php');
-
-if(!isAdmin() || !isSysAdmin()){
-  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
-}
 
 function fetchProduct($conn, $product_id){
 

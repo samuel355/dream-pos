@@ -1,13 +1,13 @@
 <?php
-  include_once('includes/head.php');
-  require_once 'includes/db_connection.php';
-  require_once 'includes/auth.php';
+include_once('includes/head.php');
+require_once 'includes/db_connection.php';
+require_once 'includes/auth.php';
 
-  // Redirect if already logged in
-  if (isLoggedIn()) {
-    header('Location: /');
-    exit();
-  }
+// Redirect if already logged in
+if (isLoggedIn()) {
+  header('Location: /');
+  exit();
+}
 
 ?>
 
@@ -16,13 +16,10 @@
     <div class="account-content">
       <div class="login-wrapper">
         <div class="login-content">
-          <form id="login-form" class="login-userset" method="POST">   
-            <div class="login-logo logo-normal">
-              <img src="assets/img/logo.png" alt="img">
+          <form id="login-form" class="login-userset" method="POST">
+            <div class="login-logo logo-normal text-center">
+              <span style="font-weight: 900; font-size:24px">POPSY BUBBLE TEA SHOP</span>
             </div>
-            <a href="/" class="login-logo logo-white">
-              <img src="assets/img/logo-white.png" alt>
-            </a>
             <div class="login-userheading">
               <h3>Sign In</h3>
               <h4>Please login to your account</h4>
@@ -52,7 +49,7 @@
           </form>
         </div>
         <div class="login-img">
-          <img src="assets/img/login.jpg" alt="img">
+          <img src="assets/img/boba/boba-c.png" alt="img">
         </div>
       </div>
     </div>

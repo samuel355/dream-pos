@@ -4,10 +4,11 @@ include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
 header('Content-Type: application/json');
 
-// if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-//   sendResponse('error', 'unauthorized accesss');
-//   exit();
-// }
+include_once('../includes/auth.php');
+
+if(!isAdmin() || !isSysAdmin()){
+  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
+}
 
 try {
   if (empty($_POST['category-name'])) {
