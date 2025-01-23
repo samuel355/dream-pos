@@ -2,7 +2,10 @@
 session_start();
 include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
+include_once('../includes/auth.php');
 header('Content-Type: application/json');
+
+requireLogin();
 
 function processOrder($conn) {
     try {
@@ -120,18 +123,19 @@ function getCartItems($conn, $session_id) {
 }
 
 function createOrder($conn, $data, $total_amount) {
-    $order_query = "INSERT INTO orders (user_id, customer_name, customer_phone, total_amount, receipt_number) 
-                    VALUES (?, ?, ?, ?, ?)";
+    $order_query = "INSERT INTO orders (user_id, customer_name, customer_phone, total_amount, receipt_number, created_by) 
+                    VALUES (?, ?, ?, ?, ?, ?)";
     
     $stmt = mysqli_prepare($conn, $order_query);
     mysqli_stmt_bind_param(
         $stmt,
-        "issds",
+        "issdss",
         $data['user_id'],
         $data['customer_name'],
         $data['customer_phone'],
         $total_amount,
-        $data['invoice_number']
+        $data['invoice_number'],
+        $_SESSION['fullname']
     );
 
     if (!mysqli_stmt_execute($stmt)) {
@@ -179,17 +183,18 @@ function addCustomer($conn, $data) {
             contact, 
             items, 
             total,
-            created_at
-        ) VALUES (?, ?, ?, ?, NOW())";
+            created_by
+        ) VALUES (?, ?, ?, ?, ?)";
 
         $stmt = mysqli_prepare($conn, $customer_query);
         mysqli_stmt_bind_param(
             $stmt, 
-            "sssd", 
+            "sssss", 
             $data['customer_name'],
             $data['customer_phone'],
             $combined_items,
-            $total
+            $total,
+            $_SESSION['fullname']
         );
         
         if (!mysqli_stmt_execute($stmt)) {
@@ -211,8 +216,8 @@ function addCustomer($conn, $data) {
 }
 
 function addOrderItems($conn, $order_id, $items) {
-    $item_query = "INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price) 
-                   VALUES (?, ?, ?, ?, ?)";
+    $item_query = "INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price, created_by) 
+                   VALUES (?, ?, ?, ?, ?, ?)";
     
     $stmt = mysqli_prepare($conn, $item_query);
 
@@ -220,12 +225,13 @@ function addOrderItems($conn, $order_id, $items) {
         $item_total = $item['quantity'] * $item['price'];
         mysqli_stmt_bind_param(
             $stmt,
-            "iiddd",
+            "iiddds",
             $order_id,
             $item['product_id'],
             $item['quantity'],
             $item['price'],
-            $item_total
+            $item_total,
+            $_SESSION['fullname']
         );
         
         if (!mysqli_stmt_execute($stmt)) {
@@ -237,14 +243,14 @@ function addOrderItems($conn, $order_id, $items) {
 }
 
 function addOrderHistory($conn, $order_id, $user_id) {
-    $history_query = "INSERT INTO order_history (order_id, user_id, action, new_status) 
-                      VALUES (?, ?, ?, ?)";
+    $history_query = "INSERT INTO order_history (order_id, user_id, action, new_status, created_by) 
+                      VALUES (?, ?, ?, ?, ?)";
     
     $stmt = mysqli_prepare($conn, $history_query);
     $action = 'order_created';
     $status = 'completed';
 
-    mysqli_stmt_bind_param($stmt, "iiss", $order_id, $user_id, $action, $status);
+    mysqli_stmt_bind_param($stmt, "iisss", $order_id, $user_id, $action, $status, $_SESSION['fullname']);
     
     if (!mysqli_stmt_execute($stmt)) {
         return ['status' => 'error', 'message' => 'Error adding order history'];

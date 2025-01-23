@@ -6,8 +6,8 @@
         <li class="submenu-open">
           <h6 class="submenu-hdr">Main</h6>
           <ul>
-            <li class="<?php echo isActiveRoute('/') ? 'active' : ''; ?>">
-              <a href="/"><i data-feather="grid"></i><span>Dashboard</span></a>
+            <li class="<?php echo isActiveRoute('/dashboard') ? 'active' : ''; ?>">
+              <a href="/dashboard"><i data-feather="grid"></i><span>Dashboard</span></a>
             </li>
             <li class="<?php echo isActiveRoute('pos') ? 'active' : ''; ?>">
               <a href="pos"><i data-feather="hard-drive"></i><span>POS</span></a>

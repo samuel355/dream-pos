@@ -117,7 +117,7 @@ requireLogin()
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Today's Customers</h4>
-            <div class="table-responsive dataview">
+            <div class="table-responsive">
               <table class="table" id="dashboard-customers">
                 <thead>
                   <tr>

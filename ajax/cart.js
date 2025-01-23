@@ -111,7 +111,9 @@ function displayCategories(categories) {
               <img style="width:100%; height:60px; object-fit: contain; border-radius: 20px" src="${
                 category.image
               }" alt="${category.name}"> </a>
-              <h6 style="margin-bottom: 8px" class="text-center">${category.name}</h6>
+              <h6 style="margin-bottom: 8px" class="text-center">${
+                category.name
+              }</h6>
           </li>
       `;
   });
@@ -247,7 +249,11 @@ function displayProducts(products, categoryId) {
         product.image !== null
           ? `php/${product.image}`
           : "../assets/img/boba/boba-c.png";
-      if (product.category_id === "1" || product.category_id === "3" || product.category_id === '5') {
+      if (
+        product.category_id === "1" ||
+        product.category_id === "3" ||
+        product.category_id === "5"
+      ) {
         html += `
               <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                   <div class="product-info default-cover card" onclick="addToCart(${
@@ -326,8 +332,8 @@ function addToCart(productId, quantity = 1) {
         toastr.success("Product added to cart");
         updateCart();
       }
-      if(data.status === 'info'){
-        toastr.info(data.message)
+      if (data.status === "info") {
+        toastr.info(data.message);
       }
     })
     .catch((error) => console.error("Error:", error));
@@ -413,7 +419,11 @@ function displayCart(cartData) {
         item.image !== null
           ? `../php/${item.image}`
           : "../assets/img/boba/boba-c.png";
-      if (item.category_id === "1" || item.category_id === "3" || item.category_id === "5") {
+      if (
+        item.category_id === "1" ||
+        item.category_id === "3" ||
+        item.category_id === "5"
+      ) {
         html += `
                 <div class="product-list d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center product-info" data-bs-toggle="modal" data-bs-target="#products">
@@ -606,8 +616,8 @@ function updateQuantity(cartId, newQuantity) {
       if (data.status === "success") {
         updateCart(); // Refresh cart display
       }
-      if(data.status === 'info'){
-        toastr.info(data.message)
+      if (data.status === "info") {
+        toastr.info(data.message);
       }
     })
     .catch((error) => console.error("Error:", error));
@@ -675,6 +685,8 @@ function createOrder(cartData) {
         toastr.success(
           "Your order is created successfully. Print your invoice"
         );
+        document.getElementById("customer-name").value = "";
+        document.getElementById("customer-contact").value = "";
       } else {
         alert("Error processing your order: " + data.message);
         order_btn.textContent = "Order now";
@@ -991,9 +1003,9 @@ function updateSize() {
       return response.json();
     })
     .then((data) => {
-      if (data.status  === 'success') {
+      if (data.status === "success") {
         // Close modal
-        $('#change-boba-size-modal').modal('hide')
+        $("#change-boba-size-modal").modal("hide");
         toastr.success("Size updated successfully!");
         updateCart();
       } else {
