@@ -1,10 +1,12 @@
 // Update your DOMContentLoaded event listener
 document.addEventListener("DOMContentLoaded", function () {
-
-  
   // Add styles to size select element
   const sizeSelect = document.getElementById("size");
   const categorySelect = document.getElementById("category-id");
+
+  document
+    .getElementById("edit-product-form")
+    .addEventListener("submit", editProduct);
 
   if (sizeSelect) {
     sizeSelect.style.width = "100%";
@@ -68,11 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
           form.reset();
           $("#create-product-mal").modal("hide");
           window.location.reload();
-          toastr.success('Product Created successfully')
+          toastr.success("Product Created successfully");
           document.getElementById("preview").style.display = "none";
         }
-        if(data.status === 'error'){
-          toastr.error(data.message)
+        if (data.status === "error") {
+          toastr.error(data.message);
         }
       })
       .catch((error) => {
@@ -114,11 +116,14 @@ function displayTableProducts(products) {
 
   // Add new data
   products.forEach((product, i) => {
-    const imageSrc = product.image !== 'php/' ? product.image : "../assets/img/boba/boba-c.png";
+    const imageSrc =
+      product.image !== "php/"
+        ? product.image
+        : "../assets/img/boba/boba-c.png";
 
     tbody.append(`
           <tr>
-            <td>${i +1}</td>
+            <td>${i + 1}</td>
               <td class="productimgname">
                   <a href="javascript:void(0);" class="product-img">                      
                       <img src="${imageSrc}" alt="${product.name}">
@@ -205,19 +210,61 @@ function editProductModal(product_id) {
     })
     .then((data) => {
       if (data.status === "success") {
+        console.log(data.product.image)
+        const imageSrc =
+          data.product.image !== "php/" || data.product.image !== null
+            ? `${data.product.image}`
+            : "assets/img/boba/boba-c.png";
         $("#edit-product-modal").modal("show");
-        document.getElementById("product-name-edt").value = data.product.name;
-        document.getElementById("product-image-preview").src =
-          data.product.image;
-        document.getElementById("product-price").value = data.product.price;
+        document.getElementById("edit-product-name").value = data.product.name;
+        document.getElementById("product-image-preview").src = imageSrc;
 
         // Store product ID for update
         document.getElementById("edit-product-form").dataset.productId =
           data.product.id;
-        document.getElementById("product_size").value = data.product.size;
         document.getElementById("product_category_id").value =
           data.product.category_name;
       }
     });
+}
+
+function editProduct(event) {
+  event.preventDefault();
+  
+  const product_name = document.getElementById("edit-product-name").value;
+  const productId = document.getElementById("edit-product-form").dataset.productId;
+  const imageFile = document.getElementById('edit-image').files[0];
+  
+  if (product_name === "") {
+    toastr.error("Enter product name");
+    return;
+  }
+  
+  const formData = new FormData();
+  formData.append("product_name", product_name);
+  formData.append("product_id", productId);
+  
+  // Append image if there is one
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
+
+  fetch("php/update-product.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        toastr.success("Product updated successfully");
+        $("#edit-product-modal").modal("hide");
+        setTimeout(function(){
+          window.location.reload();
+        }, 1000)
+      } else if (data.status === "error") {
+        toastr.error(data.message);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
 }
 

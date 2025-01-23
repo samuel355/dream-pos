@@ -48,7 +48,7 @@
 	<script src="assets/js/rocket-loader.min.js" data-cf-settings="|49" defer></script>
 	<script src="assets/js/toastr.min.js" data-cf-settings="|49" defer></script>
 
-	<script src="ajax/products.js"></script>
+
 	<script src="ajax/helpers.js" ></script>
   <!-- <script src="ajax/add-product.js"></script> -->
   <!-- <script src="ajax/add-user.js"></script> -->
@@ -63,6 +63,8 @@
 	<script src="ajax/sales.js"></script>
 	<script src="ajax/users.js"></script>
 	<script src="ajax/customers.js" ></script>
+	<script src="ajax/preview-edit-image.js" ></script>
+	<script src="ajax/products.js"></script>
 </body>
 
 </html>

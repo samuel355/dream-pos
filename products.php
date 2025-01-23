@@ -184,26 +184,13 @@ requireAdmin();
                     <div class="col-lg-6 col-sm-6 col-12">
                       <div class="form-group">
                         <label>Product Name</label>
-                        <input placeholder="Product Name" id="product-name-edt" name="product-name" type="text">
+                        <input placeholder="Product Name" id="edit-product-name" name="eproduct-name" type="text">
                       </div>
                     </div>
                     <div class="col-lg-6 col-sm-6 col-12">
                       <div class="form-group">
                         <label>Category</label>
                         <input readonly type="text" id="product_category_id">
-                      </div>
-                    </div>
-
-                    <div class="col-lg-6 col-sm-6 col-12">
-                      <div class="form-group">
-                        <label>Select Size</label>
-                        <input readonly type="text" id="product_size">
-                      </div>
-                    </div>
-                    <div class="col-lg-6 col-sm-6 col-12">
-                      <div class="form-group">
-                        <label>Price (GHS)</label>
-                        <input type="text" name="product-price" id="product-price">
                       </div>
                     </div>
                   </div>
@@ -213,10 +200,10 @@ requireAdmin();
                         <label> Product Image</label>
                         <div class="image-upload">
                           <input type="file"
-                            id="image"
-                            name="image"
+                            id="edit-image"
+                            name="edit-image"
                             accept="image/*"
-                            onchange="previewImage(this);">
+                            onchange="previewEditImage(this);">
                           <div class="image-uploads">
                             <img src="assets/img/icons/upload.svg" alt="img">
                             <h4>Drag and drop a file to upload</h4>
@@ -226,7 +213,7 @@ requireAdmin();
                       </div>
                     </div>
                     <div class="col-lg-12">
-                      <button type="submit" class="btn btn-submit me-2">Add Product</button>
+                      <button type="submit" class="btn btn-submit me-2">Update Product</button>
                     </div>
                   </div>
                 </form>
@@ -238,6 +225,5 @@ requireAdmin();
       </div>
     </div>
   </div>
-
 
   <?php include_once('includes/scripts.php') ?>
