@@ -48,7 +48,9 @@ function loadSales() {
       endDate: endDate,
     }),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
       if (data.status === "success") {
         updateSalesDisplay(data.data);
@@ -111,6 +113,7 @@ function updateSalesDisplay(data) {
           <td>${escapeHtml(sale.customer_name)}</td>
           <td>${escapeHtml(sale.items || "No items")}</td>
           <td>${formatCurrency(sale.total_amount)}</td>
+          <td>${escapeHtml(sale.created_by || 'Cashier 1')}</td>
           <td>
               <button class="btn btn-sm btn-primary" onclick="viewSaleDetails(${
                 sale.id
@@ -139,8 +142,8 @@ function viewSaleDetails(saleId) {
     .then((response) => response.json())
     .then((data) => {
       if (data.status === "success") {
-        showOrderDetailsModal(data); 
-        console.log(data)
+        showOrderDetailsModal(data);
+        console.log(data);
       } else {
         toastr.error(data.message || "Error loading order details");
       }
@@ -151,10 +154,10 @@ function viewSaleDetails(saleId) {
     });
 }
 
-function showOrderDetailsModal(order) { 
+function showOrderDetailsModal(order) {
   if (!order || !order.id) {
-      toastr.error('Invalid order data');
-      return;
+    toastr.error("Invalid order data");
+    return;
   }
 
   const modalHtml = `
@@ -167,9 +170,15 @@ function showOrderDetailsModal(order) {
                   </div>
                   <div class="modal-body">
                       <div class="order-info mb-3">
-                          <p><strong>Customer:</strong> ${order.customer_name || 'N/A'}</p>
-                          <p><strong>Phone:</strong> ${order.customer_phone || 'N/A'}</p>
-                          <p><strong>Date:</strong> ${new Date(order.created_at).toLocaleString()}</p>
+                          <p><strong>Customer:</strong> ${
+                            order.customer_name || "N/A"
+                          }</p>
+                          <p><strong>Phone:</strong> ${
+                            order.customer_phone || "N/A"
+                          }</p>
+                          <p><strong>Date:</strong> ${new Date(
+                            order.created_at
+                          ).toLocaleString()}</p>
                       </div>
                       <div class="order-items">
                           <h6>Order Items</h6>
@@ -183,27 +192,47 @@ function showOrderDetailsModal(order) {
                                   </tr>
                               </thead>
                               <tbody>
-                                  ${order.items ? order.items.map(item => `
+                                  ${
+                                    order.items
+                                      ? order.items
+                                          .map(
+                                            (item) => `
                                       <tr>
                                           <td>${item.product_name}</td>
                                           <td>${item.quantity}</td>
                                           <td>GHS ${item.total_price}</td>
-                                          <td>GHS ${(item.quantity * item.total_price).toFixed(2)}</td>
+                                          <td>GHS ${(
+                                            item.quantity * item.total_price
+                                          ).toFixed(2)}</td>
                                       </tr>
-                                  `).join('') : '<tr><td colspan="4">No items found</td></tr>'}
+                                  `
+                                          )
+                                          .join("")
+                                      : '<tr><td colspan="4">No items found</td></tr>'
+                                  }
                               </tbody>
                               <tfoot>
                                   <tr>
                                       <th colspan="3">Total</th>
-                                      <th>GHS ${order.total_amount || '0.00'}</th>
+                                      <th>GHS ${
+                                        order.total_amount || "0.00"
+                                      }</th>
                                   </tr>
                               </tfoot>
                           </table>
                       </div>
                   </div>
+                  <div class="row">
+                    <div class="col-12" style="margin-left: 12px; font-weight: 700">
+                      <span>Created By : </span>
+                      <span>${order.created_by !== '' ? order.created_by : 'Cashier 1'}</span>
+                    <div>
+                  </div>
                   <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" onclick="printReceipt(${order.id})">
+                      <button type="button" class="btn btn-primary" onclick="printReceipt(${
+                        order.id
+                      })">
                           Print Receipt
                       </button>
                   </div>
@@ -213,28 +242,28 @@ function showOrderDetailsModal(order) {
   `;
 
   // Remove existing modal if any
-  const existingModal = document.getElementById('orderModal');
+  const existingModal = document.getElementById("orderModal");
   if (existingModal) {
-      existingModal.remove();
+    existingModal.remove();
   }
 
   // Add new modal
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  document.body.insertAdjacentHTML("beforeend", modalHtml);
 
   // Show modal
-  const modal = new bootstrap.Modal(document.getElementById('orderModal'));
+  const modal = new bootstrap.Modal(document.getElementById("orderModal"));
   modal.show();
 }
 
 function printReceipt(saleId) {
   fetch(`php/get-order-details.php?id=${saleId}`)
-      .then(response => response.json())
-      .then(data => {
-          if (data.status === 'success' && data) {
-              const printWindow = window.open('', '_blank', 'width=600,height=800');
-              const order = data;
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success" && data) {
+        const printWindow = window.open("", "_blank", "width=600,height=800");
+        const order = data;
 
-              const receiptHtml = `
+        const receiptHtml = `
                   <!DOCTYPE html>
                   <html>
                   <head>
@@ -270,23 +299,39 @@ function printReceipt(saleId) {
                       <div class="header">
                           <h2>POPSY BUBBLE TEA SHOP</h2>
                           <p>Receipt #${order.id}</p>
-                          <p>Date: ${new Date(order.created_at).toLocaleString()}</p>
-                          <p>Customer: ${order.customer_name || 'N/A'}</p>
-                          <p>Phone: ${order.customer_phone || 'N/A'}</p>
+                          <p>Date: ${new Date(
+                            order.created_at
+                          ).toLocaleString()}</p>
+                          <p>Customer: ${order.customer_name || "N/A"}</p>
+                          <p>Phone: ${order.customer_phone || "N/A"}</p>
+                          <p>Created By: ${order.created_by || "Cashier 1"}</p>
                       </div>
                       
                       <div class="items">
-                          ${order.items ? order.items.map(item => `
+                        
+                          ${
+                            order.items
+                              ? order.items
+                                  .map(
+                                    (item) => `
                               <div>
                                   ${item.product_name}<br>
-                                  ${item.quantity} x GHS ${item.total_price} = GHS ${(item.quantity * item.total_price).toFixed(2)}
+                                  ${item.quantity} x GHS ${
+                                      item.total_price
+                                    } = GHS ${(
+                                      item.quantity * item.total_price
+                                    ).toFixed(2)}
                               </div>
                               <br>
-                          `).join('') : 'No items found'}
+                          `
+                                  )
+                                  .join("")
+                              : "No items found"
+                          }
                       </div>
                       
                       <div class="total">
-                          <h3>Total: GHS ${order.total_amount || '0.00'}</h3>
+                          <h3>Total: GHS ${order.total_amount || "0.00"}</h3>
                       </div>
                       
                       <div class="footer">
@@ -303,16 +348,16 @@ function printReceipt(saleId) {
                   </html>
               `;
 
-              printWindow.document.write(receiptHtml);
-              printWindow.document.close();
-          } else {
-              toastr.error(data.message || 'Error loading receipt');
-          }
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          toastr.error('Error loading receipt');
-      });
+        printWindow.document.write(receiptHtml);
+        printWindow.document.close();
+      } else {
+        toastr.error(data.message || "Error loading receipt");
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      toastr.error("Error loading receipt");
+    });
 }
 
 function formatCurrency(amount) {
@@ -337,9 +382,8 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-
 function exportSalesReport() {
-  console.log('clicked in')
+  console.log("clicked in");
   const dateRange = document.getElementById("dateRange").value;
   const startDate = document.getElementById("startDate")?.value || "";
   const endDate = document.getElementById("endDate")?.value || "";
@@ -376,7 +420,6 @@ function exportSalesReport() {
   form.submit();
   document.body.removeChild(form);
 }
-
 
 function generateReceiptHTML(order, receiptWindow) {
   const html = `

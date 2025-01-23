@@ -63,7 +63,8 @@ try {
             'customer_phone' => $row['customer_phone'],
             'items' => $row['items'],
             'total_amount' => $row['total_amount'],
-            'created_at' => $row['created_at']
+            'created_at' => $row['created_at'],
+            'created_by' => $row['created_by']
         ];
     }
 

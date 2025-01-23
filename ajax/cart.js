@@ -773,6 +773,7 @@ function previewReceipt(
               <p>INV #: ${invoiceNumber}</p>
               <p>Customer: ${customerName}</p>
               <p>Contact: ${customerContact}</p>
+              <p>Served BY: ${cartData.items[0].created_by}</p>
           </div>
           
           <table class="items-table">

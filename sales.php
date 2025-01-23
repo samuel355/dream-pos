@@ -148,6 +148,7 @@ requireAdmin();
                     <th>Customer</th>
                     <th>Items</th>
                     <th>Amount</th>
+                    <th>Created By</th>
                     <th>Action</th>
                   </tr>
                 </thead>

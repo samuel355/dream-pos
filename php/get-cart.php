@@ -44,7 +44,8 @@ function getCartItems($conn)
       'size' => $row['size'],
       'quantity' => $row['quantity'],
       'image' => $row['image'],
-      'item_total' => $item_total
+      'item_total' => $item_total,
+      'created_by' => $_SESSION['fullname']
     ];
   }
 

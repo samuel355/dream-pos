@@ -4,8 +4,8 @@ include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
 include_once('../includes/auth.php');
 
-if(!isAdmin() || !isSysAdmin()){
-  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
+if (!isAdmin() || !isSysAdmin()) {
+    sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
 
 try {
@@ -21,9 +21,9 @@ try {
     }
 
     $dateRange = $data['dateRange'] ?? 'today';
-    
+
     // Build date condition
-    switch($dateRange) {
+    switch ($dateRange) {
         case 'today':
             $dateCondition = "DATE(o.created_at) = CURRENT_DATE()";
             break;
@@ -53,7 +53,7 @@ try {
                 COALESCE(AVG(o.total_amount), 0) as average_sale
               FROM orders o 
               WHERE $dateCondition";
-    
+
     $summaryResult = mysqli_query($conn, $summaryQuery);
     if (!$summaryResult) {
         throw new Exception("Summary query error: " . mysqli_error($conn));
@@ -73,12 +73,12 @@ try {
               WHERE $dateCondition
               GROUP BY o.id
               ORDER BY o.created_at DESC";
-    
+
     $detailsResult = mysqli_query($conn, $detailsQuery);
     if (!$detailsResult) {
         throw new Exception("Details query error: " . mysqli_error($conn));
     }
-    
+
     $sales = [];
     while ($row = mysqli_fetch_assoc($detailsResult)) {
         $sales[] = $row;
@@ -94,7 +94,6 @@ try {
             'sales' => $sales
         ]
     ]);
-
 } catch (Exception $e) {
     error_log("Sales Error: " . $e->getMessage());
     echo json_encode([
@@ -104,4 +103,3 @@ try {
 } finally {
     mysqli_close($conn);
 }
-?>

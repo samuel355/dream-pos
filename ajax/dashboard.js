@@ -34,6 +34,7 @@ function updateDashboard(data) {
 
   // Update customers table
   showCustomersInTable(data.todays_orders_list);
+
 }
 
 
@@ -58,6 +59,7 @@ function showCustomersInTable(orders) {
           <td>${escapeHtml(order.customer_phone)}</td>
           <td>${escapeHtml(order.items || "No items")}</td>
           <td>GHS ${formatNumber(order.total_amount)}</td>
+          <td>${escapeHtml(order.created_by)}</td>
           <td>${formatTime(order.created_at)}</td>
         </tr>
       `

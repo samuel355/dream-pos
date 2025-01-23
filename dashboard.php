@@ -126,6 +126,7 @@ requireLogin()
                     <th>Contact</th>
                     <th>Items</th>
                     <th>Total Amount</th>
+                    <th>Created By</th>
                     <th>Time</th>
                   </tr>
                 </thead>
