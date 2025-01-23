@@ -2,7 +2,7 @@
 include_once('includes/head.php');
 include_once('includes/auth.php');
 
-requireAdmin();
+requireLogin();
 ?>
 
 
@@ -25,12 +25,15 @@ requireAdmin();
             <h4>Product list</h4>
             <h6>View Products </h6>
           </div>
-          <div class="page-btn">
-            <a href="javascript:void(0);" class="btn btn-adds" data-bs-toggle="modal"
-              data-bs-target="#create-product-modal">
-              <i class="fa fa-plus me-2"></i>Add Product
-            </a>
-          </div>
+
+          <?php if (isset($_SESSION['sysadmin']) || isset($_SESSION['role']) === 'admin'): ?>
+            <div class="page-btn">
+              <a href="javascript:void(0);" class="btn btn-adds" data-bs-toggle="modal"
+                data-bs-target="#create-product-modal">
+                <i class="fa fa-plus me-2"></i>Add Product
+              </a>
+            </div>
+          <?php endif; ?>
         </div>
 
         <div class="card">

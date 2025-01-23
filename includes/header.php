@@ -87,6 +87,9 @@
             </div>
           </div>
           <hr class="m-0">
+          <a class="dropdown-item logout pb-0" href="/pos">
+            <img src="assets/img/icons/debitcard.svg" class="me-2" alt="img">POS
+          </a>
           <hr class="m-0">
           <a class="dropdown-item logout pb-0" href="javascript:void(0);" onclick="logout()">
             <img src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout
@@ -100,6 +103,7 @@
     <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
       aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
     <div class="dropdown-menu dropdown-menu-right">
+      <a class="dropdown-item" href="/pos">POS</a>
       <a class="dropdown-item" href="javascript:void(0);" onclick="logout()">Logout</a>
     </div>
   </div>

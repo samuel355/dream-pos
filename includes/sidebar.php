@@ -17,6 +17,7 @@
                 <a href="/sales"><i data-feather="box"></i><span>Sales</span></a>
               </li>
             <?php endif; ?>
+            
           </ul>
         </li>
 

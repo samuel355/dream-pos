@@ -2,11 +2,12 @@
 session_start();
 include_once('../includes/db_connection.php');
 include_once('../includes/sendResponse.php');
+include_once('../includes/auth.php');
 header('Content-Type: application/json');
 
-if(!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-  sendResponse('error', 'unauthorized accesss');
-  exit();
+
+if(!isAdmin() || !isSysAdmin()){
+  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
 
 try {

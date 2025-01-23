@@ -55,6 +55,10 @@ function isAdmin()
   return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }
 
+function isSysAdmin(){
+  return isset($_SESSION['sysadmin']) && $_SESSION['sysadmin'] === 'addsamuel355@gmail.com';
+}
+
 function requireLogin()
 {
   if (!isLoggedIn()) {

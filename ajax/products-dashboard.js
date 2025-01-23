@@ -67,6 +67,7 @@ function showProductsInTable(products) {
               <img src="assets/img/icons/delete.svg" alt="img">
             </a>
           </td>
+
         </tr>
       `
     );
@@ -178,6 +179,9 @@ function openEditModal(productId) {
           product.id;
         document.getElementById("product_category_id").value =
           product.category_name;
+      }
+      if(data.status === 'error'){
+        toastr.error(data.message)
       }
     });
 }
