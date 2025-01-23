@@ -12,9 +12,11 @@
             <li class="<?php echo isActiveRoute('pos') ? 'active' : ''; ?>">
               <a href="pos"><i data-feather="hard-drive"></i><span>POS</span></a>
             </li>
-            <li class="<?php echo isActiveRoute('sales') ? 'active' : ''; ?>">
-              <a href="/sales"><i data-feather="box"></i><span>Sales</span></a>
-            </li>
+            <?php if (isset($_SESSION['sysadmin']) || isset($_SESSION['role']) === 'admin'): ?>
+              <li class="<?php echo isActiveRoute('sales') ? 'active' : ''; ?>">
+                <a href="/sales"><i data-feather="box"></i><span>Sales</span></a>
+              </li>
+            <?php endif; ?>
           </ul>
         </li>
 
@@ -28,9 +30,11 @@
             <li class="<?php echo isActiveRoute('categories') ? 'active' : ''; ?>">
               <a href="/categories"><i data-feather="codepen"></i><span>Categories</span></a>
             </li>
-            <li class="<?php echo isActiveRoute('product-pricing') ? 'active' : ''; ?>">
-              <a href="/product-pricing"><i data-feather="dollar-sign"></i><span>Product Pricing</span></a>
-            </li>
+            <?php if (isset($_SESSION['sysadmin']) || isset($_SESSION['role']) === 'admin'): ?>
+              <li class="<?php echo isActiveRoute('product-pricing') ? 'active' : ''; ?>">
+                <a href="/product-pricing"><i data-feather="dollar-sign"></i><span>Product Pricing</span></a>
+              </li>
+            <?php endif; ?>
           </ul>
         </li>
 
@@ -38,9 +42,12 @@
         <li class="submenu-open">
           <h6 class="submenu-hdr">People</h6>
           <ul>
-            <li class="<?php echo isActiveRoute('users') ? 'active' : ''; ?>">
-              <a href="/users"><i data-feather="users"></i><span>Users</span></a>
-            </li>
+            <?php if (isset($_SESSION['sysadmin']) || isset($_SESSION['role']) === 'admin'): ?>
+              <li class="<?php echo isActiveRoute('users') ? 'active' : ''; ?>">
+                <a href="/users"><i data-feather="users"></i><span>Users</span></a>
+              </li>
+            <?php endif; ?>
+
             <li class="<?php echo isActiveRoute('customers') ? 'active' : ''; ?>">
               <a href="/customers"><i data-feather="user"></i><span>Customers</span></a>
             </li>

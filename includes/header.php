@@ -3,15 +3,15 @@
   <div class="header-left active">
     <a href="/" class="logo logo-normal">
       <!-- <img src="assets/img/logo.png" alt> -->
-       <span style="font-weight: 600px">POPSY BUBBLE TEA SHOP</span>
+       <span style="font-weight: 800">POPSY BUBBLE TEA SHOP</span>
     </a>
     <a href="/" class="logo logo-white">
       <!-- <img src="assets/img/logo-white.png" alt> -->
-      <span style="font-weight: 600px">POPSY BUBBLE TEA SHOP</span>
+      <span style="font-weight: 800">POPSY BUBBLE TEA SHOP</span>
     </a>
     <a href="/" class="logo-small">
       <!-- <img src="assets/img/logo-small.png" alt> -->
-      <span style="font-weight: 600px">POPSY BUBBLE TEA SHOP</span>
+      <span style="font-weight: 800">POPSY BUBBLE TEA SHOP</span>
     </a>
     <a id="toggle_btn" href="javascript:void(0);">
       <i data-feather="chevrons-left" class="feather-16"></i>
@@ -30,13 +30,6 @@
 
     <li class="nav-item nav-searchinputs">
       <!--Global Search -->
-    </li>
-
-
-    <li class="nav-item nav-item-box">
-      <a href="javascript:void(0);" id="btnFullscreen">
-        <i data-feather="maximize"></i>
-      </a>
     </li>
 
     <!-- Notifications -->
@@ -94,12 +87,6 @@
             </div>
           </div>
           <hr class="m-0">
-          <a class="dropdown-item" href="profile.php">
-            <i class="me-2" data-feather="user"></i> My Profile
-          </a>
-          <a class="dropdown-item" href="settings.php">
-            <i class="me-2" data-feather="settings"></i>Settings
-          </a>
           <hr class="m-0">
           <a class="dropdown-item logout pb-0" href="javascript:void(0);" onclick="logout()">
             <img src="assets/img/icons/log-out.svg" class="me-2" alt="img">Logout
@@ -107,16 +94,13 @@
         </div>
       </div>
     </li>
-
   </ul>
 
   <div class="dropdown mobile-user-menu">
     <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
       aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
     <div class="dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" href="">My Profile</a>
-      <a class="dropdown-item" href="">Settings</a>
-      <a class="dropdown-item" href="">Logout</a>
+      <a class="dropdown-item" href="javascript:void(0);" onclick="logout()">Logout</a>
     </div>
   </div>
 
