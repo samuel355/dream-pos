@@ -50,8 +50,6 @@
 
 
 	<script src="ajax/helpers.js" ></script>
-  <!-- <script src="ajax/add-product.js"></script> -->
-  <!-- <script src="ajax/add-user.js"></script> -->
   <script src="ajax/cart.js"></script>
   <script src="ajax/login.js"></script>
   <script src="ajax/previewImage.js"></script>
@@ -64,7 +62,7 @@
 	<script src="ajax/users.js"></script>
 	<script src="ajax/customers.js" ></script>
 	<script src="ajax/preview-edit-image.js" ></script>
-	<script src="ajax/products.js"></script>
+	<script src="ajax/products-dashboard.js"></script>
 </body>
 
 </html>

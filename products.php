@@ -50,7 +50,7 @@ requireAdmin();
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody class="products-content">
+                <tbody>
 
                 </tbody>
               </table>
@@ -206,7 +206,7 @@ requireAdmin();
                             onchange="previewEditImage(this);">
                           <div class="image-uploads">
                             <img src="assets/img/icons/upload.svg" alt="img">
-                            <h4>Drag and drop a file to upload</h4>
+                            <h4>Drag and drop a file to change the existing image</h4>
                             <img style="width: 100px; height:100px; border-radius:50px; object-fit: contain; position: absolute; top:0; right:0;" id="product-image-preview" class="preview">
                           </div>
                         </div>
