@@ -62,7 +62,7 @@ function isSysAdmin(){
 function requireLogin()
 {
   if (!isLoggedIn()) {
-    header('Location: login');
+    header('Location: /login');
     exit();
   }
 }
@@ -71,7 +71,7 @@ function requireAdmin()
 {
   requireLogin();
   if (!isAdmin()) {
-    header('Location: pos');
+    header('Location: /pos');
     exit();
   }
 }

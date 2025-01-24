@@ -85,8 +85,10 @@ function editCategoryModal(categoryId) {
         document.getElementById("cat-preview").src = data.category.image;
 
         //Store category ID for update
-        document.getElementById("edit-category-form").dataset.categoryId =
-          categoryId;
+        const store_cart_id = document.getElementById("edit-category-form");
+        if (store_cart_id) {
+          store_cart_id.dataset.categoryId = categoryId;
+        }
       }
     });
 }
@@ -897,48 +899,52 @@ document.addEventListener("DOMContentLoaded", function () {
   //Create new category
   const form = document.getElementById("add-category-form");
   //Add category
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    // Create FormData object
-    const formData = new FormData(this);
-    const categoryname = $("#category-name").val();
+      // Create FormData object
+      const formData = new FormData(this);
+      const categoryname = $("#category-name").val();
 
-    if (categoryname === "") {
-      toastr.error("Please Enter category name");
-      return;
-    }
+      if (categoryname === "") {
+        toastr.error("Please Enter category name");
+        return;
+      }
 
-    // Send AJAX request
-    fetch("php/add-category-process.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        return response.json();
+      // Send AJAX request
+      fetch("php/add-category-process.php", {
+        method: "POST",
+        body: formData,
       })
-      .then((data) => {
-        if (data.status === "success") {
-          $("#create-modal").modal("hide");
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "success") {
+            $("#create-modal").modal("hide");
 
-          loadCategories();
-          toastr.success(data.message);
-          form.reset();
-          document.getElementById("preview").style.display = "none";
-        } else {
-          toastr.error(data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        toastr.error("An error occurred. Please try again..");
-      });
-  });
+            loadCategories();
+            toastr.success(data.message);
+            form.reset();
+            document.getElementById("preview").style.display = "none";
+          } else {
+            toastr.error(data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          toastr.error("An error occurred. Please try again..");
+        });
+    });
+  }
 
   // Handle Update Category
-  document
-    .getElementById("edit-category-form")
-    .addEventListener("submit", function (e) {
+  const edit_category_form_submit =
+    document.getElementById("edit-category-form");
+    
+  if (edit_category_form_submit) {
+    edit_category_form_submit.addEventListener("submit", function (e) {
       e.preventDefault();
 
       const categoryId = this.dataset.categoryId;
@@ -972,6 +978,7 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("An error occurred while updating the category");
         });
     });
+  }
 });
 
 let currentCartId = null;

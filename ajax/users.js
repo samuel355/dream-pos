@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   loadUsers();
 
   // Initialize form submission for adding users
-  document.getElementById("add-user-form").addEventListener("submit", addUser);
+  const search_add_user = document.getElementById("add-user-form");
+  if(search_add_user){
+    search_add_user.addEventListener("submit", addUser);
+  }
 
   // Initialize preview image function
   function previewImage(input) {

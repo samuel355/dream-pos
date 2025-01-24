@@ -63,6 +63,3 @@
 	<script src="ajax/customers.js" ></script>
 	<script src="ajax/preview-edit-image.js" ></script>
 	<script src="ajax/products-dashboard.js"></script>
-</body>
-
-</html>

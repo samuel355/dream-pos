@@ -1,6 +1,6 @@
 <?php
-include_once('includes/head.php');
-include_once('includes/auth.php');
+include 'includes/head.php' ;
+include 'includes/auth.php' ;
 
 requireAdmin();
 ?>
@@ -11,8 +11,8 @@ requireAdmin();
     </div>
 
     <div class="main-wrapper">
-        <?php include_once('includes/header.php') ?>
-        <?php include_once('includes/sidebar.php') ?>
+        <?php include 'includes/header.php' ?>
+        <?php include 'includes/sidebar.php' ?>
 
         <div class="page-wrapper">
             <div class="content">
@@ -50,7 +50,7 @@ requireAdmin();
     </div>
 
     <!-- Create Customer Modal -->
-    <div class="modal fade" id="create-customer-modal" tabindex="-1" aria-hidden="true">
+    <!-- <div class="modal fade" id="create-customer-modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -74,14 +74,14 @@ requireAdmin();
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Edit Customer Modal -->
     <div class="modal fade" id="edit-customer-modal" tabindex="-1" aria-hidden="true">
         <!-- Modal content will be dynamically added here -->
     </div>
 
-    <?php include_once('includes/scripts.php') ?>
+    <?php include 'includes/scripts.php' ?>
     <script src="assets/js/customers.js"></script>
 </body>
 </html>

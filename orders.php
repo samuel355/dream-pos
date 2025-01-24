@@ -1,5 +1,5 @@
-<?php include_once('includes/head.php');
-include_once('includes/auth.php');
+<?php include 'includes/head.php';
+include 'includes/auth.php';
 
 requireAdmin();
 ?>
@@ -45,9 +45,9 @@ requireAdmin();
 
   <div class="main-wrapper">
 
-    <?php include_once('includes/header.php') ?>
+    <?php include 'includes/header.php' ?>
 
-    <?php include_once('includes/sidebar.php') ?>
+    <?php include 'includes/sidebar.php' ?>
 
     <div class="page-wrapper">
       <div class="content">
@@ -125,4 +125,7 @@ requireAdmin();
   </div>
 
 
-  <?php include_once('includes/scripts.php') ?>
+  <?php include 'includes/scripts.php'; ?>
+  </body>
+
+</html>

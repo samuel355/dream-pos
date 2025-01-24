@@ -2,11 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
   initializeCustomersDataTable();
   loadCustomers();
 
-  // Add customer form submission
-  document
-    .getElementById("add-customer-form")
-    .addEventListener("submit", addCustomer);
-
   if (typeof feather !== "undefined") {
     feather.replace();
   }

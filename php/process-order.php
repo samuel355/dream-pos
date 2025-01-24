@@ -1,8 +1,7 @@
 <?php
-session_start();
-include_once('../includes/db_connection.php');
-include_once('../includes/sendResponse.php');
-include_once('../includes/auth.php');
+include '../includes/db_connection.php';
+include '../includes/auth.php';
+include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
 requireLogin();

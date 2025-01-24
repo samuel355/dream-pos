@@ -1,5 +1,5 @@
 <?php
-include_once('includes/head.php');
+include 'includes/head.php';
 require_once 'includes/db_connection.php';
 require_once 'includes/auth.php';
 
@@ -54,4 +54,7 @@ if (isLoggedIn()) {
       </div>
     </div>
   </div>
-  <?php include_once('includes/scripts.php') ?>
+  <?php include 'includes/scripts.php'; ?>
+  </body>
+
+</html>

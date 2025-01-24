@@ -3,7 +3,7 @@ function allowOnlyNumbers(event) {
 
   // Allow: Backspace, Delete, Tab, Escape, Enter, and Arrow keys
   if (
-    [8, 9, 13, 27, 46].includes(keyCode) || 
+    [8, 9, 13, 27, 46].includes(keyCode) ||
     (keyCode >= 35 && keyCode <= 40) // Home, End, Left, Right
   ) {
     return; // Allow these keys
@@ -17,5 +17,7 @@ function allowOnlyNumbers(event) {
   // Prevent other keys
   event.preventDefault();
 }
-
-document.getElementById('price').addEventListener('keydown', allowOnlyNumbers);
+const price = document.getElementById("price");
+if (price) {
+  price.addEventListener("keydown", allowOnlyNumbers);
+}

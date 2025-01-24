@@ -1,4 +1,4 @@
-<?php include_once('includes/head.php') ?>
+<?php include 'includes/head.php' ?>
 
 <body>
   <div id="global-loader">
@@ -7,9 +7,9 @@
 
   <div class="main-wrapper">
 
-    <?php include_once('includes/header.php')  ?>
+    <?php include 'includes/header.php'  ?>
 
-    <?php include_once('includes/sidebar.php') ?>
+    <?php include 'includes/sidebar.php' ?>
 
     <div class="page-wrapper">
       <div class="content">
@@ -57,4 +57,7 @@
     </div>
   </div>
 
-  <?php include_once('includes/scripts.php') ?>
+  <?php include 'includes/scripts.php' ?>
+  </body>
+
+</html>

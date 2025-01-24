@@ -1,7 +1,8 @@
 <?php
 session_start();
-include_once('../includes/db_connection.php');
-include_once('../includes/sendResponse.php');
+include '../includes/db_connection.php';
+include '../includes/sendResponse.php';
+header('Content-Type: application/json');
 
 try {
     $orderId = isset($_GET['id']) ? intval($_GET['id']) : 0;

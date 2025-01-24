@@ -3,7 +3,7 @@
 $hostname = "localhost";
 $username = "root";
 $password = "";
-$dbname = "dream_pos";
+$dbname = "popsy_shop";
 
 $conn = mysqli_connect($hostname, $username, $password, $dbname);
 if (!$conn) {

@@ -1,9 +1,9 @@
 <?php
 
 session_start();
-include_once('../includes/db_connection.php');
+include '../includes/db_connection.php';
 header('Content-Type: application/json');
-include_once('../includes/sendResponse.php');
+include '../includes/sendResponse.php';
 
 function fetchProduct($conn, $product_id){
 

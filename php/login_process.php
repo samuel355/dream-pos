@@ -1,83 +1,85 @@
 <?php
-
 session_start();
-include_once('../includes/db_connection.php');
+include '../includes/db_connection.php';
+// Added proper JSON header to ensure JSON response
 header('Content-Type: application/json');
-include_once('../includes/sendResponse.php');
+include '../includes/sendResponse.php';
 
-// Check if request is POST
+// Added exit after response
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  sendResponse('error', 'Invalid request method');
+    sendResponse('error', 'Invalid request method');
+    exit; // Added exit
 }
 
-// Validate and sanitize inputs
-$email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
-$password = trim($_POST['password'] ?? '');
+// Added try-catch block for better error handling
+try {
+    // Validate and sanitize inputs
+    $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $password = trim($_POST['password'] ?? '');
 
-if (empty($email) || empty($password)) {
-  sendResponse('error', 'Please enter both email and password');
-}
-
-// Check database connection
-if (!$conn) {
-  sendResponse('error', 'Database connection failed');
-}
-
-
-// Query user
-$query = "SELECT *
-          FROM users 
-          WHERE email = ? 
-          AND status = 'active' 
-          LIMIT 1";
-
-$stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "s", $email);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-
-if ($result && mysqli_num_rows($result) > 0) {
-  $user = mysqli_fetch_assoc($result);
-
-  if (password_verify($password, $user['password'])) {
-    // Success - Set session variables
-    $_SESSION['user_id'] = $user['id'];
-    $_SESSION['email'] = $user['email'];
-    $_SESSION['username'] = $user['username'];
-    $_SESSION['role'] = $user['role'];
-    $_SESSION['fullname'] = $user['fullname'];
-    $_SESSION['image'] = $user['image'];
-    if($_SESSION['email'] === 'addsamuel355@gmail.com'){
-      $_SESSION['sysadmin'] = $_SESSION['email'];
+    // Added exit after response
+    if (empty($email) || empty($password)) {
+        sendResponse('error', 'Please enter both email and password');
+        exit; // Added exit
     }
 
-    // Update last login
-    mysqli_query(
-      $conn,
-      "UPDATE users 
-             SET last_login = NOW() 
-             WHERE id = " . $user['id']
-    );
+    // Added exit after response
+    if (!$conn) {
+        sendResponse('error', 'Database connection failed');
+        exit; // Added exit
+    }
 
-    // Clear login attempts
-    mysqli_query(
-      $conn,
-      "DELETE FROM login_attempts 
-             WHERE ip_address = '$ip'"
-    );
+    // Query user - No changes here
+    $query = "SELECT *
+              FROM users 
+              WHERE email = ? 
+              AND status = 'active' 
+              LIMIT 1";
 
-    // Return success response
-    echo json_encode([
-      'status' => 'success',
-      'redirect' => $user['role'] === 'admin' ? '/dashboard' : '/pos'
-    ]);
-  } else {
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
-    sendResponse('error', 'Wrong credentials');
-  }
-} else {
+    if ($result && mysqli_num_rows($result) > 0) {
+        $user = mysqli_fetch_assoc($result);
 
-  sendResponse('error', 'Wrong credentials');
+        if (password_verify($password, $user['password'])) {
+            // Session variables - No changes here
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            $_SESSION['fullname'] = $user['fullname'];
+            $_SESSION['image'] = $user['image'];
+            
+            if ($_SESSION['email'] === 'addsamuel355@gmail.com') {
+                $_SESSION['sysadmin'] = $_SESSION['email'];
+            }
+
+            // Changed from direct query to prepared statement for security
+            $updateQuery = "UPDATE users SET last_login = NOW() WHERE id = ?";
+            $updateStmt = mysqli_prepare($conn, $updateQuery);
+            mysqli_stmt_bind_param($updateStmt, "i", $user['id']);
+            mysqli_stmt_execute($updateStmt);
+
+            // Removed login_attempts code that wasn't being used
+
+            // Modified to use sendResponse function consistently
+            sendResponse('success', 'Login successful', [
+                'redirect' => $user['role'] === 'admin' ? '/dashboard' : '/pos'
+            ]);
+        } else {
+            sendResponse('error', 'Wrong credentials');
+        }
+    } else {
+        sendResponse('error', 'Wrong credentials');
+    }
+
+// Added catch block for error handling
+} catch (Exception $e) {
+    sendResponse('error', 'An error occurred: ' . $e->getMessage());
+// Added finally block to ensure connection is closed
+} finally {
+    mysqli_close($conn);
 }
-
-mysqli_close($conn);

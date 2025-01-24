@@ -6,9 +6,10 @@ document.addEventListener("DOMContentLoaded", function () {
   setInterval(loadNotifications, 3000);
 
   // Setup clear all notifications
-  document
-    .querySelector(".clear-noti")
-    .addEventListener("click", clearAllNotifications);
+  const clear_notification = document.querySelector(".clear-noti")
+  if(clear_notification){
+    clear_notification.addEventListener("click", clearAllNotifications);
+  }    
 });
 
 function loadNotifications() {

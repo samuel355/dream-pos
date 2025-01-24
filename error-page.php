@@ -1,18 +1,31 @@
-<?php
-  include_once('includes/head.php');
-  require_once 'includes/db_connection.php';
-  require_once 'includes/auth.php';
+<?php include 'includes/head.php';
+include 'includes/auth.php';
+requireLogin(); ?>
 
-  // Redirect if already logged in
-  if (isLoggedIn()) {
-    header('Location: /');
-    exit();
-  }
 
-?>
+<body>
 
-<body class="account-page">
+
+  <!-- Main Wrapper -->
   <div class="main-wrapper">
-    <h1>Error page</h1>
+
+    <div class="page-wrapper pos-pg-wrapper ms-0">
+      <div class="content">
+        <h2 class="text-center">
+          Error Page
+        </h2>
+        <p class="text-center mt-3">
+          <a href="/pos">Go Back To The POS Page</a>
+        </p>
+      </div>
+    </div>
+
   </div>
-  <?php include_once('includes/scripts.php') ?>
+  <!-- /Main Wrapper -->
+
+
+
+  <?php include 'includes/scripts.php'; ?>
+  </body>
+
+</html>

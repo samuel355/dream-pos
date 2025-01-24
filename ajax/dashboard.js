@@ -17,26 +17,39 @@ function loadDashboardData() {
 
 function updateDashboard(data) {
   // Update counters
-  document.querySelector('[data-type="todays_orders"]').textContent =
-    data.todays_orders;
-  document.querySelector('[data-type="todays_sales"]').textContent =
-    formatNumber(data.todays_sales);
-  document.querySelector('[data-type="weekly_sales"]').textContent =
-    formatNumber(data.weekly_sales);
-  document.querySelector('[data-type="monthly_sales"]').textContent =
-    formatNumber(data.monthly_sales);
+  const today_orders = document.querySelector('[data-type="todays_orders"]');
+  const today_sales = document.querySelector('[data-type="todays_sales"]');
+  const weekly_sales = document.querySelector('[data-type="weekly_sales"]');
+  const monthly_sales = document.querySelector('[data-type="monthly_sales"]');
+  const today_customers = document.getElementById("todays_customers");
+  const total_admins = document.getElementById("total_admins");
+  const total_cashiers = document.getElementById("total_cashiers");
 
-  // Update user counts
-  document.getElementById("todays_customers").textContent =
-    data.todays_customers;
-  document.getElementById("total_admins").textContent = data.total_admins;
-  document.getElementById("total_cashiers").textContent = data.total_cashiers;
-
+  if (today_orders) {
+    today_orders.textContent = data.todays_orders;
+  }
+  if (today_sales) {
+    today_sales.textContent = formatNumber(data.todays_sales);
+  }
+  if (weekly_sales) {
+    weekly_sales.textContent = formatNumber(data.weekly_sales);
+  }
+  if (monthly_sales) {
+    monthly_sales.textContent = formatNumber(data.monthly_sales);
+  }
+  if (today_customers) {
+    today_customers.textContent = data.todays_customers;
+  }
+  if(total_admins){
+    total_admins.textContent = data.total_admins;
+  }
+  if(total_cashiers){
+    total_cashiers.textContent = data.total_cashiers;
+  }
+  
   // Update customers table
   showCustomersInTable(data.todays_orders_list);
-
 }
-
 
 function showCustomersInTable(orders) {
   const table = $("#dashboard-customers");
@@ -50,7 +63,6 @@ function showCustomersInTable(orders) {
   tbody.empty();
 
   orders.forEach((order, i) => {
-
     tbody.append(
       `
         <tr>

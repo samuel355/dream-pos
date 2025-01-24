@@ -1,13 +1,12 @@
 <?php
-session_start();
-include_once('../includes/db_connection.php');
-include_once('../includes/sendResponse.php');
-include_once('../includes/auth.php');
-
+include '../includes/db_connection.php';
+include '../includes/auth.php';
+include '../includes/sendResponse.php';
 
 if(!isAdmin() || !isSysAdmin()){
   sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
+
 try {
     $data = json_decode(file_get_contents('php://input'), true);
     $customerId = isset($data['customer_id']) ? intval($data['customer_id']) : 0;

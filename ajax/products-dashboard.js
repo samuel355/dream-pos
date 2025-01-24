@@ -2,14 +2,18 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchAllProducts();
 
   //Add Product
-  document
-    .getElementById("add-product-form")
-    .addEventListener("submit", addProduct);
+  const search_add_product = document.getElementById("add-product-form");
+
+  if(search_add_product){
+    search_add_product.addEventListener("submit", addProduct);
+  }
 
   //Edit Product
-  document
-    .getElementById("edit-product-form")
-    .addEventListener("submit", editProduct);
+  const search_edit_product = document.getElementById("edit-product-form");
+  if(search_edit_product){
+    search_edit_product.addEventListener("submit", editProduct);
+  }
+    
 });
 
 function fetchAllProducts() {

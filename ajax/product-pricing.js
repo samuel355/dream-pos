@@ -6,53 +6,55 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("add-product-pricing-form");
 
   //Add product size
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    // Create FormData object
-    const formData = new FormData(this);
-    const size_name = $("#size-name").val();
-    const category_id = $("#category-id").val();
-    const price = $("#price").val();
+      // Create FormData object
+      const formData = new FormData(this);
+      const size_name = $("#size-name").val();
+      const category_id = $("#category-id").val();
+      const price = $("#price").val();
 
-    if (category_id === "Choose Category" || category_id === "") {
-      toastr.error("Select  Product Category");
-      return;
-    }
+      if (category_id === "Choose Category" || category_id === "") {
+        toastr.error("Select  Product Category");
+        return;
+      }
 
-    if (size_name === "" || size_name === 'Select Size') {
-      toastr.error("Please Enter the size name: Small, Medium, Large, etc.");
-      return;
-    }
+      if (size_name === "" || size_name === "Select Size") {
+        toastr.error("Please Enter the size name: Small, Medium, Large, etc.");
+        return;
+      }
 
-    if (isNaN(price) || price === "") {
-      toastr.error("Enter the correct amount");
-      return;
-    }
+      if (isNaN(price) || price === "") {
+        toastr.error("Enter the correct amount");
+        return;
+      }
 
-    // Send AJAX request
-    fetch("php/add-product-pricing.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        return response.json();
+      // Send AJAX request
+      fetch("php/add-product-pricing.php", {
+        method: "POST",
+        body: formData,
       })
-      .then((data) => {
-        if (data.status === "success") {
-          form.reset();
-          $("#pricing-modal").modal("hide");
-          loadProductPricing();
-          toastr.success(data.message);
-        } else {
-          toastr.error(data.message);
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        toastr.error("An error occurred. Please try again..");
-      });
-  });
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.status === "success") {
+            form.reset();
+            $("#pricing-modal").modal("hide");
+            loadProductPricing();
+            toastr.success(data.message);
+          } else {
+            toastr.error(data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          toastr.error("An error occurred. Please try again..");
+        });
+    });
+  }
 });
 
 function loadProductPricing() {
@@ -72,7 +74,7 @@ function loadProductPricing() {
 
 function displayProductPricings(data) {
   const pricingList = document.querySelector(".product-pricing-content");
-  if(pricingList === null) return
+  if (pricingList === null) return;
 
   let html = "";
   data.forEach((dt, i) => {

@@ -1,18 +1,11 @@
 <?php
 session_start();
-include_once('../includes/db_connection.php');
-include_once('../includes/sendResponse.php');
+include '../includes/db_connection.php';
+include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
 function getCategories($conn)
 {
-  //$query = "SELECT * FROM products ORDER BY name";
-  // $query = "SELECT p.*, c.name as category_name, pp.size, pp.price 
-  //           FROM products p
-  //           LEFT JOIN categories c ON p.category_id = c.id
-  //           LEFT JOIN product_pricing pp ON p.id = pp.product_id
-  //           ORDER BY p.name";
-
   $query = "SELECT p.*, c.name as category_name
             FROM products p
             LEFT JOIN categories c ON p.category_id = c.id

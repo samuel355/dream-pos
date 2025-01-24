@@ -1,6 +1,6 @@
 <?php
-include_once('includes/head.php');
-include_once('includes/auth.php');
+include 'includes/head.php';
+include 'includes/auth.php';
 
 requireLogin();
 ?>
@@ -14,9 +14,9 @@ requireLogin();
 
   <div class="main-wrapper">
 
-    <?php include_once('includes/header.php')  ?>
+    <?php include 'includes/header.php'  ?>
 
-    <?php include_once('includes/sidebar.php') ?>
+    <?php include 'includes/sidebar.php' ?>
 
     <div class="page-wrapper">
       <div class="content">
@@ -99,7 +99,7 @@ requireLogin();
                           <option value="Choose Category">Choose Category</option>
                           <?php
                           // Include database connection
-                          include_once('includes/db_connection.php');
+                          include 'includes/db_connection.php' ;
 
                           // Fetch categories from database
                           $query = "SELECT * FROM categories ORDER BY id";
@@ -229,4 +229,7 @@ requireLogin();
     </div>
   </div>
 
-  <?php include_once('includes/scripts.php') ?>
+  <?php include 'includes/scripts.php'; ?>
+  </body>
+
+</html>

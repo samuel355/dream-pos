@@ -3,8 +3,8 @@ header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
 header('Connection: keep-alive');
 
-include_once('../includes/db_connection.php');
-include_once('../includes/sendResponse.php');
+include '../includes/db_connection.php';
+include '../includes/sendResponse.php';
 //header('Content-Type: application/json');
 
 while (true) {

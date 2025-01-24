@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2025 at 05:21 PM
+-- Generation Time: Jan 24, 2025 at 06:59 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `dream_pos`
+-- Database: `popsy_shop`
 --
 
 -- --------------------------------------------------------
@@ -37,6 +37,15 @@ CREATE TABLE `cart_items` (
   `category_id` varchar(25) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`id`, `session_id`, `product_id`, `quantity`, `price`, `size`, `category_id`, `created_at`) VALUES
+(257, '1lotq4ij736s0j3i2uop3tei9l', 61, 1, 80.00, 'Large', '5', '2025-01-22 17:16:29'),
+(264, 'nd6er1rb8kumlaam3hq02hihhc', 21, 1, 60.00, 'Medium', '1', '2025-01-23 14:59:46'),
+(265, 'nd6er1rb8kumlaam3hq02hihhc', 32, 1, 10.00, 'Medium', '2', '2025-01-23 14:59:49');
 
 -- --------------------------------------------------------
 
@@ -76,17 +85,25 @@ CREATE TABLE `customers` (
   `contact` varchar(50) DEFAULT NULL,
   `items` text DEFAULT NULL,
   `total` decimal(10,2) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `name`, `contact`, `items`, `total`, `created_at`) VALUES
-(1, 'Eugene', '024637389', '1x Cocktail Boba, 1x Blueberry Popping', 70.00, '2025-01-21 22:30:42'),
-(3, 'Mr Akoto', '024829879', '1x Cocktail Boba, 1x Orange Popping', 70.00, '2025-01-22 09:03:27'),
-(4, 'Francis', '0247929343', '1x Cocktail Boba, 1x Blueberry Popping', 70.00, '2025-01-22 12:07:17');
+INSERT INTO `customers` (`id`, `name`, `contact`, `items`, `total`, `created_at`, `created_by`) VALUES
+(1, 'Eugene', '024637389', '1x Cocktail Boba, 1x Blueberry Popping', 70.00, '2025-01-21 22:30:42', ''),
+(3, 'Mr Akoto', '024829879', '1x Cocktail Boba, 1x Orange Popping', 70.00, '2025-01-22 09:03:27', ''),
+(4, 'Francis', '0247929343', '1x Cocktail Boba, 1x Blueberry Popping', 70.00, '2025-01-22 12:07:17', ''),
+(5, 'Dark Side', '0246577221', '1x Boba Pearls', 60.00, '2025-01-23 09:07:57', ''),
+(6, 'new cus', '064676798', '1x Cocktail Boba', 60.00, '2025-01-23 11:14:24', ''),
+(7, 'Emmanuel', '0253098944', '1x Cocktail Boba, 1x Brown sugar syrup', 70.00, '2025-01-23 15:07:24', 'Tater Jonathan'),
+(8, 'Listowell', '0253098944', '1x Boba Pearls', 60.00, '2025-01-23 15:11:14', 'Tater Jonathan'),
+(9, 'Jahmon', '024988345', '1x Boba Pearls', 60.00, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
+(10, 'Sam', '02498905445', '1x Boba Pearls', 60.00, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
+(11, 'Zara', '02984908245', '1x Boba Pearls, 1x Nutella', 70.00, '2025-01-23 16:08:55', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -120,10 +137,17 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `order_id`, `is_read`, `created_at`) VALUES
-(16, 35, 0, '2025-01-21 22:30:42'),
-(17, 36, 0, '2025-01-21 23:11:13'),
-(18, 37, 0, '2025-01-22 09:03:27'),
-(19, 38, 0, '2025-01-22 12:07:17');
+(16, 35, 1, '2025-01-21 22:30:42'),
+(17, 36, 1, '2025-01-21 23:11:13'),
+(18, 37, 1, '2025-01-22 09:03:27'),
+(19, 38, 1, '2025-01-22 12:07:17'),
+(20, 39, 1, '2025-01-23 09:07:57'),
+(21, 40, 0, '2025-01-23 11:14:24'),
+(22, 46, 0, '2025-01-23 15:07:24'),
+(23, 47, 0, '2025-01-23 15:11:14'),
+(24, 48, 0, '2025-01-23 16:06:20'),
+(25, 49, 0, '2025-01-23 16:07:09'),
+(26, 50, 0, '2025-01-23 16:08:55');
 
 -- --------------------------------------------------------
 
@@ -144,18 +168,26 @@ CREATE TABLE `orders` (
   `order_status` enum('completed','cancelled','refunded') DEFAULT 'completed',
   `receipt_number` varchar(50) DEFAULT NULL,
   `notes` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `customer_phone`, `total_amount`, `tax_amount`, `discount_amount`, `payment_method`, `payment_status`, `order_status`, `receipt_number`, `notes`, `created_at`) VALUES
-(35, 5, 'Eugene', '024637389', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-EU88691', NULL, '2025-01-16 22:30:42'),
-(36, 5, 'Joan', '025363838', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-JO37710', NULL, '2025-01-21 23:11:13'),
-(37, 5, 'Mr Akoto', '024829879', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-MRAK27966', NULL, '2025-01-22 09:03:27'),
-(38, 5, 'Francis', '0247929343', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-FR45521', NULL, '2025-01-22 12:07:17');
+INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `customer_phone`, `total_amount`, `tax_amount`, `discount_amount`, `payment_method`, `payment_status`, `order_status`, `receipt_number`, `notes`, `created_at`, `created_by`) VALUES
+(35, 5, 'Eugene', '024637389', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-EU88691', NULL, '2025-01-16 22:30:42', ''),
+(36, 5, 'Joan', '025363838', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-JO37710', NULL, '2025-01-21 23:11:13', ''),
+(37, 5, 'Mr Akoto', '024829879', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-MRAK27966', NULL, '2025-01-22 09:03:27', ''),
+(38, 5, 'Francis', '0247929343', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-FR45521', NULL, '2025-01-22 12:07:17', ''),
+(39, 5, 'Dark Side', '0246577221', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-DASI64775', NULL, '2025-01-23 09:07:57', ''),
+(40, 5, 'new cus', '064676798', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-NECU43282', NULL, '2025-01-23 11:14:24', ''),
+(46, 7, 'Emmanuel', '0253098944', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-EM93674', NULL, '2025-01-23 15:07:24', 'Tater Jonathan'),
+(47, 7, 'Listowell', '0253098944', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-LI60820', NULL, '2025-01-23 15:11:14', 'Tater Jonathan'),
+(48, 5, 'Jahmon', '024988345', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-JA66032', NULL, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
+(49, 5, 'Sam', '02498905445', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-SA66258', NULL, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
+(50, 5, 'Zara', '02984908245', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-ZA75582', NULL, '2025-01-23 16:08:55', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -171,18 +203,26 @@ CREATE TABLE `order_history` (
   `previous_status` varchar(50) DEFAULT NULL,
   `new_status` varchar(50) DEFAULT NULL,
   `notes` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_history`
 --
 
-INSERT INTO `order_history` (`id`, `order_id`, `user_id`, `action`, `previous_status`, `new_status`, `notes`, `created_at`) VALUES
-(26, 35, 5, 'order_created', NULL, 'completed', NULL, '2025-01-21 22:30:42'),
-(27, 36, 5, 'order_created', NULL, 'completed', NULL, '2025-01-21 23:11:13'),
-(28, 37, 5, 'order_created', NULL, 'completed', NULL, '2025-01-22 09:03:27'),
-(29, 38, 5, 'order_created', NULL, 'completed', NULL, '2025-01-22 12:07:17');
+INSERT INTO `order_history` (`id`, `order_id`, `user_id`, `action`, `previous_status`, `new_status`, `notes`, `created_at`, `created_by`) VALUES
+(26, 35, 5, 'order_created', NULL, 'completed', NULL, '2025-01-21 22:30:42', ''),
+(27, 36, 5, 'order_created', NULL, 'completed', NULL, '2025-01-21 23:11:13', ''),
+(28, 37, 5, 'order_created', NULL, 'completed', NULL, '2025-01-22 09:03:27', ''),
+(29, 38, 5, 'order_created', NULL, 'completed', NULL, '2025-01-22 12:07:17', ''),
+(30, 39, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 09:07:57', ''),
+(31, 40, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 11:14:24', ''),
+(32, 46, 7, 'order_created', NULL, 'completed', NULL, '2025-01-23 15:07:24', 'Tater Jonathan'),
+(33, 47, 7, 'order_created', NULL, 'completed', NULL, '2025-01-23 15:11:14', 'Tater Jonathan'),
+(34, 48, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
+(35, 49, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
+(36, 50, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:08:55', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -197,21 +237,31 @@ CREATE TABLE `order_items` (
   `quantity` int(11) DEFAULT NULL,
   `unit_price` decimal(10,2) DEFAULT NULL,
   `total_price` decimal(10,2) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `order_items`
 --
 
-INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `unit_price`, `total_price`, `created_at`) VALUES
-(60, 35, 21, 1, 60.00, 60.00, '2025-01-21 22:30:42'),
-(61, 35, 32, 1, 10.00, 10.00, '2025-01-21 22:30:42'),
-(62, 36, 21, 1, 60.00, 60.00, '2025-01-21 23:11:13'),
-(63, 37, 21, 1, 60.00, 60.00, '2025-01-22 09:03:27'),
-(64, 37, 33, 1, 10.00, 10.00, '2025-01-22 09:03:27'),
-(65, 38, 21, 1, 60.00, 60.00, '2025-01-22 12:07:17'),
-(66, 38, 32, 1, 10.00, 10.00, '2025-01-22 12:07:17');
+INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `unit_price`, `total_price`, `created_at`, `created_by`) VALUES
+(60, 35, 21, 1, 60.00, 60.00, '2025-01-21 22:30:42', ''),
+(61, 35, 32, 1, 10.00, 10.00, '2025-01-21 22:30:42', ''),
+(62, 36, 21, 1, 60.00, 60.00, '2025-01-21 23:11:13', ''),
+(63, 37, 21, 1, 60.00, 60.00, '2025-01-22 09:03:27', ''),
+(64, 37, 33, 1, 10.00, 10.00, '2025-01-22 09:03:27', ''),
+(65, 38, 21, 1, 60.00, 60.00, '2025-01-22 12:07:17', ''),
+(66, 38, 32, 1, 10.00, 10.00, '2025-01-22 12:07:17', ''),
+(67, 39, 61, 1, 60.00, 60.00, '2025-01-23 09:07:57', ''),
+(68, 40, 21, 1, 60.00, 60.00, '2025-01-23 11:14:24', ''),
+(69, 46, 21, 1, 60.00, 60.00, '2025-01-23 15:07:24', '0'),
+(70, 46, 53, 1, 10.00, 10.00, '2025-01-23 15:07:24', '0'),
+(71, 47, 61, 1, 60.00, 60.00, '2025-01-23 15:11:14', 'Tater Jonathan'),
+(72, 48, 61, 1, 60.00, 60.00, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
+(73, 49, 61, 1, 60.00, 60.00, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
+(74, 50, 61, 1, 60.00, 60.00, '2025-01-23 16:08:55', 'Samuel Osei Adu'),
+(75, 50, 54, 1, 10.00, 10.00, '2025-01-23 16:08:55', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -236,9 +286,9 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `category_id`, `category_name`, `name`, `price`, `size`, `created_at`, `created_by`, `image`) VALUES
-(21, '1', 'Fruit Tea Series', 'Cocktail Boba', '60', 'Medium', '2025-01-21 10:59:25', NULL, 'uploads/products/678f7e0d37c35.png'),
-(22, '1', 'Fruit Tea Series', 'Mango', '60', 'Medium', '2025-01-21 11:03:13', NULL, 'uploads/products/678f7ef11e33c.png'),
-(23, '1', 'Fruit Tea Series', 'Iced Tea', '80', 'Large', '2025-01-21 11:22:10', NULL, 'uploads/products/678f8362b03b8.png'),
+(21, '1', 'Fruit Tea Series', 'Cocktail Boba', '60', 'Medium', '2025-01-21 10:59:25', NULL, 'uploads/products/6791955b628cf.png'),
+(22, '1', 'Fruit Tea Series', 'Mango', '60', 'Medium', '2025-01-21 11:03:13', NULL, 'uploads/products/6791957060134.png'),
+(23, '1', 'Fruit Tea Series', 'Iced Tea', '80', 'Large', '2025-01-21 11:22:10', NULL, 'uploads/products/67920b11d2635.png'),
 (24, '1', 'Fruit Tea Series', 'Pineapple Boba', '80', 'Large', '2025-01-21 11:23:02', NULL, 'uploads/products/678f8396a902d.png'),
 (25, '1', 'Fruit Tea Series', 'Rose', '80', 'Large', '2025-01-21 11:24:42', NULL, NULL),
 (26, '1', 'Fruit Tea Series', 'Cantaloupe', '60', 'Medium', '2025-01-21 11:41:09', NULL, NULL),
@@ -250,7 +300,32 @@ INSERT INTO `products` (`id`, `category_id`, `category_name`, `name`, `price`, `
 (32, '2', 'Poppin Boba Series', 'Blueberry Popping', '10', 'Medium', '2025-01-21 11:47:58', NULL, NULL),
 (33, '2', 'Poppin Boba Series', 'Orange Popping', '10', 'Medium', '2025-01-21 11:48:13', NULL, NULL),
 (34, '2', 'Poppin Boba Series', 'Yogurt Popping', '10', 'Medium', '2025-01-21 11:48:41', NULL, NULL),
-(35, '2', 'Poppin Boba Series', 'Passion Fruit Popping', '10', 'Medium', '2025-01-21 11:49:03', NULL, NULL);
+(35, '2', 'Poppin Boba Series', 'Passion Fruit Popping', '10', 'Medium', '2025-01-21 11:49:03', NULL, NULL),
+(36, '3', 'Milk Tea Series', 'Taro Milk', '60', 'Medium', '2025-01-22 16:26:58', NULL, NULL),
+(37, '3', 'Milk Tea Series', 'Blue Berry Milk', '60', 'Medium', '2025-01-22 16:27:58', NULL, NULL),
+(38, '3', 'Milk Tea Series', 'Vanilla Milk', '80', 'Large', '2025-01-22 16:42:58', NULL, NULL),
+(40, '3', 'Milk Tea Series', 'Strawberry Milk', '60', 'Medium', '2025-01-22 16:45:42', NULL, NULL),
+(41, '3', 'Milk Tea Series', 'Chocolate Milk', '60', 'Medium', '2025-01-22 16:46:00', NULL, NULL),
+(42, '3', 'Milk Tea Series', 'Pineapple Milk', '60', 'Medium', '2025-01-22 16:47:05', NULL, NULL),
+(43, '3', 'Milk Tea Series', 'Coconut Milk', '80', 'Large', '2025-01-22 16:47:23', NULL, NULL),
+(44, '3', 'Milk Tea Series', 'Original Milk Tea', '80', 'Large', '2025-01-22 16:48:26', NULL, NULL),
+(45, '3', 'Milk Tea Series', 'Banana Milk', '60', 'Medium', '2025-01-22 16:48:52', NULL, NULL),
+(46, '3', 'Milk Tea Series', 'Matcha Milk', '60', 'Medium', '2025-01-22 16:49:18', NULL, NULL),
+(47, '3', 'Milk Tea Series', 'Melon Milk', '60', 'Medium', '2025-01-22 16:49:47', NULL, NULL),
+(48, '3', 'Milk Tea Series', 'Oreo Milk', '60', 'Medium', '2025-01-22 16:50:21', NULL, NULL),
+(49, '3', 'Milk Tea Series', 'Lotus Biscoff Caramel', '80', 'Large', '2025-01-22 16:50:41', NULL, NULL),
+(50, '3', 'Milk Tea Series', 'Malta Flash Milk', '60', 'Medium', '2025-01-22 16:51:04', NULL, NULL),
+(51, '4', 'Toppings', 'Cheese Bomb', '10', 'Medium', '2025-01-22 16:54:15', NULL, NULL),
+(52, '4', 'Toppings', 'Hersheys Caramel Syrup', '10', 'Medium', '2025-01-22 16:55:09', NULL, NULL),
+(53, '4', 'Toppings', 'Brown sugar syrup', '10', 'Medium', '2025-01-22 16:55:44', NULL, NULL),
+(54, '4', 'Toppings', 'Nutella', '10', 'Medium', '2025-01-22 16:56:03', NULL, NULL),
+(55, '4', 'Toppings', 'Mango Syrup', '10', 'Medium', '2025-01-22 16:56:27', NULL, NULL),
+(56, '4', 'Toppings', 'Passion Fruit', '10', 'Medium', '2025-01-22 16:56:54', NULL, NULL),
+(57, '4', 'Toppings', 'Mango', '10', 'Medium', '2025-01-22 17:00:32', NULL, NULL),
+(58, '4', 'Toppings', 'Strawberry', '10', 'Medium', '2025-01-22 17:01:36', NULL, NULL),
+(59, '4', 'Toppings', 'Brown Chocolate', '10', 'Medium', '2025-01-22 17:02:13', NULL, NULL),
+(60, '4', 'Toppings', 'Brown Sugar Boba', '80', 'Large', '2025-01-22 17:02:30', NULL, NULL),
+(61, '5', 'Boba Pearls', 'Boba Pearls', '60', 'Medium', '2025-01-22 17:03:21', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -299,8 +374,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `phone`, `username`, `password`, `fullname`, `role`, `status`, `last_login`, `created_at`, `updated_at`, `image`) VALUES
-(5, 'addsamuel355@gmail.com', '0246562377', 'samuelos', '$2y$10$lELYL5GH8TZonjHqGmhfpuXp5FB0gzPyHgA4v9/JwLghtKnYTrzxe', 'Samuel Osei Adu', 'admin', 'active', '2025-01-21 10:05:27', '2025-01-17 10:37:32', '2025-01-22', 'uploads/profile_images/678a32eca0f48.jpg'),
-(7, 'tater@gmail.com', '0246578988', 'taterjon', '$2y$10$2gbK2DxWCJYaEvJnMazc6uRcU/NJ.OWuY14Z9Hx/Vxj2e58x1jTd.', 'Tater Jonathan', 'admin', 'active', NULL, '2025-01-22 12:06:04', '2025-01-22', 'uploads/profile_images/6790df2c09fd0.jpg');
+(5, 'addsamuel355@gmail.com', '0246562377', 'samuelos', '$2y$10$lELYL5GH8TZonjHqGmhfpuXp5FB0gzPyHgA4v9/JwLghtKnYTrzxe', 'Samuel Osei Adu', 'admin', 'active', '2025-01-24 17:50:34', '2025-01-17 10:37:32', '2025-01-22', 'uploads/profile_images/678a32eca0f48.jpg'),
+(7, 'tater@gmail.com', '0246578988', 'taterjon', '$2y$10$2gbK2DxWCJYaEvJnMazc6uRcU/NJ.OWuY14Z9Hx/Vxj2e58x1jTd.', 'Tater Jonathan', 'cashier', 'active', '2025-01-23 15:06:15', '2025-01-22 12:06:04', '2025-01-23', 'uploads/profile_images/6790df2c09fd0.jpg');
 
 --
 -- Indexes for dumped tables
@@ -389,7 +464,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=272;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -401,7 +476,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -413,31 +488,31 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `order_history`
 --
 ALTER TABLE `order_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `product_pricing`

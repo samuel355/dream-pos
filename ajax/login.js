@@ -23,7 +23,6 @@ $("#login-form").on("submit", function (e) {
     body: formData, // Use 'body' instead of 'data'
   })
     .then((response) => {
-      console.log(response)
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -42,7 +41,7 @@ $("#login-form").on("submit", function (e) {
       }
     })
     .catch((error) => {
-      console.error("Error:", error); // Log the error for debugging
+      console.log(error);
       toastr.error("Sorry, an error occurred while logging in");
       $(".btn-login").text("Sign In");
       $(".btn-login").prop("disabled", false); // Re-enable button

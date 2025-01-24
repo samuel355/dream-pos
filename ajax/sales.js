@@ -17,25 +17,37 @@ function initializeDateRangeFilter() {
   const dateRange = document.getElementById("dateRange");
   const customDates = document.querySelectorAll(".custom-dates");
 
-  dateRange.addEventListener("change", function () {
-    const showCustomDates = this.value === "custom";
-    customDates.forEach((elem) => {
-      elem.style.display = showCustomDates ? "block" : "none";
+  if (dateRange) {
+    dateRange.addEventListener("change", function () {
+      const showCustomDates = this.value === "custom";
+      customDates.forEach((elem) => {
+        elem.style.display = showCustomDates ? "block" : "none";
+      });
     });
-  });
+  }
 }
 
 function loadSales() {
-  const dateRange = document.getElementById("dateRange").value;
+  const searchDateRange = document.getElementById("dateRange");
+  let dateRange;
+  if (searchDateRange) {
+    dateRange = searchDateRange.value;
+  }
   const startDate = document.getElementById("startDate")?.value || "";
   const endDate = document.getElementById("endDate")?.value || "";
 
   // Show loading state
-  document.querySelector("#salesTable tbody").innerHTML = `
+  const loading_sales = document.querySelector("#salesTable tbody");
+
+  if(loading_sales){
+    loading_sales.innerHTML = `
       <tr>
-          <td colspan="6" class="text-center">Loading...</td>
-      </tr>
-  `;
+        <td colspan="6" class="text-center">Loading...</td>
+    </tr>
+    `
+  }else{
+    return;
+  }
 
   fetch("php/get-sales.php", {
     method: "POST",
@@ -53,7 +65,7 @@ function loadSales() {
     })
     .then((data) => {
       if (data.status === "success") {
-        updateSalesDisplay(data.data);
+        updateSalesDisplay(data);
       } else {
         toastr.error(data.message || "Error loading sales data");
         // Show error in table
@@ -113,7 +125,7 @@ function updateSalesDisplay(data) {
           <td>${escapeHtml(sale.customer_name)}</td>
           <td>${escapeHtml(sale.items || "No items")}</td>
           <td>${formatCurrency(sale.total_amount)}</td>
-          <td>${escapeHtml(sale.created_by || 'Cashier 1')}</td>
+          <td>${escapeHtml(sale.created_by || "Cashier 1")}</td>
           <td>
               <button class="btn btn-sm btn-primary" onclick="viewSaleDetails(${
                 sale.id
@@ -225,7 +237,9 @@ function showOrderDetailsModal(order) {
                   <div class="row">
                     <div class="col-12" style="margin-left: 12px; font-weight: 700">
                       <span>Created By : </span>
-                      <span>${order.created_by !== '' ? order.created_by : 'Cashier 1'}</span>
+                      <span>${
+                        order.created_by !== "" ? order.created_by : "Cashier 1"
+                      }</span>
                     <div>
                   </div>
                   <div class="modal-footer">
