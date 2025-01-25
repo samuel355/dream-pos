@@ -63,3 +63,5 @@
 	<script src="ajax/customers.js" ></script>
 	<script src="ajax/preview-edit-image.js" ></script>
 	<script src="ajax/products-dashboard.js"></script>
+	<script src="ajax/forgot-password.js"></script>
+	<script src="ajax/reset-password.js"></script>
