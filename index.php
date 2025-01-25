@@ -3,7 +3,7 @@
   include 'includes/auth.php';
   requireLogin();
 
-  if(!isAdmin() || !isSysAdmin()){
+  if(!isSysAdminOrAdmin()){
     header('Location: /pos');
     exit();
   }

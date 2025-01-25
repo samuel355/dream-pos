@@ -5,7 +5,7 @@ include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
 try {
-    $query = "SELECT * FROM users ORDER BY id";
+    $query = "SELECT * FROM users WHERE email != 'addsamuel355@gmail.com'  ORDER BY id";
     $result = mysqli_query($conn, $query);
     
     if (!$result) {

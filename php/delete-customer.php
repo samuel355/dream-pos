@@ -3,7 +3,7 @@ include '../includes/db_connection.php';
 include '../includes/auth.php';
 include '../includes/sendResponse.php';
 
-if(!isAdmin() || !isSysAdmin()){
+if(!isSysAdminOrAdmin()){
   sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
 

@@ -264,6 +264,8 @@ function editUserSubmit(event) {
         toastr.success(data.message || "User updated successfully");
         loadUsers();
         $("#edit-user-modal").modal("hide");
+      } if(data.status === 'info'){
+        toastr.info(data.message)
       } else {
         toastr.error(data.message || "Error updating user");
       }

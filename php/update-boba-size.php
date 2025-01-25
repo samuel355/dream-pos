@@ -8,7 +8,7 @@ include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
 
-if(!isAdmin() || !isSysAdmin()){
+if(!isSysAdminOrAdmin()){
   sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
 

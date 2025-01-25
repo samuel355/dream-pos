@@ -694,7 +694,7 @@ function createOrder(cartData) {
         document.getElementById("customer-name").value = "";
         document.getElementById("customer-contact").value = "";
       } else {
-        alert("Error processing your order: " + data.message);
+        toastr.error("Error processing your order: " + data.message);
         order_btn.textContent = "Order now";
       }
     })

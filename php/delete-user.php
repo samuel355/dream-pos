@@ -4,7 +4,7 @@ include '../includes/auth.php';
 include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
-if(!isAdmin() || !isSysAdmin()){
+if(!isSysAdminOrAdmin()){
   sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
 
@@ -16,6 +16,10 @@ try {
     throw new Exception('Invalid user ID');
   }
 
+  if ($userId !== intval($_SESSION['user_id']) && !isSysAdmin()) {
+    sendResponse('error', 'You cannot delete other admins unless they do it themselves or the developer does it');
+    exit;
+  }
 
   $query = "DELETE FROM users WHERE id = ?";
   $stmt = mysqli_prepare($conn, $query);

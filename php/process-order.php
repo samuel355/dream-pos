@@ -6,10 +6,11 @@ header('Content-Type: application/json');
 
 requireLogin();
 
-function processOrder($conn) {
+function processOrder($conn)
+{
     try {
         mysqli_begin_transaction($conn);
-        
+
         // 1. Validate Session and Input Data
         if (!validateInput()) {
             return [
@@ -20,7 +21,7 @@ function processOrder($conn) {
 
         // 2. Get and Sanitize Input Data
         $data = getAndSanitizeInput($conn);
-        
+
         // 3. Get Cart Items and Calculate Totals
         $cartData = getCartItems($conn, $data['session_id']);
         if ($cartData['status'] === 'error') {
@@ -58,14 +59,13 @@ function processOrder($conn) {
         }
 
         mysqli_commit($conn);
-        
+
         return [
             'status' => 'success',
             'message' => 'Order processed successfully',
             'order_id' => $orderResult['order_id'],
             'receipt_number' => $data['invoice_number']
         ];
-
     } catch (Exception $e) {
         mysqli_rollback($conn);
         return [
@@ -75,13 +75,15 @@ function processOrder($conn) {
     }
 }
 
-function validateInput() {
-    return isset($_POST['customer_name']) && 
-           isset($_POST['customer_phone']) && 
-           isset($_POST['invoice_number']);
+function validateInput()
+{
+    return isset($_POST['customer_name']) &&
+        isset($_POST['customer_phone']) &&
+        isset($_POST['invoice_number']);
 }
 
-function getAndSanitizeInput($conn) {
+function getAndSanitizeInput($conn)
+{
     return [
         'customer_name' => mysqli_real_escape_string($conn, trim($_POST['customer_name'])),
         'customer_phone' => mysqli_real_escape_string($conn, trim($_POST['customer_phone'])),
@@ -91,17 +93,67 @@ function getAndSanitizeInput($conn) {
     ];
 }
 
-function getCartItems($conn, $session_id) {
+function checkMainFlavor($conn, $session_id)
+{
+    // Query to get products from main flavor categories
+    $query = "SELECT p.category_id, c.name as category_name, COUNT(*) as product_count
+              FROM cart_items ci 
+              JOIN products p ON ci.product_id = p.id 
+              JOIN categories c ON p.category_id = c.id
+              WHERE ci.session_id = ? 
+              AND p.category_id IN (1, 3, 5)
+              GROUP BY p.category_id";
+
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "s", $session_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    // Get count of main flavor products
+    $mainFlavorCount = mysqli_num_rows($result);
+
+    if ($mainFlavorCount === 0) {
+        // No main flavor in cart
+        return [
+            'status' => 'error',
+            'message' => 'Please add a main flavor to the cart (Fruit Tea Series, Milk Tea Series or Boba Pearls)'
+        ];
+    }
+
+    if ($mainFlavorCount > 1) {
+        // More than one main flavor in cart
+        $categories = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $categories[] = $row['category_name'];
+        }
+
+        return [
+            'status' => 'error',
+            'message' => 'Only one main flavor allowed. Currently you have: ' . implode(', ', $categories)
+        ];
+    }
+
+    return ['status' => 'success'];
+}
+
+function getCartItems($conn, $session_id)
+{
+    // Check for main flavor first
+    $mainFlavorCheck = checkMainFlavor($conn, $session_id);
+    if ($mainFlavorCheck['status'] === 'error') {
+        return $mainFlavorCheck;
+    }
+
     $cart_query = "SELECT ci.*, p.name as product_name 
                    FROM cart_items ci 
                    JOIN products p ON ci.product_id = p.id 
                    WHERE ci.session_id = ?";
-    
+
     $stmt = mysqli_prepare($conn, $cart_query);
     mysqli_stmt_bind_param($stmt, "s", $session_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-    
+
     if (!$result) {
         return ['status' => 'error', 'message' => 'Error fetching cart items'];
     }
@@ -121,10 +173,12 @@ function getCartItems($conn, $session_id) {
     ];
 }
 
-function createOrder($conn, $data, $total_amount) {
+
+function createOrder($conn, $data, $total_amount)
+{
     $order_query = "INSERT INTO orders (user_id, customer_name, customer_phone, total_amount, receipt_number, created_by) 
                     VALUES (?, ?, ?, ?, ?, ?)";
-    
+
     $stmt = mysqli_prepare($conn, $order_query);
     mysqli_stmt_bind_param(
         $stmt,
@@ -147,7 +201,8 @@ function createOrder($conn, $data, $total_amount) {
     ];
 }
 
-function addCustomer($conn, $data) {
+function addCustomer($conn, $data)
+{
     try {
         // Get cart items to combine
         $session_id = session_id();
@@ -155,7 +210,7 @@ function addCustomer($conn, $data) {
                       FROM cart_items ci 
                       JOIN products p ON ci.product_id = p.id 
                       WHERE ci.session_id = ?";
-        
+
         $stmt = mysqli_prepare($conn, $cart_query);
         mysqli_stmt_bind_param($stmt, "s", $session_id);
         mysqli_stmt_execute($stmt);
@@ -164,11 +219,11 @@ function addCustomer($conn, $data) {
         // Combine items and calculate total
         $items_array = [];
         $total = 0;
-        
+
         while ($item = mysqli_fetch_assoc($cart_items)) {
             // Add item to combined string
             $items_array[] = $item['quantity'] . "x " . $item['product_name'];
-            
+
             // Calculate total
             $total += ($item['quantity'] * $item['price']);
         }
@@ -187,25 +242,24 @@ function addCustomer($conn, $data) {
 
         $stmt = mysqli_prepare($conn, $customer_query);
         mysqli_stmt_bind_param(
-            $stmt, 
-            "sssss", 
+            $stmt,
+            "sssss",
             $data['customer_name'],
             $data['customer_phone'],
             $combined_items,
             $total,
             $_SESSION['fullname']
         );
-        
+
         if (!mysqli_stmt_execute($stmt)) {
             throw new Exception('Error adding customer: ' . mysqli_error($conn));
         }
-        
+
         return [
             'status' => 'success',
             'message' => 'Customer added successfully',
             'customer_id' => mysqli_insert_id($conn)
         ];
-
     } catch (Exception $e) {
         return [
             'status' => 'error',
@@ -214,10 +268,11 @@ function addCustomer($conn, $data) {
     }
 }
 
-function addOrderItems($conn, $order_id, $items) {
+function addOrderItems($conn, $order_id, $items)
+{
     $item_query = "INSERT INTO order_items (order_id, product_id, quantity, unit_price, total_price, created_by) 
                    VALUES (?, ?, ?, ?, ?, ?)";
-    
+
     $stmt = mysqli_prepare($conn, $item_query);
 
     foreach ($items as $item) {
@@ -232,44 +287,45 @@ function addOrderItems($conn, $order_id, $items) {
             $item_total,
             $_SESSION['fullname']
         );
-        
+
         if (!mysqli_stmt_execute($stmt)) {
             return ['status' => 'error', 'message' => 'Error adding order items'];
         }
     }
-    
+
     return ['status' => 'success'];
 }
 
-function addOrderHistory($conn, $order_id, $user_id) {
+function addOrderHistory($conn, $order_id, $user_id)
+{
     $history_query = "INSERT INTO order_history (order_id, user_id, action, new_status, created_by) 
                       VALUES (?, ?, ?, ?, ?)";
-    
+
     $stmt = mysqli_prepare($conn, $history_query);
     $action = 'order_created';
     $status = 'completed';
 
     mysqli_stmt_bind_param($stmt, "iisss", $order_id, $user_id, $action, $status, $_SESSION['fullname']);
-    
+
     if (!mysqli_stmt_execute($stmt)) {
         return ['status' => 'error', 'message' => 'Error adding order history'];
     }
-    
+
     return ['status' => 'success'];
 }
 
-function addNotification($conn, $order_id) {
+function addNotification($conn, $order_id)
+{
     $notification_query = "INSERT INTO notifications (order_id) VALUES (?)";
     $stmt = mysqli_prepare($conn, $notification_query);
     mysqli_stmt_bind_param($stmt, "i", $order_id);
-    
+
     if (!mysqli_stmt_execute($stmt)) {
         return ['status' => 'error', 'message' => 'Error adding notification'];
     }
-    
+
     return ['status' => 'success'];
 }
 
 // Execute the process
 echo json_encode(processOrder($conn));
-?>

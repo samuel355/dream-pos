@@ -4,8 +4,8 @@ include '../includes/auth.php';
 include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
-if(!isAdmin() || !isSysAdmin()){
-  sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
+if(!isSysAdmin()){
+  sendResponse('error', 'Unauthorized Action. Only the developer can perform this action. Deleting this can cause issues to the software');
 }
 
 function deleteCategory($conn, $category_id)

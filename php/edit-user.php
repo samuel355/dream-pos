@@ -4,7 +4,7 @@ include '../includes/auth.php';
 include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
-if(!isAdmin() || !isSysAdmin()){
+if (!isSysAdminOrAdmin()) {
   sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }
 
@@ -12,6 +12,11 @@ try {
   $userId = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
   if ($userId <= 0) {
     throw new Exception('Invalid user ID');
+  }
+
+  if ($userId !== intval($_SESSION['user_id']) && !isSysAdmin()) {
+    sendResponse('error', 'You cannot edit other user details unless they do it themselves or the developer does it');
+    exit;
   }
 
   // Input validation and sanitization (add more checks as needed)
