@@ -655,6 +655,21 @@ function clearCart() {
   }
 }
 
+function clearCartAfterOrder(){
+  fetch("php/clear-cart.php", {
+    method: "POST",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        updateCart(); // Refresh cart display
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
 //Checkout funciton
 function createOrder(cartData) {
   const order_btn = document.querySelector(".order-btn-container");
@@ -701,6 +716,7 @@ function createOrder(cartData) {
         );
         document.getElementById("customer-name").value = "";
         document.getElementById("customer-contact").value = "";
+        order_btn.textContent = "Order now";
       } else {
         toastr.error("Error processing your order: " + data.message);
         order_btn.textContent = "Order now";
@@ -847,13 +863,13 @@ function previewReceipt(
 
   const order_btn = document.querySelector(".order-btn-container");
   receiptWindow.onclose = function () {
-    clearCart(); // Clear the cart
+    clearCartAfterOrder()
     order_btn.disabled = false;
   };
 
   receiptWindow.onafterprint = function () {
     receiptWindow.close();
-    clearCart(); // Clear the cart
+    clearCartAfterOrder()
     order_btn.disabled = false;
   };
 }
