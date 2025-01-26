@@ -529,10 +529,18 @@ function displayCart(cartData) {
   cartContainer.innerHTML = html;
 
   // Update totals
-  subtotalElement.textContent = ` GHS. ${cartData.subtotal.toFixed(2)}`;
-  totalElement.textContent = `${cartData.total_items}`;
-  checkoutTotal.textContent = ` GHS ${cartData.total.toFixed(2)}`;
-  checkoutCheckout.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+  if(subtotalElement){
+    subtotalElement.textContent = ` GHS. ${cartData.subtotal.toFixed(2)}`;
+  }
+  if(totalElement){
+    totalElement.textContent = `${cartData.total_items}`;
+  }
+  if(checkoutTotal){
+    checkoutTotal.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+  }
+  if(checkoutCheckout){
+    checkoutCheckout.textContent = ` GHS ${cartData.total.toFixed(2)}`;
+  }
 
   //Print preview button
   const createOrderBtn = document.querySelector(".order-btn-container");
@@ -721,41 +729,41 @@ function previewReceipt(
           <style>
             *{
               margin: 0;
-              padding: 4px;
+              padding: 1px;
               box-sizing: border-box;
             }
               body {
                   font-family: monospace;
-                  padding: 20px;
+                  padding: 8px;
                   max-width: 400px;
                   margin: 0 auto;
               }
               .header {
                   text-align: center;
-                  margin-bottom: 20px;
+                  margin-bottom: 8px;
               }
               .items-table {
                   width: 100%;
                   border-collapse: collapse;
-                  margin: 20px 0;
+                  margin: 8px 0;
               }
               .items-table th {
                   border-bottom: 1px solid #000;
-                  padding: 5px;
+                  padding: 3px;
                   text-align: left;
               }
               .items-table td {
-                  padding: 5px;
+                  padding: 3px;
                   text-align: left;
               }
               .totals {
                   font-weight: bold;
-                  margin-top: 20px;
+                  margin-top: 8px;
                   text-align: right;
               }
               .footer {
                   text-align: center;
-                  margin-top: 20px;
+                  margin-top: 5px;
               }
               @media print {
                   .no-print {
@@ -764,7 +772,7 @@ function previewReceipt(
                   body {
                       width: 100%;
                       margin: 0;
-                      padding: 10px;
+                      padding: 6px;
                   }
               }
           </style>
@@ -775,10 +783,8 @@ function previewReceipt(
               <p>Ayeduase New Site - </p>
               <small>Close to Liendaville Hostel</small>
               <p>Tel: 0530975528</p>
-              <p>Date: ${new Date().toLocaleString()}</p>
+              <small>Date: ${new Date().toLocaleString()}</small>
               <p>INV #: ${invoiceNumber}</p>
-              <p>Customer: ${customerName}</p>
-              <p>Contact: ${customerContact}</p>
               <p>Served BY: ${cartData.items[0].created_by}</p>
           </div>
           

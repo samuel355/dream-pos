@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2025 at 06:59 PM
+-- Generation Time: Jan 25, 2025 at 05:56 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -45,7 +45,10 @@ CREATE TABLE `cart_items` (
 INSERT INTO `cart_items` (`id`, `session_id`, `product_id`, `quantity`, `price`, `size`, `category_id`, `created_at`) VALUES
 (257, '1lotq4ij736s0j3i2uop3tei9l', 61, 1, 80.00, 'Large', '5', '2025-01-22 17:16:29'),
 (264, 'nd6er1rb8kumlaam3hq02hihhc', 21, 1, 60.00, 'Medium', '1', '2025-01-23 14:59:46'),
-(265, 'nd6er1rb8kumlaam3hq02hihhc', 32, 1, 10.00, 'Medium', '2', '2025-01-23 14:59:49');
+(265, 'nd6er1rb8kumlaam3hq02hihhc', 32, 1, 10.00, 'Medium', '2', '2025-01-23 14:59:49'),
+(277, 'joi43tu1ipv0a4hhi97frv7995', 23, 1, 80.00, 'Large', '1', '2025-01-24 21:43:05'),
+(278, 'joi43tu1ipv0a4hhi97frv7995', 32, 2, 10.00, 'Medium', '2', '2025-01-24 21:43:44'),
+(287, 'l3rip9p78nf55vussflkbdeb16', 32, 1, 10.00, 'Medium', '2', '2025-01-25 15:32:46');
 
 -- --------------------------------------------------------
 
@@ -103,7 +106,15 @@ INSERT INTO `customers` (`id`, `name`, `contact`, `items`, `total`, `created_at`
 (8, 'Listowell', '0253098944', '1x Boba Pearls', 60.00, '2025-01-23 15:11:14', 'Tater Jonathan'),
 (9, 'Jahmon', '024988345', '1x Boba Pearls', 60.00, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
 (10, 'Sam', '02498905445', '1x Boba Pearls', 60.00, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
-(11, 'Zara', '02984908245', '1x Boba Pearls, 1x Nutella', 70.00, '2025-01-23 16:08:55', 'Samuel Osei Adu');
+(11, 'Zara', '02984908245', '1x Boba Pearls, 1x Nutella', 70.00, '2025-01-23 16:08:55', 'Samuel Osei Adu'),
+(12, 'Jacobina', '0248903453', '1x Mint, 1x Brown sugar syrup', 70.00, '2025-01-24 19:25:39', 'Samuel Osei Adu'),
+(13, 'Gambi', '043872985', '1x Iced Tea, 1x Blueberry Popping', 90.00, '2025-01-24 21:49:01', 'Samuel Osei Adu'),
+(14, 'Loving', '0398289435', '1x Iced Tea, 1x Blueberry Popping, 1x Brown sugar syrup', 100.00, '2025-01-24 21:57:51', 'Samuel Osei Adu'),
+(15, 'Blessing', '0398478934', '1x Strawberry Popping, 1x Brown sugar syrup', 20.00, '2025-01-25 15:30:55', 'Grace Gambi'),
+(16, 'Emman', '03398740934', '1x Blueberry Popping', 10.00, '2025-01-25 15:32:57', 'Grace Gambi'),
+(17, 'Kofi', '0245693784', '1x Blueberry Popping, 1x Hersheys Caramel Syrup, 1x Boba Pearls', 80.00, '2025-01-25 15:36:42', 'Grace Gambs'),
+(18, 'Kwame', '03984094', '1x Blueberry Popping, 1x Hersheys Caramel Syrup, 1x Boba Pearls', 80.00, '2025-01-25 15:37:11', 'Grace Gambs'),
+(19, 'Anas', '025309844', '1x Cocktail Boba, 1x Blueberry Popping', 70.00, '2025-01-25 15:57:53', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -142,12 +153,20 @@ INSERT INTO `notifications` (`id`, `order_id`, `is_read`, `created_at`) VALUES
 (18, 37, 1, '2025-01-22 09:03:27'),
 (19, 38, 1, '2025-01-22 12:07:17'),
 (20, 39, 1, '2025-01-23 09:07:57'),
-(21, 40, 0, '2025-01-23 11:14:24'),
-(22, 46, 0, '2025-01-23 15:07:24'),
-(23, 47, 0, '2025-01-23 15:11:14'),
-(24, 48, 0, '2025-01-23 16:06:20'),
-(25, 49, 0, '2025-01-23 16:07:09'),
-(26, 50, 0, '2025-01-23 16:08:55');
+(21, 40, 1, '2025-01-23 11:14:24'),
+(22, 46, 1, '2025-01-23 15:07:24'),
+(23, 47, 1, '2025-01-23 15:11:14'),
+(24, 48, 1, '2025-01-23 16:06:20'),
+(25, 49, 1, '2025-01-23 16:07:09'),
+(26, 50, 1, '2025-01-23 16:08:55'),
+(27, 51, 1, '2025-01-24 19:25:39'),
+(28, 56, 1, '2025-01-24 21:49:01'),
+(29, 57, 1, '2025-01-24 21:57:51'),
+(30, 58, 0, '2025-01-25 15:30:55'),
+(31, 59, 0, '2025-01-25 15:32:57'),
+(32, 60, 0, '2025-01-25 15:36:42'),
+(33, 61, 0, '2025-01-25 15:37:11'),
+(34, 62, 0, '2025-01-25 15:57:53');
 
 -- --------------------------------------------------------
 
@@ -187,7 +206,15 @@ INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `customer_phone`, `total
 (47, 7, 'Listowell', '0253098944', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-LI60820', NULL, '2025-01-23 15:11:14', 'Tater Jonathan'),
 (48, 5, 'Jahmon', '024988345', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-JA66032', NULL, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
 (49, 5, 'Sam', '02498905445', 60.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-SA66258', NULL, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
-(50, 5, 'Zara', '02984908245', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-ZA75582', NULL, '2025-01-23 16:08:55', 'Samuel Osei Adu');
+(50, 5, 'Zara', '02984908245', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-ZA75582', NULL, '2025-01-23 16:08:55', 'Samuel Osei Adu'),
+(51, 5, 'Jacobina', '0248903453', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-JA93237', NULL, '2025-01-24 19:25:39', 'Samuel Osei Adu'),
+(56, 5, 'Gambi', '043872985', 90.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-GA12027', NULL, '2025-01-24 21:49:01', 'Samuel Osei Adu'),
+(57, 5, 'Loving', '0398289435', 100.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-LO33762', NULL, '2025-01-24 21:57:51', 'Samuel Osei Adu'),
+(58, 8, 'Blessing', '0398478934', 20.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-BL18913', NULL, '2025-01-25 15:30:55', 'Grace Gambi'),
+(59, 8, 'Emman', '03398740934', 10.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-EM24289', NULL, '2025-01-25 15:32:57', 'Grace Gambi'),
+(60, 8, 'Kofi', '0245693784', 80.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-KO95174', NULL, '2025-01-25 15:36:42', 'Grace Gambs'),
+(61, 8, 'Kwame', '03984094', 80.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-KW46881', NULL, '2025-01-25 15:37:11', 'Grace Gambs'),
+(62, 5, 'Anas', '025309844', 70.00, NULL, 0.00, 'cash', 'paid', 'completed', 'INV-AN24965', NULL, '2025-01-25 15:57:53', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -222,7 +249,15 @@ INSERT INTO `order_history` (`id`, `order_id`, `user_id`, `action`, `previous_st
 (33, 47, 7, 'order_created', NULL, 'completed', NULL, '2025-01-23 15:11:14', 'Tater Jonathan'),
 (34, 48, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
 (35, 49, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
-(36, 50, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:08:55', 'Samuel Osei Adu');
+(36, 50, 5, 'order_created', NULL, 'completed', NULL, '2025-01-23 16:08:55', 'Samuel Osei Adu'),
+(37, 51, 5, 'order_created', NULL, 'completed', NULL, '2025-01-24 19:25:39', 'Samuel Osei Adu'),
+(38, 56, 5, 'order_created', NULL, 'completed', NULL, '2025-01-24 21:49:01', 'Samuel Osei Adu'),
+(39, 57, 5, 'order_created', NULL, 'completed', NULL, '2025-01-24 21:57:51', 'Samuel Osei Adu'),
+(40, 58, 8, 'order_created', NULL, 'completed', NULL, '2025-01-25 15:30:55', 'Grace Gambi'),
+(41, 59, 8, 'order_created', NULL, 'completed', NULL, '2025-01-25 15:32:57', 'Grace Gambi'),
+(42, 60, 8, 'order_created', NULL, 'completed', NULL, '2025-01-25 15:36:42', 'Grace Gambs'),
+(43, 61, 8, 'order_created', NULL, 'completed', NULL, '2025-01-25 15:37:11', 'Grace Gambs'),
+(44, 62, 5, 'order_created', NULL, 'completed', NULL, '2025-01-25 15:57:53', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -261,7 +296,25 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `quantity`, `unit_pri
 (72, 48, 61, 1, 60.00, 60.00, '2025-01-23 16:06:20', 'Samuel Osei Adu'),
 (73, 49, 61, 1, 60.00, 60.00, '2025-01-23 16:07:09', 'Samuel Osei Adu'),
 (74, 50, 61, 1, 60.00, 60.00, '2025-01-23 16:08:55', 'Samuel Osei Adu'),
-(75, 50, 54, 1, 10.00, 10.00, '2025-01-23 16:08:55', 'Samuel Osei Adu');
+(75, 50, 54, 1, 10.00, 10.00, '2025-01-23 16:08:55', 'Samuel Osei Adu'),
+(76, 51, 30, 1, 60.00, 60.00, '2025-01-24 19:25:39', 'Samuel Osei Adu'),
+(77, 51, 53, 1, 10.00, 10.00, '2025-01-24 19:25:39', 'Samuel Osei Adu'),
+(78, 56, 23, 1, 80.00, 80.00, '2025-01-24 21:49:01', 'Samuel Osei Adu'),
+(79, 56, 32, 1, 10.00, 10.00, '2025-01-24 21:49:01', 'Samuel Osei Adu'),
+(80, 57, 23, 1, 80.00, 80.00, '2025-01-24 21:57:51', 'Samuel Osei Adu'),
+(81, 57, 32, 1, 10.00, 10.00, '2025-01-24 21:57:51', 'Samuel Osei Adu'),
+(82, 57, 53, 1, 10.00, 10.00, '2025-01-24 21:57:51', 'Samuel Osei Adu'),
+(83, 58, 31, 1, 10.00, 10.00, '2025-01-25 15:30:55', 'Grace Gambi'),
+(84, 58, 53, 1, 10.00, 10.00, '2025-01-25 15:30:55', 'Grace Gambi'),
+(85, 59, 32, 1, 10.00, 10.00, '2025-01-25 15:32:57', 'Grace Gambi'),
+(86, 60, 32, 1, 10.00, 10.00, '2025-01-25 15:36:42', 'Grace Gambs'),
+(87, 60, 52, 1, 10.00, 10.00, '2025-01-25 15:36:42', 'Grace Gambs'),
+(88, 60, 61, 1, 60.00, 60.00, '2025-01-25 15:36:42', 'Grace Gambs'),
+(89, 61, 32, 1, 10.00, 10.00, '2025-01-25 15:37:11', 'Grace Gambs'),
+(90, 61, 52, 1, 10.00, 10.00, '2025-01-25 15:37:11', 'Grace Gambs'),
+(91, 61, 61, 1, 60.00, 60.00, '2025-01-25 15:37:11', 'Grace Gambs'),
+(92, 62, 21, 1, 60.00, 60.00, '2025-01-25 15:57:53', 'Samuel Osei Adu'),
+(93, 62, 32, 1, 10.00, 10.00, '2025-01-25 15:57:53', 'Samuel Osei Adu');
 
 -- --------------------------------------------------------
 
@@ -289,10 +342,10 @@ INSERT INTO `products` (`id`, `category_id`, `category_name`, `name`, `price`, `
 (21, '1', 'Fruit Tea Series', 'Cocktail Boba', '60', 'Medium', '2025-01-21 10:59:25', NULL, 'uploads/products/6791955b628cf.png'),
 (22, '1', 'Fruit Tea Series', 'Mango', '60', 'Medium', '2025-01-21 11:03:13', NULL, 'uploads/products/6791957060134.png'),
 (23, '1', 'Fruit Tea Series', 'Iced Tea', '80', 'Large', '2025-01-21 11:22:10', NULL, 'uploads/products/67920b11d2635.png'),
-(24, '1', 'Fruit Tea Series', 'Pineapple Boba', '80', 'Large', '2025-01-21 11:23:02', NULL, 'uploads/products/678f8396a902d.png'),
+(24, '1', 'Fruit Tea Series', 'Pineapple Boba', '80', 'Large', '2025-01-21 11:23:02', NULL, 'uploads/products/6795081836e2a.png'),
 (25, '1', 'Fruit Tea Series', 'Rose', '80', 'Large', '2025-01-21 11:24:42', NULL, NULL),
 (26, '1', 'Fruit Tea Series', 'Cantaloupe', '60', 'Medium', '2025-01-21 11:41:09', NULL, NULL),
-(27, '1', 'Fruit Tea Series', 'Lemon', '60', 'Medium', '2025-01-21 11:41:36', NULL, NULL),
+(27, '1', 'Fruit Tea Series', 'Lemon', '60', 'Medium', '2025-01-21 11:41:36', NULL, 'uploads/products/6795083f7c1fd.png'),
 (28, '1', 'Fruit Tea Series', 'Blue Orange', '60', 'Medium', '2025-01-21 11:42:00', NULL, NULL),
 (29, '1', 'Fruit Tea Series', 'Vanilla', '60', 'Medium', '2025-01-21 11:42:25', NULL, NULL),
 (30, '1', 'Fruit Tea Series', 'Mint', '60', 'Medium', '2025-01-21 11:42:45', NULL, NULL),
@@ -346,7 +399,8 @@ CREATE TABLE `product_pricing` (
 
 INSERT INTO `product_pricing` (`id`, `size_name`, `category_id`, `price`) VALUES
 (10, 'Medium', '1', '60'),
-(11, 'Large', '1', '80');
+(11, 'Large', '1', '80'),
+(12, 'Large', '23', '50');
 
 -- --------------------------------------------------------
 
@@ -366,16 +420,18 @@ CREATE TABLE `users` (
   `last_login` datetime DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` date NOT NULL DEFAULT current_timestamp(),
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `is_sysadmin` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `phone`, `username`, `password`, `fullname`, `role`, `status`, `last_login`, `created_at`, `updated_at`, `image`) VALUES
-(5, 'addsamuel355@gmail.com', '0246562377', 'samuelos', '$2y$10$lELYL5GH8TZonjHqGmhfpuXp5FB0gzPyHgA4v9/JwLghtKnYTrzxe', 'Samuel Osei Adu', 'admin', 'active', '2025-01-24 17:50:34', '2025-01-17 10:37:32', '2025-01-22', 'uploads/profile_images/678a32eca0f48.jpg'),
-(7, 'tater@gmail.com', '0246578988', 'taterjon', '$2y$10$2gbK2DxWCJYaEvJnMazc6uRcU/NJ.OWuY14Z9Hx/Vxj2e58x1jTd.', 'Tater Jonathan', 'cashier', 'active', '2025-01-23 15:06:15', '2025-01-22 12:06:04', '2025-01-23', 'uploads/profile_images/6790df2c09fd0.jpg');
+INSERT INTO `users` (`id`, `email`, `phone`, `username`, `password`, `fullname`, `role`, `status`, `last_login`, `created_at`, `updated_at`, `image`, `is_sysadmin`) VALUES
+(5, 'addsamuel355@gmail.com', '0246562377', 'samuelos', '$2y$10$lELYL5GH8TZonjHqGmhfpuXp5FB0gzPyHgA4v9/JwLghtKnYTrzxe', 'Samuel Osei Adu', 'admin', 'active', '2025-01-25 15:57:26', '2025-01-17 10:37:32', '2025-01-22', 'uploads/profile_images/678a32eca0f48.jpg', 1),
+(7, 'tater@gmail.com', '0246578988', 'taterjon', '$2y$10$2gbK2DxWCJYaEvJnMazc6uRcU/NJ.OWuY14Z9Hx/Vxj2e58x1jTd.', 'Tater Jonathan', 'cashier', 'active', '2025-01-25 12:44:55', '2025-01-22 12:06:04', '2025-01-23', 'uploads/profile_images/6790df2c09fd0.jpg', 0),
+(8, 'grace@gmail.com', '034983987943', 'gracegam', '$2y$10$M4hDABM8pW1vnkUdoPTQRuGFb6hBRbsCO/HvBqTgLIjvu5GWIuP.u', 'Grace Gambs', 'admin', 'active', '2025-01-25 15:34:12', '2025-01-25 11:52:12', '2025-01-25', NULL, 0);
 
 --
 -- Indexes for dumped tables
@@ -464,19 +520,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart_items`
 --
 ALTER TABLE `cart_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=272;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=297;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `login_attempts`
@@ -488,25 +544,25 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `order_history`
 --
 ALTER TABLE `order_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -518,13 +574,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `product_pricing`
 --
 ALTER TABLE `product_pricing`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

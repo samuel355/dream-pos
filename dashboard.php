@@ -2,7 +2,7 @@
 include 'includes/head.php';
 include 'includes/auth.php';
 
-requireLogin()
+ requireLogin()
 
 ?>
 

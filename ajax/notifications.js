@@ -9,7 +9,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const clear_notification = document.querySelector(".clear-noti")
   if(clear_notification){
     clear_notification.addEventListener("click", clearAllNotifications);
-  }    
+  } 
+  
+  const clear_all_notification = document.querySelector(".clear-all-noti")
+  if(clear_all_notification){
+    clear_all_notification.addEventListener("click", clearAllNotifications)
+  }
+  
 });
 
 function loadNotifications() {
@@ -112,6 +118,9 @@ function clearAllNotifications() {
       if (data.status === "success") {
         loadNotifications();
         toastr.success("All notifications cleared");
+      }
+      if(data.status === 'error'){
+        toastr.error(data.message)
       }
     })
     .catch((error) => console.error("Error:", error));

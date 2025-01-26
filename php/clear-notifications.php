@@ -4,7 +4,6 @@ include '../includes/auth.php';
 include '../includes/sendResponse.php';
 header('Content-Type: application/json');
 
-
 if(!isSysAdminOrAdmin()){
   sendResponse('error', 'Unauthorized Action. Only Admins can perform this action');
 }

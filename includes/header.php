@@ -49,7 +49,7 @@
           </ul>
         </div>
         <div class="topnav-dropdown-footer">
-          <a href="javascript:void(0)" class="clear-noti">Clear all Notifications</a>
+          <a href="javascript:void(0)" class="clear-all-noti">Clear all Notifications</a>
         </div>
       </div>
     </li>
