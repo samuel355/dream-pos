@@ -53,7 +53,7 @@ try {
             $_SESSION['fullname'] = $user['fullname'];
             $_SESSION['image'] = $user['image'];
             
-            if ($user['role'] === 'admin' && $user['is_sysadmin']) {
+            if ($user['role'] === 'admin' && $user['software'] === 'developer') {
                 $_SESSION['sysadmin'] = true;
             }
 

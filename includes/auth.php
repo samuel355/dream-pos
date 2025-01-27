@@ -24,7 +24,7 @@ function login($email, $password, $conn)
       $_SESSION['email'] = $user['email'];
       $_SESSION['fullname'] = $user['fullname'];
       $_SESSION['role'] = $user['role'];
-
+      
       // Update last login
       updateLastLogin($user['id'], $conn);
 

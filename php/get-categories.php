@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 
 function getCategories($conn)
 {
-  $query = "SELECT id, name, created_by, image FROM categories ORDER BY id";
+  $query = "SELECT id, name, created_by, image FROM categories ORDER BY arrange";
   $result = mysqli_query($conn, $query);
 
   if (!$result) {

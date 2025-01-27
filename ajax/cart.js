@@ -354,6 +354,7 @@ function updateCart() {
     .then((data) => {
       if (data.status === "success") {
         const cartData = data.data;
+        console.log(cartData)
 
         // Get container elements
         const leftContainer = document.querySelector(".product-right-block");
@@ -798,7 +799,7 @@ function previewReceipt(
               <h2>POPSY BUBBLE TEA SHOP</h2>
               <p>Ayeduase New Site - </p>
               <small>Close to Liendaville Hostel</small>
-              <p>Tel: 0530975528</p>
+              <p>Tel: 0530975528/0272542156</p>
               <small>Date: ${new Date().toLocaleString()}</small>
               <p>INV #: ${invoiceNumber}</p>
               <p>Served BY: ${cartData.items[0].created_by}</p>
@@ -822,10 +823,17 @@ function previewReceipt(
     const quantity = parseInt(item.quantity);
     const total = price * quantity;
 
+    let size_lable;
+    if((item.category_id === "1" || item.category_id === "3")){
+      size_lable = item.size === "Large" ? "(Lg.)" : item.size === "Medium" ? "(Md.)" : ''
+    }else{
+      size_lable = ''
+    }
+
     html += `
           <tr>
               <td>${index + 1}</td>
-              <td>${item.name}</td>
+              <td>${item.name}${size_lable}</td>
               <td>${price.toFixed(2)}</td>
               <td>${quantity}</td>
               <td>${total.toFixed(2)}</td>

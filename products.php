@@ -26,7 +26,7 @@ requireLogin();
             <h6>View Products </h6>
           </div>
 
-          <?php if (isset($_SESSION['sysadmin']) || isset($_SESSION['role']) === 'admin'): ?>
+          <?php if (isSysAdminOrAdmin()): ?>
             <div class="page-btn">
               <a href="javascript:void(0);" class="btn btn-adds" data-bs-toggle="modal"
                 data-bs-target="#create-product-modal">
