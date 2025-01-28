@@ -123,7 +123,6 @@ include 'includes/auth.php';
                   <tr>
                     <th>No</th>
                     <th>Customer Name</th>
-                    <th>Contact</th>
                     <th>Items</th>
                     <th>Total Amount</th>
                     <th>Created By</th>

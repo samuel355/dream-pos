@@ -61,7 +61,6 @@ try {
         $todays_orders_list[] = [
             'id' => $row['id'],
             'customer_name' => $row['customer_name'],
-            'customer_phone' => $row['customer_phone'],
             'items' => $row['items'],
             'total_amount' => $row['total_amount'],
             'created_at' => $row['created_at'],

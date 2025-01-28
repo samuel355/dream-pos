@@ -68,7 +68,6 @@ function showCustomersInTable(orders) {
         <tr>
           <td>${i + 1}</td>
           <td>${escapeHtml(order.customer_name)}</td>
-          <td>${escapeHtml(order.customer_phone)}</td>
           <td>${escapeHtml(order.items || "No items")}</td>
           <td>GHS ${formatNumber(order.total_amount)}</td>
           <td>${escapeHtml(order.created_by)}</td>
