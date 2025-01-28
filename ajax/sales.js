@@ -185,9 +185,6 @@ function showOrderDetailsModal(order) {
                           <p><strong>Customer:</strong> ${
                             order.customer_name || "N/A"
                           }</p>
-                          <p><strong>Phone:</strong> ${
-                            order.customer_phone || "N/A"
-                          }</p>
                           <p><strong>Date:</strong> ${new Date(
                             order.created_at
                           ).toLocaleString()}</p>
@@ -283,24 +280,29 @@ function printReceipt(saleId) {
                   <head>
                       <title>Receipt #${order.id}</title>
                       <style>
-                          body {
-                              font-family: 'Courier New', monospace;
-                              padding: 20px;
-                              max-width: 300px;
-                              margin: 0 auto;
+                          *{
+                            margin: 0;
+                            padding: 1px;
+                            box-sizing: border-box;
                           }
+                            body {
+                                font-family: monospace;
+                                padding: 8px;
+                                max-width: 400px;
+                                margin: 0 auto;
+                            }
                           .header, .footer {
                               text-align: center;
-                              margin: 20px 0;
+                              margin: 8px 0;
                           }
                           .items {
                               margin: 20px 0;
                           }
                           .total {
                               text-align: right;
-                              margin-top: 20px;
+                              margin-top: 8px;
                               border-top: 1px dashed #000;
-                              padding-top: 10px;
+                              padding-top: 8px;
                           }
                           @media print {
                               .no-print {
@@ -317,7 +319,6 @@ function printReceipt(saleId) {
                             order.created_at
                           ).toLocaleString()}</p>
                           <p>Customer: ${order.customer_name || "N/A"}</p>
-                          <p>Phone: ${order.customer_phone || "N/A"}</p>
                           <p>Created By: ${order.created_by || "Cashier 1"}</p>
                       </div>
                       
@@ -444,7 +445,7 @@ function generateReceiptHTML(order, receiptWindow) {
           <style>
               body {
                   font-family: monospace;
-                  padding: 20px;
+                  padding: 8px;
                   max-width: 400px;
                   margin: 0 auto;
               }
@@ -453,18 +454,18 @@ function generateReceiptHTML(order, receiptWindow) {
                   margin-bottom: 20px;
               }
               .items {
-                  margin: 20px 0;
+                  margin: 10px 0;
               }
               .item {
                   margin: 5px 0;
               }
               .totals {
-                  margin-top: 20px;
+                  margin-top: 10px;
                   text-align: right;
               }
               .footer {
                   text-align: center;
-                  margin-top: 20px;
+                  margin-top: 10px;
               }
               @media print {
                   .no-print {
@@ -479,7 +480,6 @@ function generateReceiptHTML(order, receiptWindow) {
               <p>Receipt #${order.id}</p>
               <p>Date: ${formatDate(order.created_at)}</p>
               <p>Customer: ${order.customer_name}</p>
-              <p>Contact: ${order.customer_phone}</p>
           </div>
           
           <div class="items">

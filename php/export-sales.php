@@ -87,7 +87,6 @@ try {
         'Order ID',
         'Date & Time',
         'Customer Name',
-        'Contact',
         'Items',
         'Total Amount (GHS)'
     ]);
@@ -99,7 +98,6 @@ try {
             '#' . $row['id'],
             date('Y-m-d H:i', strtotime($row['created_at'])),
             $row['customer_name'],
-            $row['customer_phone'],
             $row['items'],
             number_format($row['total_amount'], 2)
         ]);
@@ -108,7 +106,7 @@ try {
 
     // Add summary
     fputcsv($output, []); // Empty line
-    fputcsv($output, ['Total:', '', '', '', '', number_format($totalAmount, 2)]);
+    fputcsv($output, ['Total:', '', '', '', number_format($totalAmount, 2)]);
 
     // Close the output stream
     fclose($output);

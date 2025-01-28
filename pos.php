@@ -19,17 +19,6 @@ requireLogin(); ?>
 </style>
 
 <body>
-
-    <!-- <div>
-        <select onchange=changeBobaSize(${
-            item.cart_id
-            }) style="margin-left: 2px; margin-right: 2px" class="select" id="change-boba-size" name="change-boba-size">
-            <option value="Change Size">Change Size</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-        </select>
-    </div> -->
-
     <div class="header">
         <div class="page-header">
             <div class="page-btn mt-3 mb-5">
@@ -94,15 +83,6 @@ requireLogin(); ?>
                                         </div>
                                     </div>
                                     <a href="javascript:void(0);" class="btn btn-primary btn-icon"><i data-feather="user-plus" class="feather-16"></i></a>
-                                </div>
-                                <div class="input-block d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <div class="form-group">
-                                            <label>Contact</label>
-                                            <input type="text" id="customer-contact" name="customer-contact">
-                                        </div>
-                                    </div>
-                                    <a href="javascript:void(0);" class="btn btn-primary btn-icon"><i data-feather="phone" class="feather-16"></i></a>
                                 </div>
                             </div>
 

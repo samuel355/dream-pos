@@ -78,7 +78,6 @@ function processOrder($conn)
 function validateInput()
 {
     return isset($_POST['customer_name']) &&
-        isset($_POST['customer_phone']) &&
         isset($_POST['invoice_number']);
 }
 
@@ -86,7 +85,6 @@ function getAndSanitizeInput($conn)
 {
     return [
         'customer_name' => mysqli_real_escape_string($conn, trim($_POST['customer_name'])),
-        'customer_phone' => mysqli_real_escape_string($conn, trim($_POST['customer_phone'])),
         'invoice_number' => $_POST['invoice_number'],
         'session_id' => session_id(),
         'user_id' => $_SESSION['user_id'] ?? null
@@ -101,7 +99,7 @@ function checkMainFlavor($conn, $session_id)
               JOIN products p ON ci.product_id = p.id 
               JOIN categories c ON p.category_id = c.id
               WHERE ci.session_id = ? 
-              AND p.category_id IN (1, 3, 5)
+              AND p.category_id IN (1, 3)
               GROUP BY p.category_id";
 
     $stmt = mysqli_prepare($conn, $query);
@@ -176,16 +174,15 @@ function getCartItems($conn, $session_id)
 
 function createOrder($conn, $data, $total_amount)
 {
-    $order_query = "INSERT INTO orders (user_id, customer_name, customer_phone, total_amount, receipt_number, created_by) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+    $order_query = "INSERT INTO orders (user_id, customer_name, total_amount, receipt_number, created_by) 
+                    VALUES (?, ?, ?, ?, ?)";
 
     $stmt = mysqli_prepare($conn, $order_query);
     mysqli_stmt_bind_param(
         $stmt,
-        "issdss",
+        "isdss",
         $data['user_id'],
         $data['customer_name'],
-        $data['customer_phone'],
         $total_amount,
         $data['invoice_number'],
         $_SESSION['fullname']
@@ -234,18 +231,16 @@ function addCustomer($conn, $data)
         // Insert into customers table
         $customer_query = "INSERT INTO customers (
             name, 
-            contact, 
             items, 
             total,
             created_by
-        ) VALUES (?, ?, ?, ?, ?)";
+        ) VALUES (?, ?, ?, ?)";
 
         $stmt = mysqli_prepare($conn, $customer_query);
         mysqli_stmt_bind_param(
             $stmt,
-            "sssss",
+            "ssss",
             $data['customer_name'],
-            $data['customer_phone'],
             $combined_items,
             $total,
             $_SESSION['fullname']

@@ -354,7 +354,6 @@ function updateCart() {
     .then((data) => {
       if (data.status === "success") {
         const cartData = data.data;
-        console.log(cartData)
 
         // Get container elements
         const leftContainer = document.querySelector(".product-right-block");
@@ -678,7 +677,6 @@ function createOrder(cartData) {
   order_btn.textContent = "Processing...";
   //Save details to cart before previewing cart data to print.
   const customerName = document.getElementById("customer-name").value;
-  const customerContact = document.getElementById("customer-contact").value;
 
   if (customerName === "") {
     toastr.error("Enter customer name");
@@ -690,16 +688,10 @@ function createOrder(cartData) {
     order_btn.textContent = "Order now";
     return;
   }
-  if (customerContact === "") {
-    toastr.error("Enter your contact");
-    order_btn.textContent = "Order now";
-    return;
-  }
   const invoiceNumber = generateReceiptNumber(customerName);
 
   const formData = new FormData();
   formData.append("customer_name", customerName);
-  formData.append("customer_phone", customerContact);
   formData.append("invoice_number", invoiceNumber);
 
   fetch("php/process-order.php", {
@@ -711,12 +703,11 @@ function createOrder(cartData) {
     })
     .then((data) => {
       if (data.status === "success") {
-        previewReceipt(cartData, invoiceNumber, customerName, customerContact);
+        previewReceipt(cartData, invoiceNumber, customerName);
         toastr.success(
           "Your order is created successfully. Print your invoice"
         );
         document.getElementById("customer-name").value = "";
-        document.getElementById("customer-contact").value = "";
         order_btn.textContent = "Order now";
       } else {
         toastr.error("Error processing your order: " + data.message);
@@ -734,7 +725,6 @@ function previewReceipt(
   cartData,
   invoiceNumber,
   customerName,
-  customerContact
 ) {
   const receiptWindow = window.open("", "_blank", "width=400,height=600");
 
