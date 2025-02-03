@@ -13,12 +13,7 @@ try {
   if ($userId <= 0) {
     throw new Exception('Invalid user ID');
   }
-
-  if ($userId !== intval($_SESSION['user_id']) && !isSysAdmin()) {
-    sendResponse('error', 'You cannot edit other user details unless they do it themselves or the developer does it');
-    exit;
-  }
-
+  
   // Input validation and sanitization (add more checks as needed)
   $fullname = mysqli_real_escape_string($conn, trim($_POST['fullname']));
   $phone = mysqli_real_escape_string($conn, trim($_POST['phone']));

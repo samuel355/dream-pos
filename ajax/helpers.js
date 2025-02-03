@@ -21,3 +21,13 @@ const price = document.getElementById("price");
 if (price) {
   price.addEventListener("keydown", allowOnlyNumbers);
 }
+
+const phone = document.querySelector(".user-phone");
+if (phone) {
+  phone.addEventListener("keydown", allowOnlyNumbers);
+}
+
+const edit_phone = document.querySelector(".edit-user-phone");
+if (edit_phone) {
+  edit_phone.addEventListener("keydown", allowOnlyNumbers);
+}

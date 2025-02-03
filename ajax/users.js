@@ -171,7 +171,7 @@ function showEditUserModal(user) {
                               <div class="col-lg-6">
                                   <div class="form-group">
                                       <label>Phone<span class="text-danger">*</span></label>
-                                      <input type="text" name="phone" class="form-control" value="${
+                                      <input type="text" name="phone" class="form-control edit-user-phone" value="${
                                         user.phone
                                       }" required>
                                   </div>
@@ -266,7 +266,7 @@ function editUserSubmit(event) {
         $("#edit-user-modal").modal("hide");
       } if(data.status === 'info'){
         toastr.info(data.message)
-      } else {
+      } else if(data.status === 'error') {
         toastr.error(data.message || "Error updating user");
       }
     })

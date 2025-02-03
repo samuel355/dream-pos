@@ -83,7 +83,7 @@ requireAdmin();
               <div class="col-lg-6">
                 <div class="form-group">
                   <label>Phone<span class="text-danger">*</span></label>
-                  <input type="text" name="phone" class="form-control" required>
+                  <input type="text" name="phone" class="form-control user-phone" required>
                 </div>
               </div>
               <div class="col-lg-6">
